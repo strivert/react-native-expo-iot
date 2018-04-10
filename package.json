@@ -1,0 +1,62 @@
+{
+  "name": "andersen_app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.16.2",
+    "axios-mock-adapter": "^1.9.0",
+    "expo": "^25.0.0",
+    "keymirror": "^0.1.1",
+    "native-base": "^2.3.3",
+    "qs": "^6.5.1",
+    "react": "16.2.0",
+    "react-mixin": "^4.0.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
+    "react-native-azure-ad": "^0.2.4",
+    "react-native-button": "^2.1.0",
+    "react-native-dotenv": "^0.1.0",
+    "react-native-image-picker": "^0.26.7",
+    "react-native-modal": "^4.1.1",
+    "react-native-scripts": "^1.11.1",
+    "react-native-vector-icons": "^4.4.2",
+    "react-navigation": "^1.0.0-beta.27",
+    "react-redux": "^5.0.6",
+    "react-router-native": "^4.2.0",
+    "react-test-renderer": "16.0.0",
+    "react-timer-mixin": "^0.13.3",
+    "redux": "^3.7.2",
+    "redux-promise-middleware": "^4.4.1",
+    "redux-thunk": "^2.2.0",
+    "socket.io-client": "^2.0.4",
+    "url-parse": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-react": "^7.4.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "jest": "^21.2.1",
+    "jest-cli": "^21.2.1",
+    "jest-expo": "^25.0.0"
+  },
+  "resolutions": {
+    "uglify-es": "3.2.2"
+  },
+  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "scripts": {
+    "start": "react-native-scripts start",
+    "eject": "react-native-scripts eject",
+    "android": "react-native-scripts android",
+    "ios": "react-native-scripts ios",
+    "test": "node node_modules/jest/bin/jest.js --watch"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!react-native|react-router-native)/"
+    ]
+  }
+}
