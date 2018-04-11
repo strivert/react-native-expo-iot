@@ -140,17 +140,17 @@ export default {
   },
 
   // Footer
-  footerHeight: isIphoneX ? 89 : 55,
+  footerHeight: isIphoneX ? 89 : 57,
   footerDefaultBg: platform === 'ios' ? bg2 : bg2,
   footerPaddingBottom: isIphoneX ? 34 : 0,
 
   // FooterTab
-  tabBarTextColor: platform === 'ios' ? '#6b6b6b' : '#b3c7f9',
+  tabBarTextColor: '#000000', // custom footer txt color
   tabBarTextSize: platform === 'ios' ? 14 : 11,
   activeTab: platform === 'ios' ? '#007aff' : '#fff',
   sTabBarActiveTextColor: '#007aff',
-  tabBarActiveTextColor: platform === 'ios' ? '#007aff' : '#fff',
-  tabActiveBgColor: platform === 'ios' ? '#cde1f9' : '#3F51B5',
+  tabBarActiveTextColor: '#218FD8', // custom active
+  tabActiveBgColor: '#F2F2F2', // custom footer tab bg
 
   // Tab
   tabDefaultBg: platform === 'ios' ? '#F8F8F8' : '#3F51B5',

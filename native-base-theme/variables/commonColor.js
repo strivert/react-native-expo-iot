@@ -133,7 +133,7 @@ export default {
   },
 
   // Footer
-  footerHeight: isIphoneX ? 89 : 55,
+  footerHeight: isIphoneX ? 89 : 155,
   footerDefaultBg: "#2874F0",
   footerPaddingBottom: isIphoneX ? 34 : 0,
 

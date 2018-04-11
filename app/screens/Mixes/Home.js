@@ -4,11 +4,11 @@ import {
   Container,
 } from 'native-base'
 
+import HomeContainer from '../../containers/home/HomeContainer'
 class Home extends Component {
   render () {
     return (
-      <Container style={{ backgroundColor: 'white' }}>
-      </Container>
+      <HomeContainer />
     )
   }
 }

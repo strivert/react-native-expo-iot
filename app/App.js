@@ -5,7 +5,7 @@ import {NativeRouter} from 'react-router-native'
 import {AsyncStorage} from 'react-native'
 import {Font} from 'expo'
 import getTheme from '../native-base-theme/components'
-import platform from '../native-base-theme/variables/platform'
+import material from '../native-base-theme/variables/material'
 import {setDefaults} from './actions/storeActions'
 import AppContainer from './containers/App'
 import store from './store'
@@ -58,7 +58,7 @@ export default class App extends Component {
     const {fontLoaded} = this.state
 
     return !fontLoaded || !store ? <Spinner /> : (
-      <StyleProvider style={getTheme(platform)}>
+      <StyleProvider style={getTheme(material)}>
         <Provider store={store}>
           <NativeRouter>
             <AppContainer />
