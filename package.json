@@ -10,6 +10,7 @@
     "native-base": "^2.3.3",
     "qs": "^6.5.1",
     "react": "16.2.0",
+    "react-addons-shallow-compare": "^15.6.2",
     "react-mixin": "^4.0.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
     "react-native-azure-ad": "^0.2.4",
@@ -29,6 +30,7 @@
     "redux-promise-middleware": "^4.4.1",
     "redux-thunk": "^2.2.0",
     "socket.io-client": "^2.0.4",
+    "toggle-switch-react-native": "^0.2.0",
     "url-parse": "^1.2.0"
   },
   "devDependencies": {

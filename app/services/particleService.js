@@ -28,6 +28,7 @@ function getDevice (deviceId) {
  * @param {bool} enabled
  */
 function postSetEnableCharging (deviceId, enabled) {
+  console.log('`devices/${deviceId}/set-remote-locking`', `devices/${deviceId}/set-remote-locking`)
   return andersenHttp.post(`devices/${deviceId}/set-remote-locking`, {
     setTo: !enabled,
   })

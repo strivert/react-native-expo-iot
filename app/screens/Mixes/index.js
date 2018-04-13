@@ -5,23 +5,22 @@ import User from './User'
 import Setting from './Setting'
 import More from './More'
 
-import { TabNavigator } from 'react-navigation'
+import { TabNavigator, StackNavigator } from 'react-navigation'
 import Footer from '../../components/common/Footer'
 
-
-import { StackNavigator } from 'react-navigation'
-
-const HomeNav = StackNavigator({
-  Home: { screen: Home },
-  Charge: { screen: Charge },
-},{ headerMode: 'none' })
+const HomeNav = StackNavigator(
+  {
+    Home: { screen: Home },
+    Charge: { screen: Charge },
+  }, { headerMode: 'none' }
+)
 
 export default ( MainScreenNavigator = TabNavigator(
   {
     HomeNav: { screen: HomeNav },
     User: { screen: User },
     Setting: { screen: Setting },
-    More: { screen: More }
+    More: { screen: More },
   },
   {
     tabBarPosition: 'bottom',

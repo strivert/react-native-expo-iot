@@ -10,6 +10,8 @@ import {setDefaults} from './actions/storeActions'
 import AppContainer from './containers/App'
 import store from './store'
 
+console.disableYellowBox = true;
+
 export default class App extends Component {
   constructor (props) {
     super(props)

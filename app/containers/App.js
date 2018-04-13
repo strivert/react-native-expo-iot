@@ -24,7 +24,7 @@ class AppContainer extends Component {
     this.socketAuthenticated = false
   }
 
-  componentDidMount () {    
+  componentDidMount () {
     // this.props.logout()
     NetInfo.getConnectionInfo().then(connectionInfo => this.props.setConnectionStatus(connectionInfo))
     NetInfo.addEventListener('connectionChange', connectionInfo => this.props.setConnectionStatus(connectionInfo))
@@ -54,7 +54,7 @@ class AppContainer extends Component {
       this.socket.emit('authorize', {id_token: this.props.token})
     })
     this.socket.on('chargerstatus', data => {
-      console.log('chargerstatus', data);
+      // console.log('chargerstatus', data);
       this.props.receivedDeviceStatus(data)
     })
     this.socket.on('authenticated', () => {
@@ -84,7 +84,7 @@ class AppContainer extends Component {
 
   render () {
     return <StyleProvider style={getTheme(platform)}>
-      <Container>
+      <Container style={{marginTop: 24}}>
         <BootStrap />
       </Container>
     </StyleProvider>

@@ -1,22 +1,14 @@
-import React, { Component } from "react";
-import {
-  Text,
-  Container
-} from "native-base";
-import ReactNative from "react-native";
+import React, { Component } from 'react'
+import {Text, Container} from 'native-base'
 
-class ChargeContainer extends Component {  
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+class ChargeContainer extends Component {
+  render () {
     return (
-      <Container style={{ backgroundColor: "white" }}>
+      <Container style={{ backgroundColor: 'white' }}>
         <Text>Charge</Text>
       </Container>
-    );
+    )
   }
 }
 
-export default ChargeContainer;
+export default ChargeContainer

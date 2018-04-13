@@ -9,7 +9,7 @@ import {fetchToken} from '../../actions/azureActions'
 import {fetchUser} from '../../actions/andersenActions'
 
 class AdView extends Component {
-  static navigationOptions = { // no-eslint
+  static navigationOptions={ // no-eslint
     header: null,
   }
 
