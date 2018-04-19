@@ -8,6 +8,8 @@ module.exports = {
   putRenameDevice,
   putDeviceSerialNumber,
   putDeviceLocation,
+  deleteDevice,
+  postDevice,
 }
 
 function postCreateClaimCode () {
@@ -20,6 +22,13 @@ function getDevices () {
 
 function getDevice (deviceId) {
   return andersenHttp.get(`particle/v1/devices/${deviceId}`)
+}
+
+function deleteDevice (deviceId) {
+  return andersenHttp.delete(`particle/unclaim/${deviceId}`)
+}
+function postDevice (deviceId) {
+  return andersenHttp.get(`particle/claim/${deviceId}`)
 }
 
 /**

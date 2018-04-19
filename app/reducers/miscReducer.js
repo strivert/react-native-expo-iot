@@ -1,5 +1,6 @@
 import {
   SET_CONNECTION_STATUS,
+  SET_CONNECTION_INTER,
 } from '../types'
 
 const initialState = {
@@ -14,6 +15,12 @@ export default function data (state = initialState, action) {
         ...state,
         connectionStatus: action.meta,
         internetConnection: action.meta.type !== 'none',
+      }
+	case SET_CONNECTION_INTER:
+		console.log('action.data', action.data);
+      return {
+        ...state,
+        internetConnection: action.data,
       }
     default:
       return state

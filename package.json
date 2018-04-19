@@ -8,6 +8,7 @@
     "expo": "^25.0.0",
     "keymirror": "^0.1.1",
     "native-base": "^2.3.3",
+    "odiff": "^1.1.0",
     "qs": "^6.5.1",
     "react": "16.2.0",
     "react-addons-shallow-compare": "^15.6.2",

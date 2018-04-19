@@ -10,7 +10,7 @@ import {ANDERSEN_IOT_DOMAIN} from 'react-native-dotenv'
 import getTheme from '../../native-base-theme/components'
 import platform from '../../native-base-theme/variables/platform'
 import {receivedDeviceStatus, socketConnected, socketDisconnected} from '../actions/particleActions'
-import {setConnectionStatus} from '../actions/storeActions'
+import {setConnectionStatus, setConnectionInter} from '../actions/storeActions'
 import {fetchUser} from '../actions/andersenActions'
 import {logout} from '../actions/azureActions'
 
@@ -37,8 +37,22 @@ class AppContainer extends Component {
     this.socket.disconnect()
   }
 
+  componentWillReceiveProps (nextProps) {
+    console.log('this.props.internetConnection', this.props.internetConnection)
+    console.log('nextProps.internetConnection', nextProps.internetConnection)
+    // if ((this.props.internetConnection !== nextProps.internetConnection) && nextProps.internetConnection === false) {
+    if (this.props.internetConnection === false && nextProps.internetConnection === true) {
+      this.reconnectSocket()
+    }
+    if (this.props.token !== nextProps.token) {
+      this.reconnectSocket()
+    }
+  }
+
   componentDidUpdate (prevProps, prevState) {
+    console.log('componentDidUpdate')
     if (prevProps.token !== this.props.token) {
+      console.log('componentDidUpdated')
       this.reconnectSocket()
     }
     if (!this.props.token && this.socket) {
@@ -76,13 +90,18 @@ class AppContainer extends Component {
   }
 
   reconnectSocket () {
+    // console.log('this.socket', this.socket)
+    // console.log('this.socket.socketAuthenticated', this.socket.socketAuthenticated)
     if (this.socket && !this.socket.socketAuthenticated) {
+      console.log('RRReconnect')
       this.socket.disconnect()
       this.socket.connect()
+      this.props.setConnectionInter(true)
     }
   }
 
   render () {
+    console.log('this.props.misc', this.props.internetConnection)
     return <StyleProvider style={getTheme(platform)}>
       <Container style={{marginTop: 24}}>
         <BootStrap />
@@ -99,11 +118,14 @@ AppContainer.propTypes = {
   fetchUser: PropTypes.func.isRequired,
   setConnectionStatus: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
+  internetConnection: PropTypes.bool,
+  setConnectionInter: PropTypes.func,
 }
 
 export default withRouter(connect(
   state => ({
     token: state.auth.token,
+    internetConnection: state.misc.internetConnection,
   }),
-  dispatch => bindActionCreators({receivedDeviceStatus, socketConnected, socketDisconnected, fetchUser, setConnectionStatus, logout}, dispatch)
+  dispatch => bindActionCreators({receivedDeviceStatus, socketConnected, socketDisconnected, fetchUser, setConnectionStatus, logout, setConnectionInter}, dispatch)
 )(AppContainer))

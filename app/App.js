@@ -10,7 +10,7 @@ import {setDefaults} from './actions/storeActions'
 import AppContainer from './containers/App'
 import store from './store'
 
-console.disableYellowBox = true;
+console.disableYellowBox = true
 
 export default class App extends Component {
   constructor (props) {
@@ -33,6 +33,8 @@ export default class App extends Component {
         Proxima_nova_scosfthin: require('./assets/fonts/Proxima-Nova-ScOsf-Thin-webfont.ttf'),
         Proxima_nova_ltsemibold: require('./assets/fonts/Proxima-Nova-Semibold-webfont.ttf'),
         Proxima_nova_ltthin: require('./assets/fonts/Proxima-Nova-Thin-webfont.ttf'),
+        Proxima_nova_light: require('./assets/fonts/Proxima-nova-light-webfont.ttf'),
+        Arial: require('./assets/fonts/arial.ttf'),
       }),
     ])
       .then(data => {

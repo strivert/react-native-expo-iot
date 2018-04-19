@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 
-import {
-  Container,
-} from 'native-base'
-
+import AddingDeviceContainer from '../../containers/adding_device/AddingDeviceContainer'
 class Setting extends Component {
   render () {
     return (
-      <Container style={{ backgroundColor: 'white' }}>
-      </Container>
+      <AddingDeviceContainer refresh={this.props.navigation.state.params.isRefresh} />
     )
   }
 }

@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { MapView } from 'expo'
 import PropTypes from 'prop-types'
+import odiff from 'odiff'
 
 class MapWrapper extends Component {
   constructor (props) {
@@ -12,12 +13,21 @@ class MapWrapper extends Component {
     }
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    const diffArr = odiff(this.props, nextProps)
+    if (diffArr.length === 0) {
+      return false
+    } else {
+      return true
+    }
+  }
+
   componentDidMount () {
     setTimeout(() => {
       this.setState({
         visibleSwiper: true,
       })
-    }, 10)
+    }, 100)
   }
 
   onIndexChanged (selectedIndex) {
@@ -32,14 +42,19 @@ class MapWrapper extends Component {
       return (
         <MapView
           style={{ flex: 1, position: 'relative' }}
-          initialRegion={item.location}
+          initialRegion={{
+            latitude: item.location.latitude + 0.004,
+            longitude: item.location.longitude - 0.008,
+            latitudeDelta: item.location.latitudeDelta,
+            longitudeDelta: item.location.longitudeDelta,
+          }}
           key={`map-${i}`}
         >
           <MapView.Marker
             coordinate={item.location}
           />
-          <View style={{flex: 1, position: 'absolute', left: 30, top: 10}}>
-            <Text style={{fontSize: 37}}>{item.deviceName}</Text>
+          <View style={{flex: 1, position: 'absolute', left: 30, top: 70}}>
+            <Text style={{fontSize: 37, fontFamily: 'Proxima_nova_light'}}>{item.deviceName}</Text>
           </View>
         </MapView>
       )
@@ -54,6 +69,9 @@ class MapWrapper extends Component {
             onIndexChanged={(index) => {
               this.onIndexChanged(index)
             }}
+            nextButton={<Text style={{color: '#707070', fontSize: 50}}>›</Text>}
+            prevButton={<Text style={{color: '#707070', fontSize: 50}}>‹</Text>}
+            activeDotColor={'#707070'}
           >
             {maps}
           </Swiper>

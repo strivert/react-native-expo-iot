@@ -22,7 +22,7 @@ class FooterWrapper extends Component {
           <Button
             vertical
             active={this.props.navigationState.index === 2}
-            onPress={() => this.props.navigation.navigate('Setting')}>
+            onPress={() => this.props.navigation.navigate('Setting', { isRefresh: Date.now() })}>
             <Icon name='ios-settings-outline' style={styles.footerIcon} />
           </Button>
           <Button

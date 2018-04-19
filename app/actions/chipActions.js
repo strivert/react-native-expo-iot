@@ -73,8 +73,7 @@ function configureAndConnectAp (ssid, password, sec, ch) {
   return (dispatch, getState) => {
     const state = getState()
 
-    return dispatch(setClaimCode(state.particle.claimCode))
-      .then(() => dispatch(fetchPublicKey()))
+    return dispatch(fetchPublicKey())
       .then(data => {
         const publicKey = data.value.data.b
         const rsa = new RsaKey()
@@ -83,6 +82,12 @@ function configureAndConnectAp (ssid, password, sec, ch) {
         return rsa.encrypt(password)
       })
       .then(pwd => dispatch(configureAp(ssid, pwd, sec, ch)))
-      .then(() => dispatch(connectAp()))
+      .then(() => {
+		alert('hello');
+        dispatch(connectAp())
+	   })
+	  .catch((err) => {
+        console.log('err', err)
+      })
   }
 }

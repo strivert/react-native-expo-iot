@@ -1,1 +1,1 @@
-export { default } from './MapWrapper';
+export { default } from './MapWrapper'

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Image } from 'react-native'
 import { Container } from 'native-base'
 
 import {withRouter} from 'react-router-native'
@@ -176,7 +176,6 @@ class HomeContainer extends Component {
           initStates['charge']['t1Text'] = 'Last Charge'
           initStates['charge']['t2Text'] = this.toHHMMSS(lastchargingtime) // to be
           initStates['charge']['t2Sty'] = 'grayColor'
-          initStates['charge']['iconName'] = 'ios-link-outline'
           initStates['charge']['iconSty'] = 'grayColor'
           break
         case 'C':
@@ -208,6 +207,13 @@ class HomeContainer extends Component {
           <MapWrapper
             selectDevice={(deviceId) => this.selectDevice(deviceId)}
             mapData={deviceArr}
+          />
+        </View>
+        <View style={{flex: 1, position: 'absolute', left: '50%', marginLeft: -50, top: 0}}>
+          <Image
+            style={{flex: 1, height: 30, width: 100}}
+            source={require('../../assets/images/logo.png')}
+            resizeMode="contain"
           />
         </View>
 
