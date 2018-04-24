@@ -66,7 +66,15 @@ class HomeContainer extends Component {
   render () {
     const { selectedDeviceId } = this.state
 
+    if (!this.props.token) {
+      alert('??');
+    }
     if (!selectedDeviceId) {
+      alert('deciceiD');      
+    } else {
+      alert('Ok');            
+    }
+    if (!selectedDeviceId || !this.props.token) {
       return null
     }
 
@@ -254,12 +262,14 @@ HomeContainer.propTypes = {
   devicesHash: PropTypes.object,
   devices: PropTypes.array,
   setEnableCharging: PropTypes.func,
+  token: PropTypes.string,
 }
 
 export default withRouter(connect(
   state => ({
     devicesHash: state.particle.devicesHash,
     devices: state.particle.devices,
+    token: state.auth.token,
   }),
   dispatch => bindActionCreators({setEnableCharging}, dispatch)
 )(HomeContainer))

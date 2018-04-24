@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 
-import {
-  Container,
-} from 'native-base'
+import AccountContainer from '../../containers/user/AccountContainer'
 
 class User extends Component {
   render () {
     return (
-      <Container style={{ backgroundColor: 'white' }}>
-      </Container>
+      <AccountContainer />
     )
   }
 }

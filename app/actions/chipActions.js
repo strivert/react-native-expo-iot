@@ -83,7 +83,7 @@ function configureAndConnectAp (ssid, password, sec, ch) {
       })
       .then(pwd => dispatch(configureAp(ssid, pwd, sec, ch)))
       .then(() => {
-		alert('hello');
+		// alert('hello');
         dispatch(connectAp())
 	   })
 	  .catch((err) => {

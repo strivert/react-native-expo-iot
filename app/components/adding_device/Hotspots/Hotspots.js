@@ -20,7 +20,7 @@ class Hotspots extends Component {
       style={{backgroundColor: 'transparent'}}
     >
       <Body>
-        <Text>{item.ssid}</Text>
+        <Text style={[styles.txtColor]}>{item.ssid}</Text>
       </Body>
       <Right>
         {item.sec > 0 && <Icon name="lock" />}

@@ -38,8 +38,8 @@ class AppContainer extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log('this.props.internetConnection', this.props.internetConnection)
-    console.log('nextProps.internetConnection', nextProps.internetConnection)
+    // console.log('this.props.internetConnection', this.props.internetConnection)
+    // console.log('nextProps.internetConnection', nextProps.internetConnection)
     // if ((this.props.internetConnection !== nextProps.internetConnection) && nextProps.internetConnection === false) {
     if (this.props.internetConnection === false && nextProps.internetConnection === true) {
       this.reconnectSocket()
@@ -50,9 +50,9 @@ class AppContainer extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    console.log('componentDidUpdate')
+    // console.log('componentDidUpdate')
     if (prevProps.token !== this.props.token) {
-      console.log('componentDidUpdated')
+      // console.log('componentDidUpdated')
       this.reconnectSocket()
     }
     if (!this.props.token && this.socket) {
@@ -68,7 +68,7 @@ class AppContainer extends Component {
       this.socket.emit('authorize', {id_token: this.props.token})
     })
     this.socket.on('chargerstatus', data => {
-      // console.log('chargerstatus', data);
+      console.log('chargerstatus', data)
       this.props.receivedDeviceStatus(data)
     })
     this.socket.on('authenticated', () => {
@@ -93,15 +93,20 @@ class AppContainer extends Component {
     // console.log('this.socket', this.socket)
     // console.log('this.socket.socketAuthenticated', this.socket.socketAuthenticated)
     if (this.socket && !this.socket.socketAuthenticated) {
-      console.log('RRReconnect')
+      // console.log('RRReconnect')
+      /*
       this.socket.disconnect()
+      this.setupSocket()
       this.socket.connect()
+      */
+      this.setupSocket()
+      this.connectSocket()
       this.props.setConnectionInter(true)
     }
   }
 
   render () {
-    console.log('this.props.misc', this.props.internetConnection)
+    // console.log('this.props.misc', this.props.internetConnection)
     return <StyleProvider style={getTheme(platform)}>
       <Container style={{marginTop: 24}}>
         <BootStrap />

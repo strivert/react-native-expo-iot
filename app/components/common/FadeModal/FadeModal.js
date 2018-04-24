@@ -13,13 +13,13 @@ class FadeModal extends Component {
         transparent={true}
       >
         <TouchableWithoutFeedback onPress={this.props.handleModalClose}>
-          <View style={styles.modalBackdrop}>
+          <View style={[styles.modalBackdrop, styles.bgModalColor]}>
             <TouchableOpacity activeOpacity={1}>
               <ScrollView
                 contentContainerStyle={{flexGrow: 1, justifyContent: 'center'}}
                 keyboardShouldPersistTaps="always"
               >
-                <View style={!noPad ? styles.modalView : {padding: 0}}>
+                <View style={[!noPad ? styles.modalView : {padding: 0}, styles.bgModalColor]}>
                   {this.props.children}
                 </View>
               </ScrollView>

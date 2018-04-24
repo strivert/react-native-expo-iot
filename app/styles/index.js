@@ -15,7 +15,7 @@ export default StyleSheet.create({
     flexShrink: 1,
   },
   disabledText: {
-    color: '#ccc',
+    color: '#ccc', // #ccc
   },
   appWrap: {
     flexGrow: 1,
@@ -23,10 +23,10 @@ export default StyleSheet.create({
   },
   appContainer: {
     flexGrow: 1,
-    backgroundColor: '#e9eaee',
+    backgroundColor: '#e9eaee', // #e9eaee
   },
   textWhite: {
-    color: '#fff',
+    color: '#fff', // #fff
   },
   pad: {
     padding: 10,
@@ -40,7 +40,7 @@ export default StyleSheet.create({
   },
   modalBackdrop: {
     flexGrow: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 7f7f7f
     padding: 24,
     justifyContent: 'center',
   },
@@ -58,7 +58,7 @@ export default StyleSheet.create({
     paddingRight: 0,
   },
   modalButton: {
-    color: '#fff',
+    color: '#fff', // #fff
     fontSize: 16,
     fontWeight: 'normal',
     marginLeft: 16,
@@ -70,11 +70,11 @@ export default StyleSheet.create({
     height: 50,
   },
   modalButtonDisabled: {
-    color: '#666',
+    color: '#666', // #666
   },
   label: {
     lineHeight: 24,
-    color: '#666',
+    color: '#666', // #666
     fontSize: 12,
   },
   wifiScan: {
@@ -83,12 +83,25 @@ export default StyleSheet.create({
   },
   hotspotItem: {
     height: 45,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff', // #fff
     paddingRight: 15,
     marginLeft: 15,
     flex: 1,
     flexDirection: 'row',
-    borderBottomColor: '#c9c9c9',
+    borderBottomColor: '#c9c9c9', // #c9c9c9
     borderBottomWidth: 0.5,
+  },
+  bgColor: {
+    backgroundColor: '#FFFFFF',
+  },
+  bgModalColor: {
+    backgroundColor: '#e9eaee',
+  },
+  txtColor: {
+    color: '#707070',
+  },
+  inputBorder: {
+    borderColor: '#666',
+    borderWidth: 0.5,
   },
 })

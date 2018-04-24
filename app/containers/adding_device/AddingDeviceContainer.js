@@ -40,6 +40,7 @@ class AddingDeviceContainer extends Component {
       hotspots: null,
       connected: false,
       deviceId: null,
+      addedDevice: false,
     }
 
     this.fetchIdInterval = null
@@ -54,9 +55,13 @@ class AddingDeviceContainer extends Component {
         hotspots: null,
         connected: false,
         deviceId: null,
+        addedDevice: false,
       })
-      this.clearInterval(this.fetchIdInterval)
       this.clearInterval(this.verifyingConnectionInterval)
+
+      this.props.fetchId()
+        .then(response => this.setState({connected: true, deviceId: response.action.payload.data.id}))
+        .catch(() => this.setState({connected: false}))
     }
   }
 
@@ -86,11 +91,12 @@ class AddingDeviceContainer extends Component {
     if (prevState.stage === 1 && this.state.stage === 2 && !this.props.claimCode) {
       this.props.createClaimCode()
         .catch(() => {
-          alert('Failed to create claim code')
+          // alert('Failed to create claim code')
         })
     }
 
     if (prevState.stage !== 3 && this.state.stage === 3) {
+      const _this = this
       const {deviceId} = this.state
       this.verifyingConnectionInterval = this.setInterval(() => {
 
@@ -99,11 +105,15 @@ class AddingDeviceContainer extends Component {
             return postDevice(deviceId)
           })
           .then((b) => {
-            alert(b)
+            _this.setState({
+              addedDevice: true,
+            })
+            // alert(b)
             // console.log(b)
           })
           .catch((err) => {
-            alert(err)
+            console.log(err)
+            // alert(err)
           })
       }, 3000)
     }
@@ -139,12 +149,12 @@ class AddingDeviceContainer extends Component {
       selectedHotspot.ch
     )
       .then(() => {
-        alert('connected')
+        // alert('connected')
         this.props.setConnectionInter(false)
         this.setState({stage: 3})
       })
       .catch(() => {
-        alert('Connection failed')
+        // alert('Connection failed')
       })
   }
 
@@ -176,41 +186,41 @@ class AddingDeviceContainer extends Component {
 
     const {selectedHotspot, stage, hotspots} = this.state
 
-    const beforeYouStart = <View style={[styles.flex]}>
+    const beforeYouStart = <View style={[styles.flex, styles.bgColor]}>
       <Content padder2>
-        <H1 mt>Before you start, please ensure that:</H1>
-        <Text mt>{'\u2022'} You are within 5m of your charge point</Text>
-        <Text mt>{'\u2022'} You are also within range of your home wifi</Text>
-        <Text mt>{'\u2022'} You know your home wifi password</Text>
-        <Text mt>{'\u2022'} You have your Andersen setup pack with you</Text>
+        <H1 mt style={[styles.txtColor]}>Before you start, please ensure that:</H1>
+        <Text mt style={[styles.txtColor]}>{'\u2022'} You are within 5m of your charge point</Text>
+        <Text mt style={[styles.txtColor]}>{'\u2022'} You are also within range of your home wifi</Text>
+        <Text mt style={[styles.txtColor]}>{'\u2022'} You know your home wifi password</Text>
+        <Text mt style={[styles.txtColor]}>{'\u2022'} You have your Andersen setup pack with you</Text>
       </Content>
       <Footer>
-        <FooterTab buttons>
+        <FooterTab buttons style={{backgroundColor: '#f2f2f2'}}>
           <Button onPress={handleClickBeginSetup}>
-            <Text>Begin setup</Text>
+            <Text style={[styles.txtColor]}>Begin setup</Text>
           </Button>
         </FooterTab>
       </Footer>
     </View>
 
-    const awaitingWifi = <Content>
+    const awaitingWifi = <Content style={[styles.bgColor]}>
       {creatingClaimCode && <Spinner />}
-      {!creatingClaimCode && claimCode && <View padder2>
-        <H1 bold>First, connect to the chargepoint with your phone</H1>
-        <Text bold mt>Please select the network from your Andersen chargepoint.</Text>
-        <Text mt>The network name should appear as Andersen-XXXX</Text>
-        <Text mt>Waiting for connection...</Text>
+      {!creatingClaimCode && claimCode && <View padder2 style={[styles.bgColor]}>
+        <H1 bold style={[styles.txtColor]}>First, connect to the chargepoint with your phone</H1>
+        <Text bold mt style={[styles.txtColor]}>Please select the network from your Andersen chargepoint.</Text>
+        <Text mt style={[styles.txtColor]}>The network name should appear as Andersen-XXXX</Text>
+        <Text mt style={[styles.txtColor]}>Waiting for connection...</Text>
         <Spinner />
       </View>}
     </Content>
 
-    const listHotspots = <View style={[styles.flex]}>
+    const listHotspots = <View style={[styles.flex, styles.bgColor]}>
       <Content>
         <View padder>
-          <Text>Select the wifi hotspot you wish to connect the chargepoint to:</Text>
+          <Text style={[styles.txtColor]}>Select the wifi hotspot you wish to connect the chargepoint to:</Text>
         </View>
         {fetchingHotspots && <View padder>
-          <Text>Searching for wifi hotspots...</Text>
+          <Text style={[styles.txtColor]}>Searching for wifi hotspots...</Text>
           <Spinner />
         </View>}
         {!fetchingHotspots && hotspots && <Hotspots onSelect={handleSelectHotspot} hotspots={hotspots} />}
@@ -222,18 +232,27 @@ class AddingDeviceContainer extends Component {
         />}
       </Content>
       <Footer>
-        <FooterTab buttons>
+        <FooterTab buttons style={{backgroundColor: '#f2f2f2'}}>
           <Button disabled={fetchingHotspots} onPress={handlePressScan}>
-            <Text>Scan for hotspots</Text>
+            <Text style={[styles.txtColor]}>Scan for hotspots</Text>
           </Button>
         </FooterTab>
       </Footer>
     </View>
 
-    const verifyingConnection = <Content>
-      <View padder>
-        <Text>Waiting for chargepoint to connect to the internet. This may take up to 30 seconds...</Text>
-        <Spinner />
+    const verifyingConnection = <Content style={[styles.bgColor]}>
+      <View padder style={[styles.bgColor]}>
+        {!this.state.addedDevice && (
+          <View>
+            <Text style={[styles.txtColor]}>Waiting for chargepoint to connect to the internet. This may take up to 30 seconds...</Text>
+            <Spinner />
+          </View>
+        )}
+
+        {this.state.addedDevice && (
+          <Text style={[styles.txtColor, {fontSize: 20, textAlign: 'center'}]}>Device added.</Text>
+        )
+        }
       </View>
     </Content>
 

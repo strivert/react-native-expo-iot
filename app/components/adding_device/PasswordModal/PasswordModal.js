@@ -53,15 +53,15 @@ class PasswordModal extends Component {
     const {handlePasswordChange, handlePressShowPassword} = this
 
     return (
-      <FadeModal handleModalClose={handleModalClose}>
+      <FadeModal handleModalClose={handleModalClose} style={[styles.bgModalColor]}>
         {attemptingConnection && <Spinner />}
-        {!attemptingConnection && <Form>
-          <Text>SSID: {selectedHotspot.ssid}</Text>
-          <View style={{display: selectedHotspot.sec ? 'flex' : 'none'}}>
+        {!attemptingConnection && <Form style={[styles.bgModalColor]}>
+          <Text style={[styles.txtColor]}>SSID: {selectedHotspot.ssid}</Text>
+          <View style={[{display: selectedHotspot.sec ? 'flex' : 'none'}, styles.bgModalColor]}>
             <Item stackedLabel style={{marginLeft: 0}}>
-              <Label>Password:</Label>
+              <Label style={[styles.txtColor]}>Password:</Label>
               <Input
-                style={styles.textInput}
+                style={[styles.textInput, styles.txtColor]}
                 secureTextEntry={!showPassword}
                 autoFocus={true}
                 autoCorrect={false}
@@ -72,27 +72,28 @@ class PasswordModal extends Component {
                 disableFullscreenUI={true}
               />
             </Item>
-            <TouchableWithoutFeedback onPress={() => this.showPasswordCheckbox.props.onPress()}>
-              <ListItem style={{borderBottomWidth: 0, marginLeft: 0}}>
+            <TouchableWithoutFeedback onPress={() => this.showPasswordCheckbox.props.onPress()} style={[styles.bgModalColor]}>
+              <ListItem style={[{borderBottomWidth: 0, marginLeft: 0}, styles.bgModalColor]}>
                 <CheckBox
                   ref={ref => (this.showPasswordCheckbox = ref)}
                   color="#666"
                   checked={showPassword}
                   onPress={handlePressShowPassword} />
                 <Body>
-                  <Text style={[styles.label, {color: '#fff'}]}>Show password</Text>
+                  <Text style={[styles.label, styles.txtColor]}>Show password</Text>
                 </Body>
               </ListItem>
             </TouchableWithoutFeedback>
           </View>
-          <ListItem style={styles.modalButtons}>
+          <ListItem style={[styles.modalButtons, styles.bgModalColor]}>
             <ReactNativeButton
               onPress={handleModalClose}
-              style={styles.modalButton}
+              style={[styles.modalButton, styles.txtColor]}
             >Cancel</ReactNativeButton>
             <ReactNativeButton
               disabled={!!(selectedHotspot.sec && password === '')}
-              style={styles.modalButton}
+              // style={styles.modalButton}
+              style={styles.modalButtonDisabled}
               styleDisabled={styles.modalButtonDisabled}
               onPress={() => handleSubmitConnect(selectedHotspot, password)}
             >Connect</ReactNativeButton>

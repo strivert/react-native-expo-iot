@@ -5,14 +5,10 @@ import {bindActionCreators} from 'redux'
 import {WebView, Dimensions} from 'react-native'
 import urlParse from 'url-parse'
 import {stringify} from 'qs'
-import {fetchToken} from '../../actions/azureActions'
-import {fetchUser} from '../../actions/andersenActions'
+import {fetchToken} from '../../../actions/azureActions'
+import {fetchUser} from '../../../actions/andersenActions'
 
 class AdView extends Component {
-  static navigationOptions={ // no-eslint
-    header: null,
-  }
-
   constructor (props) {
     super(props)
 
@@ -21,20 +17,6 @@ class AdView extends Component {
     this.state = {
       policy: 'B2C_1_customer-sign-up-sign-in',
       gotCode: false,
-    }
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (!this.props.token && nextProps.token) {
-      this.props.navigation.navigate('HomeNav')
-    }
-  }
-
-  componentDidMount () {
-    if (this.props.token) {
-      return this.props.fetchUser().then(() => {
-        this.props.navigation.navigate('HomeNav')
-      })
     }
   }
 
@@ -68,11 +50,6 @@ class AdView extends Component {
   }
 
   render () {
-
-    if (this.props.token) {
-      return null;
-    }
-
     const {handleADToken} = this
     const {policy} = this.state
 
@@ -119,13 +96,10 @@ class AdView extends Component {
 AdView.propTypes = {
   fetchToken: PropTypes.func.isRequired,
   fetchUser: PropTypes.func.isRequired,
-  navigation: PropTypes.object.isRequired,
-  token: PropTypes.string,
 }
 
 export default connect(
   state => ({
-    token: state.auth.token,
   }),
   dispatch => bindActionCreators({fetchToken, fetchUser}, dispatch)
 )(AdView)
