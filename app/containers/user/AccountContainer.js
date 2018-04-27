@@ -1,37 +1,27 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import {
-  Text,
-  Button,
-  View,
-  H2,
-  Label,
-  Footer,
-  FooterTab,
-  Spinner,
-  Content,
-} from 'native-base'
-import {fetchUser, updateUser} from '../../actions/andersenActions'
-import {logout} from '../../actions/azureActions'
-import styles from '../../styles'
-// import AdView from '../../components/user/AdView'
-import Details from '../../components/user/Details'
+import { StyleSheet, Text } from 'react-native'
+import { Container } from 'native-base'
 
-class Account extends Component {
+import {withRouter} from 'react-router-native'
+import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
+import {bindActionCreators} from 'redux'
+
+import {fetchUser} from '../../actions/andersenActions'
+import {logout} from '../../actions/azureActions'
+
+import styles from '../../styles'
+
+import PageHeader from '../../components/common/PageHeader'
+import PageTop from '../../components/common/PageTop'
+import Bar from '../../components/common/Bar'
+import BlueBtn from '../../components/common/BlueBtn'
+import Border from '../../components/common/Border'
+
+class AccountContainer extends Component {
   constructor (props) {
     super(props)
-
-    this.handlePressLogout = this.handlePressLogout.bind(this)
-    this.handlePressEdit = this.handlePressEdit.bind(this)
-    this.handleCloseEdit = this.handleCloseEdit.bind(this)
-    this.handleSave = this.handleSave.bind(this)
-
     this.state = {
-      editModal: false,
-      loading: false,
-      submitted: false,
     }
   }
 
@@ -45,131 +35,109 @@ class Account extends Component {
     if (!prevProps.token && this.props.token) {
       this.props.fetchUser()
     }
-
-    if (!this.props.user.validAccount && this.props.user.receivedUser && !this.state.loading && !this.state.editModal) {
-      this.setState({editModal: true})
-    }
-
-    if (this.props.user && this.props.user.receivedUser && !this.props.user.firstName) {
-
-    }
-  }
-
-  handleSave (firstName, lastName, mobile, address1, address2, town, county, postcode) {
-    this.setState({editModal: false, loading: true, submitted: true})
-    this.props.updateUser(firstName, lastName, mobile, address1, address2, town, county, postcode)
-      .then(() => this.props.fetchUser())
-      .then(() => this.setState({loading: false}))
-      .catch(() => this.setState({loading: false}))
-  }
-
-  handlePressLogout () {
-    this.props.logout()
-  }
-
-  handlePressEdit () {
-    this.setState({editModal: true})
-  }
-
-  handleCloseEdit () {
-    this.setState({editModal: false})
-  }
-
-  handleChange (name, value) {
-    this.setState({
-      [name]: value,
-    })
   }
 
   render () {
-    const {token, gettingToken, email, user, internetConnection} = this.props
-    const {editModal, loading, submitted} = this.state
-    const {handlePressLogout, handlePressEdit, handleCloseEdit, handleSave} = this
-
-    if (!token && !internetConnection) {
-      return <View padder2>
-        <Text>Internet connection not available.</Text>
-      </View>
-    }
-
-    /*
-    if (!token) {
-      return <AdView />
-    }
-    */
-
-    if (editModal) {
-      if (!user.receivedUser) {
-        return <Spinner />
-      }
-      return <Details submitted={submitted} handleClose={handleCloseEdit} handleSave={handleSave} />
-    }
-
+    const {email, user} = this.props
     return (
-      <View style={[styles.flex]}>
-        <Content padder bounces={false}>
-          {gettingToken && <Spinner />}
-          {token && <View style={styles.pad}>
-            <Text>Logged in: {email}</Text>
-            {loading && <Spinner />}
-            {user && !!user.receivedUser && <View userDetails>
-              <H2>Your Details</H2>
-              <Label>First name</Label>
-              <Text boxText style={{borderWidth: 1}}>{user.firstName}</Text>
-              <Label>Last name</Label>
-              <Text boxText style={{borderWidth: 1}}>{user.lastName}</Text>
-              <Label>Mobile</Label>
-              <Text boxText style={{borderWidth: 1}}>{user.mobile}</Text>
-              <Label>Address 1</Label>
-              <Text boxText style={{borderWidth: 1}}>{user.address1}</Text>
-              <Label>Address 2</Label>
-              <Text boxText style={{borderWidth: 1}}>{user.address2}</Text>
-              <Label>Town</Label>
-              <Text boxText style={{borderWidth: 1}}>{user.town}</Text>
-              <Label>County</Label>
-              <Text boxText style={{borderWidth: 1}}>{user.county}</Text>
-              <Label>Post code</Label>
-              <Text boxText style={{borderWidth: 1}}>{user.postcode}</Text>
-            </View>}
-          </View>}
-        </Content>
-        <Footer>
-          <FooterTab buttons>
-            {token && user && !!user.receivedUser && <Button
-              style={{marginRight: 5, borderRightWidth: 1, borderColor: '#000', borderRadius: 0}}
-              onPress={handlePressEdit}>
-              <Text>Edit</Text>
-            </Button>}
-            <Button
-              onPress={handlePressLogout}>
-              <Text>Sign out</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      </View>
+      <Container style={pageStyles.accountWrapper}>
+        <PageHeader />
+        <PageTop
+          iconName='ios-person-outline'
+          firstText='AndersenId'
+          secondText={`${user.firstName} ${user.lastName}`}
+        />
+        <Bar
+          barText='Your Account'
+        />
+        <Text style={[styles.txtColor2, pageStyles.paddingLeftRight36, pageStyles.emailText]}>
+          {email}
+        </Text>
+
+        <Border style={pageStyles.marginLeftRight16} />
+
+        <BlueBtn style={[pageStyles.manageWrapper, pageStyles.paddingLeftRight36]} onClick={() => {}}>
+          <Text style={[styles.blueBtnTextColor, pageStyles.manageText]}>Manage your Andersen ID</Text>
+          <Text style={[styles.txtColor2, pageStyles.changeText]}>Change your password, delete account</Text>
+        </BlueBtn>
+
+        <Border style={pageStyles.width50} />
+
+        <BlueBtn style={[pageStyles.paddingLeftRight36, pageStyles.termsWrapper]} onClick={() => {}}>
+          <Text style={[styles.blueBtnTextColor, pageStyles.termsText]}>Terms and Conditions</Text>
+        </BlueBtn>
+
+        <Border style={pageStyles.marginLeftRight16} />
+
+        <BlueBtn style={[pageStyles.paddingLeftRight36, pageStyles.signOutWrapper]} onClick={() => this.props.logout()}>
+          <Text style={[styles.blueBtnTextColor, pageStyles.signOutText]}>Sign Out</Text>
+        </BlueBtn>
+      </Container>
     )
   }
 }
 
-Account.propTypes = {
-  token: PropTypes.string,
-  email: PropTypes.string,
-  fetchUser: PropTypes.func.isRequired,
-  updateUser: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
-  gettingToken: PropTypes.bool,
+let pageStyles = StyleSheet.create({
+  accountWrapper: {
+    backgroundColor: '#FFFFFF',
+  },
+  paddingLeftRight36: {
+    paddingLeft: 36,
+    paddingRight: 36,
+  },
+  marginLeftRight16: {
+    marginLeft: 16,
+    marginRight: 16,
+  },
+  width50: {
+    width: '50%',
+  },
+  emailText: {
+    marginTop: 17,
+    marginBottom: 17,
+    fontSize: 18,
+  },
+  manageWrapper: {
+    paddingTop: 17,
+    paddingBottom: 17,
+  },
+  manageText: {
+    fontSize: 18,
+    lineHeight: 23,
+  },
+  changeText: {
+    fontSize: 17,
+    lineHeight: 21,
+    marginTop: 6,
+  },
+  termsWrapper: {
+    paddingTop: 31,
+    paddingBottom: 31,
+  },
+  termsText: {
+    fontSize: 18,
+  },
+  signOutWrapper: {
+    paddingTop: 25,
+  },
+  signOutText: {
+    fontSize: 18,
+  },
+})
+
+AccountContainer.propTypes = {
   user: PropTypes.object,
-  internetConnection: PropTypes.bool.isRequired,
+  email: PropTypes.string,
+  token: PropTypes.string,
+  fetchUser: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 }
 
-export default connect(
+export default withRouter(connect(
   state => ({
+    user: state.user,
     token: state.auth.token,
     email: state.user.email,
-    user: state.user,
-    gettingToken: state.auth.gettingToken,
-    claimCode: state.particle.claimCode,
-    internetConnection: state.misc.internetConnection,
   }),
-  dispatch => bindActionCreators({fetchUser, updateUser, logout}, dispatch)
-)(Account)
+  dispatch => bindActionCreators({fetchUser, logout}, dispatch)
+)(AccountContainer))

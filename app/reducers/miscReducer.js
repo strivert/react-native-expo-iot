@@ -16,8 +16,8 @@ export default function data (state = initialState, action) {
         connectionStatus: action.meta,
         internetConnection: action.meta.type !== 'none',
       }
-	case SET_CONNECTION_INTER:
-		console.log('action.data', action.data);
+    case SET_CONNECTION_INTER:
+      // console.log('action.data', action.data);
       return {
         ...state,
         internetConnection: action.data,

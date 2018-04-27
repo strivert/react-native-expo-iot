@@ -14,10 +14,16 @@ class MapWrapper extends Component {
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    const diffArr = odiff(this.props, nextProps)
-    if (diffArr.length === 0) {
+    if (!this.state.visibleSwiper) {
+      return true
+    }
+
+    if (odiff.equal(this.props.mapData, nextProps.mapData)) {
+      // console.log('false')
       return false
     } else {
+      // console.log('this.props.mapData', this.props.mapData)
+      // console.log('nextProps.mapData', nextProps.mapData)
       return true
     }
   }
@@ -38,6 +44,7 @@ class MapWrapper extends Component {
 
   render () {
     const {mapData} = this.props
+    // console.log('mapData', mapData)
     const maps = mapData.map((item, i) => {
       return (
         <MapView

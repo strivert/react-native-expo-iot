@@ -128,10 +128,16 @@ let styles = StyleSheet.create({
     flex: 0.6,
   },
   t1: {
-    color: '#707070', fontSize: 17, lineHeight: 21,
+    color: '#707070',
+    fontSize: 17,
+    lineHeight: 21,
+    fontFamily: 'Proxima_nova_light',
   },
   t2: {
-    color: '#707070', fontSize: 32, lineHeight: 39,
+    color: '#707070',
+    fontSize: 32,
+    lineHeight: 39,
+    fontFamily: 'Proxima_nova_light',
   },
 
   blueColor: {

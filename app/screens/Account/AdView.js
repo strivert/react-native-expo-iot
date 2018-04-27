@@ -7,9 +7,11 @@ import urlParse from 'url-parse'
 import {stringify} from 'qs'
 import {fetchToken} from '../../actions/azureActions'
 import {fetchUser} from '../../actions/andersenActions'
+import { Platform, BackHandler } from 'react-native'
+
 
 class AdView extends Component {
-  static navigationOptions={ // no-eslint
+  static navigationOptions = { // no-eslint
     header: null,
   }
 
@@ -24,6 +26,17 @@ class AdView extends Component {
     }
   }
 
+  componentWillMount() {
+    if (Platform.OS !== 'android') return
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      return true
+    })
+  }
+
+  componentWillUnmount() {
+    if (Platform.OS === 'android') BackHandler.removeEventListener('hardwareBackPress')
+  }
+  
   componentWillReceiveProps (nextProps) {
     if (!this.props.token && nextProps.token) {
       this.props.navigation.navigate('HomeNav')
@@ -70,7 +83,7 @@ class AdView extends Component {
   render () {
 
     if (this.props.token) {
-      return null;
+      return null
     }
 
     const {handleADToken} = this
@@ -89,7 +102,7 @@ class AdView extends Component {
 
     // Fix visibility problem on Android webview
     const js = `document.getElementsByTagName('body')[0].style.height = '${Dimensions.get('window').height}px';
-    document.getElementsByTagName('body')[0].style.backgroundColor = '#212121';`
+    document.getElementsByTagName('body')[0].style.backgroundColor = 'white';`
 
     return (
       <WebView
@@ -99,7 +112,7 @@ class AdView extends Component {
           alignSelf: 'stretch',
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').height,
-          backgroundColor: '#212121',
+          backgroundColor: 'white',
         }]}
         source={{uri: source}}
         javaScriptEnabled={true}

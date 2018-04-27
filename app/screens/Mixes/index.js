@@ -24,6 +24,7 @@ export default ( MainScreenNavigator = TabNavigator(
   },
   {
     tabBarPosition: 'bottom',
-    tabBarComponent: props=> (<Footer {...props} />)
+    tabBarComponent: props=> (<Footer {...props} />),
+    swipeEnabled: false,
   }
 ))

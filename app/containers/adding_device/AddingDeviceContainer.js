@@ -41,6 +41,7 @@ class AddingDeviceContainer extends Component {
       connected: false,
       deviceId: null,
       addedDevice: false,
+      exceedWaiting: false,
     }
 
     this.fetchIdInterval = null
@@ -53,7 +54,6 @@ class AddingDeviceContainer extends Component {
         selectedHotspot: null,
         stage: 1,
         hotspots: null,
-        connected: false,
         deviceId: null,
         addedDevice: false,
       })
@@ -99,16 +99,16 @@ class AddingDeviceContainer extends Component {
       const _this = this
       const {deviceId} = this.state
       this.verifyingConnectionInterval = this.setInterval(() => {
-
         deleteDevice(deviceId)
           .then((a) => {
+            // alert('a')
             return postDevice(deviceId)
           })
           .then((b) => {
             _this.setState({
               addedDevice: true,
             })
-            // alert(b)
+            // alert('b')
             // console.log(b)
           })
           .catch((err) => {
@@ -116,6 +116,12 @@ class AddingDeviceContainer extends Component {
             // alert(err)
           })
       }, 3000)
+
+      setTimeout(() => {
+        this.setState({
+          exceedWaiting: true,
+        })
+      }, 30000)
     }
   }
 
@@ -159,7 +165,10 @@ class AddingDeviceContainer extends Component {
   }
 
   handleClickBeginSetup () {
-    this.setState({stage: 2})
+    this.setState({
+      stage: 2,
+      exceedWaiting: false,
+    })
   }
 
   handleClose () {
@@ -242,7 +251,7 @@ class AddingDeviceContainer extends Component {
 
     const verifyingConnection = <Content style={[styles.bgColor]}>
       <View padder style={[styles.bgColor]}>
-        {!this.state.addedDevice && (
+        {(!this.state.exceedWaiting && !this.state.addedDevice) && (
           <View>
             <Text style={[styles.txtColor]}>Waiting for chargepoint to connect to the internet. This may take up to 30 seconds...</Text>
             <Spinner />
@@ -250,7 +259,12 @@ class AddingDeviceContainer extends Component {
         )}
 
         {this.state.addedDevice && (
-          <Text style={[styles.txtColor, {fontSize: 20, textAlign: 'center'}]}>Device added.</Text>
+          <Text style={[styles.txtColor, {fontSize: 25, textAlign: 'center'}]}>Device added.</Text>
+        )
+        }
+
+        {(this.state.exceedWaiting && !this.state.addedDevice) && (
+          <Text style={[styles.txtColor, {fontSize: 25, textAlign: 'center'}]}>Please Try again later.</Text>
         )
         }
       </View>

@@ -99,9 +99,18 @@ export default StyleSheet.create({
   },
   txtColor: {
     color: '#707070',
+    fontFamily: 'Proxima_nova_light',
+  },
+  txtColor2: {
+    color: '#373636',
+    fontFamily: 'Proxima_nova_light',
   },
   inputBorder: {
     borderColor: '#666',
     borderWidth: 0.5,
+  },
+  blueBtnTextColor: {
+    color: '#218FD8',
+    fontFamily: 'Proxima_nova_light',
   },
 })

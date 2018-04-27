@@ -18,6 +18,7 @@ import BootStrap from '../screens/Bootstrap'
 
 class AppContainer extends Component {
   constructor (props) {
+    // console.log('constructor');
     super(props)
 
     this.socket = null
@@ -34,18 +35,29 @@ class AppContainer extends Component {
   }
 
   componentWillUnmount () {
+    // console.log('unmount');
     this.socket.disconnect()
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log('this.props.internetConnection', this.props.internetConnection)
-    // console.log('nextProps.internetConnection', nextProps.internetConnection)
+    /*
+    console.log('this.props.internetConnection', this.props.internetConnection)
+    console.log('nextProps.internetConnection', nextProps.internetConnection)
+    console.log('this.props.token', this.props.token)
+    console.log('nextProps.token', nextProps.token)
+    */
     // if ((this.props.internetConnection !== nextProps.internetConnection) && nextProps.internetConnection === false) {
     if (this.props.internetConnection === false && nextProps.internetConnection === true) {
+      // alert('Resocket')
+      // this.socket.disconnect()
       this.reconnectSocket()
     }
-    if (this.props.token !== nextProps.token) {
+    if (this.props.token !== nextProps.token && nextProps.token !== null) {
       this.reconnectSocket()
+    }
+
+    if (this.props.token !== null && nextProps.token === null) {
+      this.socket.disconnect()
     }
   }
 
@@ -68,7 +80,7 @@ class AppContainer extends Component {
       this.socket.emit('authorize', {id_token: this.props.token})
     })
     this.socket.on('chargerstatus', data => {
-      console.log('chargerstatus', data)
+      // console.log('chargerstatus', data)
       this.props.receivedDeviceStatus(data)
     })
     this.socket.on('authenticated', () => {
@@ -93,7 +105,7 @@ class AppContainer extends Component {
     // console.log('this.socket', this.socket)
     // console.log('this.socket.socketAuthenticated', this.socket.socketAuthenticated)
     if (this.socket && !this.socket.socketAuthenticated) {
-      // console.log('RRReconnect')
+      console.log('RRReconnect')
       /*
       this.socket.disconnect()
       this.setupSocket()

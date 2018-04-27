@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 
-import {
-  Container,
-} from 'native-base'
+import MoreContainer from '../../containers/more/MoreContainer'
 
 class More extends Component {
   render () {
     return (
-      <Container style={{ backgroundColor: 'white' }}>
-      </Container>
+      <MoreContainer />
     )
   }
 }

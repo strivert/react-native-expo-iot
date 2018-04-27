@@ -52,6 +52,9 @@ class HomeContainer extends Component {
   }
 
   toHHMMSS (str) {
+    if (!parseInt(str, 10)) {
+      return '00:00:00'
+    }
     let secNum = parseInt(str, 10) // don't forget the second param
     let hours = Math.floor(secNum / 3600)
     let minutes = Math.floor((secNum - (hours * 3600)) / 60)
@@ -67,12 +70,12 @@ class HomeContainer extends Component {
     const { selectedDeviceId } = this.state
 
     if (!this.props.token) {
-      alert('??');
+      // alert('??')
     }
     if (!selectedDeviceId) {
-      alert('deciceiD');      
+      // alert('deciceiD')
     } else {
-      alert('Ok');            
+      // alert('Ok')
     }
     if (!selectedDeviceId || !this.props.token) {
       return null
@@ -194,6 +197,11 @@ class HomeContainer extends Component {
           initStates['charge']['iconSty'] = 'grayColor'
           break
       }
+
+      if (!enablecharger) {
+        initStates['status']['iconSty'] = 'disableColor'
+        initStates['status']['t2Sty'] = 'disableColor'
+      }
     }
 
     const deviceArr = this.props.devices.map((item, i) => {
@@ -208,7 +216,7 @@ class HomeContainer extends Component {
         },
       }
     })
-    // console.log('deviceArr', 'deviceArr')
+    // console.log('deviceArr', deviceArr)
     return (
       <Container style={styles.homeWrapper}>
         <View style={{height: 207}}>
@@ -217,9 +225,9 @@ class HomeContainer extends Component {
             mapData={deviceArr}
           />
         </View>
-        <View style={{flex: 1, position: 'absolute', left: '50%', marginLeft: -50, top: 0}}>
+        <View style={{flex: 1, position: 'absolute', left: '50%', marginLeft: -65, top: 10}}>
           <Image
-            style={{flex: 1, height: 30, width: 100}}
+            style={{flex: 1, height: 40, width: 130}}
             source={require('../../assets/images/logo.png')}
             resizeMode="contain"
           />

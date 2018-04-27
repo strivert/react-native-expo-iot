@@ -21,6 +21,7 @@ export default class App extends Component {
   }
 
   componentDidMount () {
+    // AsyncStorage.clear()
     Promise.all([
       AsyncStorage.multiGet(['email', 'token', 'refreshToken']),
       Font.loadAsync({
