@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Container, Button, Icon, Footer, FooterTab } from 'native-base'
-import { StyleSheet } from 'react-native';
+import { Button, Icon, Footer, FooterTab } from 'native-base'
+import { StyleSheet, Image } from 'react-native'
 
 class FooterWrapper extends Component {
   render () {
@@ -11,25 +11,45 @@ class FooterWrapper extends Component {
             vertical
             active={this.props.navigationState.index === 0}
             onPress={() => this.props.navigation.navigate('HomeNav')}>
-            <Icon name='ios-home-outline' style={styles.footerIcon} />
+            {
+              (this.props.navigationState.index === 0 ?
+                <Image source={require('../../../assets/images/bottom_icons/home2.png')} style={styles.footerIcon} />
+                : <Image source={require('../../../assets/images/bottom_icons/home1.png')} style={styles.footerIcon} />
+              )
+            }
           </Button>
           <Button
             vertical
             active={this.props.navigationState.index === 1}
             onPress={() => this.props.navigation.navigate('User')}>
-            <Icon name='ios-person-outline' style={styles.footerIcon} />
+            {
+              (this.props.navigationState.index === 1 ?
+                <Image source={require('../../../assets/images/bottom_icons/account2.png')} style={styles.footerIcon} />
+                : <Image source={require('../../../assets/images/bottom_icons/account1.png')} style={styles.footerIcon} />
+              )
+            }
           </Button>
           <Button
             vertical
             active={this.props.navigationState.index === 2}
             onPress={() => this.props.navigation.navigate('Setting', { isRefresh: Date.now() })}>
-            <Icon name='ios-settings-outline' style={styles.footerIcon} />
+            {
+              (this.props.navigationState.index === 2 ?
+                <Image source={require('../../../assets/images/bottom_icons/setting2.png')} style={styles.footerIcon} />
+                : <Image source={require('../../../assets/images/bottom_icons/setting1.png')} style={styles.footerIcon} />
+              )
+            }
           </Button>
           <Button
             vertical
             active={this.props.navigationState.index === 3}
             onPress={() => this.props.navigation.navigate('More')}>
-            <Icon name='ios-list-outline' style={styles.footerIcon} />
+            {
+              (this.props.navigationState.index === 3 ?
+                <Image source={require('../../../assets/images/bottom_icons/more2.png')} style={styles.footerIcon} />
+                : <Image source={require('../../../assets/images/bottom_icons/more1.png')} style={styles.footerIcon} />
+              )
+            }
           </Button>
         </FooterTab>
       </Footer>
@@ -42,8 +62,9 @@ let styles = StyleSheet.create({
     borderWidth: 0.5, borderColor: '#959595',
   },
   footerIcon: {
-    fontSize: 30,
-  }
-});
+    width: 30,
+    height: 30,
+  },
+})
 
 export default FooterWrapper
