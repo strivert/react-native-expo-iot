@@ -43,7 +43,7 @@ class AccountContainer extends Component {
       <Container style={pageStyles.accountWrapper}>
         <PageHeader />
         <PageTop
-          iconName='ios-person-outline'
+          iconName='account3'
           firstText='AndersenId'
           secondText={`${user.firstName} ${user.lastName}`}
         />

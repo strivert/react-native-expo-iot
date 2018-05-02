@@ -1,15 +1,21 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import { Icon } from 'native-base'
+import { StyleSheet, View, Text, Image } from 'react-native'
 import PropTypes from 'prop-types'
 import styles from '../../../styles'
 
 class PageTop extends Component {
+  constructor (props) {
+    super(props)
+    this.icons = {
+      'account3': require('../../../assets/images/page_icons/account3.png'),
+      'setting3': require('../../../assets/images/page_icons/setting3.png'),
+    }
+  }
   render () {
     return (
       <View style={pageStyles.topWrapper}>
         <View style={pageStyles.leftTop}>
-          <Icon name={this.props.iconName} style={[pageStyles.iconStyle, styles.txtColor]} />
+          <Image source={this.icons[this.props.iconName]} style={[pageStyles.iconStyle]} />
         </View>
         <View style={[pageStyles.rightTop]}>
           <Text style={[pageStyles.firstText, styles.txtColor]}>{this.props.firstText}</Text>
@@ -49,7 +55,8 @@ let pageStyles = StyleSheet.create({
     fontFamily: 'Proxima_nova_light',
   },
   iconStyle: {
-    fontSize: 50,
+    width: 45,
+    height: 45,
   },
 })
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, Image } from 'react-native'
 import Swiper from 'react-native-swiper'
 import { MapView } from 'expo'
 import PropTypes from 'prop-types'
@@ -11,6 +11,7 @@ class MapWrapper extends Component {
     this.state = {
       visibleSwiper: false,
     }
+    this.onIndexChanged.bind(this)
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -51,17 +52,27 @@ class MapWrapper extends Component {
           style={{ flex: 1, position: 'relative' }}
           initialRegion={{
             latitude: item.location.latitude + 0.004,
-            longitude: item.location.longitude - 0.008,
+            longitude: item.location.longitude - 0.015,
             latitudeDelta: item.location.latitudeDelta,
             longitudeDelta: item.location.longitudeDelta,
           }}
           key={`map-${i}`}
         >
           <MapView.Marker
-            coordinate={item.location}
+            // coordinate={item.location}
+            coordinate={{
+              latitude: item.location.latitude,
+              longitude: item.location.longitude,
+            }}
           />
+
+          <View style={{flex: 1, position: 'absolute', width: '100%', height: 207}}>
+            <Image source={ require('../../../assets/images/gradient.png') } style={{width: '100%', height: '100%', resizeMode: 'stretch'}} />
+          </View>
+
           <View style={{flex: 1, position: 'absolute', left: 30, top: 70}}>
             <Text style={{fontSize: 37, fontFamily: 'Proxima_nova_light'}}>{item.deviceName}</Text>
+            <Text style={{fontSize: 14, marginTop: 5, fontFamily: 'Proxima_nova_ltsemibold'}}>{item.serialNumber}</Text>
           </View>
         </MapView>
       )

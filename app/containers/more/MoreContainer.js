@@ -16,7 +16,7 @@ class MoreContainer extends Component {
       <Container style={pageStyles.moreWrapper}>
         <PageHeader />
         <PageTop
-          iconName='ios-settings-outline'
+          iconName='setting3'
           firstText=''
           secondText='App Settings'
         />

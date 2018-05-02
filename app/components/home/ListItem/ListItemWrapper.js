@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Icon, Text, Switch } from 'native-base'
-import { StyleSheet, View } from 'react-native'
+import { Text, Switch } from 'native-base'
+import { StyleSheet, View, Image } from 'react-native'
 import PropTypes from 'prop-types'
 // import ToggleSwitch from 'toggle-switch-react-native'
 
@@ -9,6 +9,22 @@ class ListItemWrapper extends Component {
     super(props)
     this.state = {
       switchValue: false,
+    }
+
+    this.statusIcons = {
+      'charge1': require('../../../assets/images/status_icons/charge1.png'),
+      'charge-disable': require('../../../assets/images/status_icons/charge-disable.png'),
+      'maintenance1': require('../../../assets/images/status_icons/maintenance1.png'),
+      'maintenance1-disable': require('../../../assets/images/status_icons/maintenance1-disable.png'),
+      'security1': require('../../../assets/images/status_icons/security1.png'),
+      'security1-disable': require('../../../assets/images/status_icons/security1-disable.png'),
+      'security2': require('../../../assets/images/status_icons/security2.png'),
+      'status1': require('../../../assets/images/status_icons/status1.png'),
+      'status2': require('../../../assets/images/status_icons/status2.png'),
+      'status3': require('../../../assets/images/status_icons/status3.png'),
+      'status4': require('../../../assets/images/status_icons/status4.png'),
+      'status5': require('../../../assets/images/status_icons/status5.png'),
+      'status5-disable': require('../../../assets/images/status_icons/status5-disable.png'),
     }
   }
 
@@ -28,7 +44,8 @@ class ListItemWrapper extends Component {
   }
 
   render () {
-    const {iconName, iconSty, t1Text, t2Text, t2Sty, hasSwitch, isLast, switchSty, isEnableSwitch} = this.props
+    const {iconName, t1Text, t2Text, t2Sty, hasSwitch, isLast, switchSty, isEnableSwitch} = this.props
+    // const {iconSty} = this.props
 
     // item wrapper style
     let itemWrapperStyles = [styles.itemWrapper]
@@ -36,7 +53,7 @@ class ListItemWrapper extends Component {
 
     // left icon style
     let iconStyles = [styles.iconStyle]
-    iconSty && iconStyles.push(styles[iconSty])
+    // iconSty && iconStyles.push(styles[iconSty])
 
     // body style
     let bodyStyles = [styles.bodyCtr]
@@ -56,7 +73,8 @@ class ListItemWrapper extends Component {
     return (
       <View style={itemWrapperStyles}>
         <View style={styles.leftCtr}>
-          <Icon name={iconName} style={iconStyles} />
+          <Text style={t1Styles}></Text>
+          <Image source={this.statusIcons[iconName]} style={iconStyles} />
         </View>
         <View style={bodyStyles}>
           <Text style={t1Styles}>{t1Text}</Text>
@@ -112,11 +130,13 @@ let styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   iconStyle: {
-    fontSize: 35,
-    color: '#707070',
+    width: 40,
+    height: 40,
+    justifyContent: 'flex-end',
   },
   leftCtr: {
     flex: 0.2,
+    flexDirection: 'column',
   },
   rightCtr: {
     flex: 0.2,

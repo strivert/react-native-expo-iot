@@ -90,7 +90,7 @@ class HomeContainer extends Component {
       'status': {
         't1Text': 'Status',
         't2Text': 'Offline',
-        'iconName': 'ios-close-circle-outline',
+        'iconName': 'status5-disable',
         'iconSty': 'disableColor',
         't2Sty': 'disableColor',
         'hasSwitch': false,
@@ -98,7 +98,7 @@ class HomeContainer extends Component {
       'security': {
         't1Text': 'Security',
         't2Text': 'Unlocked',
-        'iconName': 'ios-unlock-outline',
+        'iconName': 'security1-disable',
         'iconSty': 'disableColor',
         't2Sty': 'disableColor',
         'hasSwitch': true,
@@ -106,7 +106,7 @@ class HomeContainer extends Component {
       'charge': {
         't1Text': 'Last Charge',
         't2Text': '00:00:00',
-        'iconName': 'ios-paper-outline',
+        'iconName': 'charge-disable',
         'iconSty': 'disableColor',
         't2Sty': 'disableColor',
         'hasSwitch': false,
@@ -114,7 +114,7 @@ class HomeContainer extends Component {
       'mainternance': {
         't1Text': 'Mainternance',
         't2Text': 'No Action',
-        'iconName': 'ios-construct-outline',
+        'iconName': 'maintenance1-disable',
         'iconSty': 'disableColor',
         't2Sty': 'disableColor',
         'hasSwitch': false,
@@ -132,21 +132,29 @@ class HomeContainer extends Component {
       initStates['charge']['iconSty'] = 'grayColor'
       initStates['mainternance']['t2Sty'] = 'grayColor'
       initStates['mainternance']['iconSty'] = 'grayColor'
+
+      initStates['status']['iconName'] = 'status5'
+      initStates['security']['iconName'] = 'security1'
+      initStates['charge']['iconName'] = 'charge1'
+      initStates['mainternance']['iconName'] = 'maintenance1'
     }
+
     if (evccoffline === false) {
       initStates['mainternance']['t2Sty'] = 'grayColor'
       initStates['mainternance']['iconSty'] = 'grayColor'
+
+      initStates['mainternance']['iconName'] = 'maintenance1'
 
       const enablecharger = this.checkKeyExist('enablecharger', selectedDevice['variables']) ? selectedDevice['variables']['enablecharger'] : false
       if (enablecharger) {
         initStates['security']['t2Text'] = 'Unlocked'
         initStates['security']['t2Sty'] = 'grayColor'
-        initStates['security']['iconName'] = 'ios-unlock-outline'
+        initStates['security']['iconName'] = 'security1'
         initStates['security']['iconSty'] = 'grayColor'
       } else {
         initStates['security']['t2Text'] = 'Locked'
         initStates['security']['t2Sty'] = 'purpleColor'
-        initStates['security']['iconName'] = 'ios-lock-outline'
+        initStates['security']['iconName'] = 'security3'
         initStates['security']['iconSty'] = 'purpleColor'
       }
 
@@ -157,26 +165,26 @@ class HomeContainer extends Component {
         case '':
           initStates['status']['t2Text'] = 'Offline'
           initStates['status']['t2Sty'] = 'grayColor'
-          initStates['status']['iconName'] = 'ios-close-circle-outline'
+          initStates['status']['iconName'] = 'status5'
           initStates['status']['iconSty'] = 'grayColor'
           break
         case 'A':
           initStates['status']['t2Text'] = 'Ready'
           initStates['status']['t2Sty'] = 'blueColor'
-          initStates['status']['iconName'] = 'ios-checkmark-circle-outline'
+          initStates['status']['iconName'] = 'status3'
           initStates['status']['iconSty'] = 'blueColor'
           break
         case 'B':
           initStates['status']['t2Text'] = 'Connected'
           initStates['status']['t2Sty'] = 'orangeColor'
-          initStates['status']['iconName'] = 'ios-link-outline'
+          initStates['status']['iconName'] = 'status1'
           initStates['status']['iconSty'] = 'orangeColor'
           break
         case 'C':
         case 'D':
           initStates['status']['t2Text'] = 'Charging'
           initStates['status']['t2Sty'] = 'greenColor'
-          initStates['status']['iconName'] = 'ios-thunderstorm-outline'
+          initStates['status']['iconName'] = 'status4'
           initStates['status']['iconSty'] = 'greenColor'
           break
       }
@@ -188,6 +196,8 @@ class HomeContainer extends Component {
           initStates['charge']['t2Text'] = this.toHHMMSS(lastchargingtime) // to be
           initStates['charge']['t2Sty'] = 'grayColor'
           initStates['charge']['iconSty'] = 'grayColor'
+
+          initStates['charge']['iconName'] = 'charge1'
           break
         case 'C':
         case 'D':
@@ -195,24 +205,35 @@ class HomeContainer extends Component {
           initStates['charge']['t2Text'] = this.toHHMMSS(lastchargingtime) // to be
           initStates['charge']['t2Sty'] = 'greenColor'
           initStates['charge']['iconSty'] = 'grayColor'
+
+          initStates['charge']['iconName'] = 'charge1'
           break
       }
 
       if (!enablecharger) {
         initStates['status']['iconSty'] = 'disableColor'
         initStates['status']['t2Sty'] = 'disableColor'
+
+        initStates['status']['iconName'] = 'status5-disable'
       }
     }
 
     const deviceArr = this.props.devices.map((item, i) => {
+      if (i === 1) {
+        // alert(this.checkKeyExist('location', item.variables) ? parseFloat(parseFloat(item.variables.location.latitude).toFixed(10)) : 0);
+      }
+      // console.log('item', item)
       return {
         deviceId: item.id,
         deviceName: item.name,
+        serialNumber: ('variables' in item) ? item.variables.serialNumber : '',
         location: {
-          latitude: this.checkKeyExist('location', item.variables) ? parseFloat(item.variables.location.latitude) : 0,
-          longitude: this.checkKeyExist('location', item.variables) ? parseFloat(item.variables.location.longitude) : 0,
-          latitudeDelta: this.checkKeyExist('location', item.variables) ? parseFloat(item.variables.location.latitudeDelta) : 0,
-          longitudeDelta: this.checkKeyExist('location', item.variables) ? parseFloat(item.variables.location.longitudeDelta) : 0,
+          latitude: this.checkKeyExist('location', item.variables) ? parseFloat(parseFloat(item.variables.location.latitude).toFixed(10)) : 0,
+          longitude: this.checkKeyExist('location', item.variables) ? parseFloat(parseFloat(item.variables.location.longitude).toFixed(10)) : 0,
+          // latitudeDelta: this.checkKeyExist('location', item.variables) ? parseFloat(item.variables.location.latitudeDelta) : 0,
+          // longitudeDelta: this.checkKeyExist('location', item.variables) ? parseFloat(item.variables.location.longitudeDelta) : 0,
+          latitudeDelta: 0.017,
+          longitudeDelta: 0.017,
         },
       }
     })

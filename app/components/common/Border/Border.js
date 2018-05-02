@@ -22,7 +22,7 @@ let styles = StyleSheet.create({
 })
 
 Border.propTypes = {
-  style: PropTypes.object,
+  style: PropTypes.number,
 }
 
 export default Border
