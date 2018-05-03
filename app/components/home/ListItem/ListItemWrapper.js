@@ -1,14 +1,26 @@
 import React, { Component } from 'react'
-import { Text, Switch } from 'native-base'
+import { Text } from 'native-base'
 import { StyleSheet, View, Image } from 'react-native'
 import PropTypes from 'prop-types'
 // import ToggleSwitch from 'toggle-switch-react-native'
+// import * as Animatable from 'react-native-animatable'
+import Swipeout from 'react-native-swipeout'
+
+const LockCompoment = ({textValue}) => (
+  <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 25, color: 'white'}}>{textValue}</Text></View>
+)
+
+LockCompoment.propTypes = {
+  textValue: PropTypes.string,
+}
 
 class ListItemWrapper extends Component {
   constructor (props) {
     super(props)
     this.state = {
       switchValue: false,
+      switchValueExam: false,
+      fontSize: 10,
     }
 
     this.statusIcons = {
@@ -19,6 +31,7 @@ class ListItemWrapper extends Component {
       'security1': require('../../../assets/images/status_icons/security1.png'),
       'security1-disable': require('../../../assets/images/status_icons/security1-disable.png'),
       'security2': require('../../../assets/images/status_icons/security2.png'),
+      'security3': require('../../../assets/images/status_icons/security3.png'),
       'status1': require('../../../assets/images/status_icons/status1.png'),
       'status2': require('../../../assets/images/status_icons/status2.png'),
       'status3': require('../../../assets/images/status_icons/status3.png'),
@@ -70,54 +83,77 @@ class ListItemWrapper extends Component {
     let switchStyles = []
     switchSty && switchStyles.push(styles[switchSty])
 
-    return (
-      <View style={itemWrapperStyles}>
-        <View style={styles.leftCtr}>
-          <Text style={t1Styles}></Text>
-          <Image source={this.statusIcons[iconName]} style={iconStyles} />
-        </View>
-        <View style={bodyStyles}>
-          <Text style={t1Styles}>{t1Text}</Text>
-          <Text style={t2Styles}>{t2Text}</Text>
-        </View>
-
+    let swipeBtnOption = []
+    const _this = this
+    if (this.state.switchValue) {
+      swipeBtnOption = [
         {
-          hasSwitch &&
-            <View style={styles.rightCtr}>
-              <Switch
-                onValueChange={(state) => {
-                  if (isEnableSwitch) {
-                    this.setState({
-                      switchValue: state,
-                    })
-                    console.log('selectede state', state)
-                    this.props.setEnableCharging(this.props.deviceId, state)
-                  }
-                }}
-                value={this.state.switchValue}
-                style={switchStyles}
-              />
-              {
-                /*
-                <ToggleSwitch
-                  isOn={this.state.switchValue}
-                  onColor={this.state.switchValue ? '#6C3D90' : '#707070'}
-                  offColor='#707070'
-                  onToggle={ (isOn) => {
-                    if (isEnableSwitch) {
-                      this.setState({
-                        switchValue: isOn,
-                      })
-                      console.log('selectede state', isOn)
-                      this.props.setEnableCharging(this.props.deviceId, isOn)
-                    }
-                  }}
-                />
-                */
-              }
+          text: 'Unlock',
+          backgroundColor: '#6C3D90',
+          onPress: () => {
+            _this.setState({
+              switchValue: false,
+            })
+            _this.props.setEnableCharging(_this.props.deviceId, false)
+          },
+          component: <LockCompoment textValue={'Unlock'} />,
+        },
+      ]
+    } else {
+      swipeBtnOption = [
+        {
+          text: 'Lock',
+          backgroundColor: '#959595',
+          onPress: () => {
+            _this.setState({
+              switchValue: true,
+            })
+            _this.props.setEnableCharging(_this.props.deviceId, true)
+          },
+          component: <LockCompoment textValue={'Lock'} />,
+        },
+      ]
+    }
+    return (
+      (hasSwitch && isEnableSwitch) ? (
+        <Swipeout
+          backgroundColor={'white'}
+          right={swipeBtnOption}
+          style={{borderColor: '#959595', borderWidth: 0, borderBottomWidth: 0.5}}
+          buttonWidth={120}
+          autoClose={true}
+        >
+          <View style={{flexDirection: 'row', padding: 10, paddingLeft: 20, borderColor: '#959595', borderWidth: 0, borderTopWidth: 0}}>
+            <View style={styles.leftCtr}>
+              <Text style={t1Styles}></Text>
+              <Image source={this.statusIcons[iconName]} style={iconStyles} />
             </View>
-        }
-      </View>
+            <View style={bodyStyles}>
+              <Text style={t1Styles}>{t1Text}</Text>
+              <Text style={t2Styles}>{t2Text}</Text>
+            </View>
+          </View>
+        </Swipeout>
+      ) : (
+        <View style={itemWrapperStyles}>
+          <View style={styles.leftCtr}>
+            <Text style={t1Styles}></Text>
+            <Image source={this.statusIcons[iconName]} style={iconStyles} />
+          </View>
+          <View style={bodyStyles}>
+            <Text style={t1Styles}>{t1Text}</Text>
+            <Text style={t2Styles}>{t2Text}</Text>
+          </View>
+
+          {
+            (hasSwitch && isEnableSwitch) &&
+              <View style={styles.rightCtr}>
+                {
+                }
+              </View>
+          }
+        </View>
+      )
     )
   }
 }
@@ -139,13 +175,13 @@ let styles = StyleSheet.create({
     flexDirection: 'column',
   },
   rightCtr: {
-    flex: 0.2,
+    flex: 0.3,
   },
   bodyCtr: {
     flexDirection: 'column', flex: 0.8,
   },
   flex_6: {
-    flex: 0.6,
+    flex: 0.5,
   },
   t1: {
     color: '#707070',

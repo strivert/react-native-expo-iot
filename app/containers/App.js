@@ -152,7 +152,7 @@ class AppContainer extends Component {
     let viewArr = []
     for (var key in this.statusIcons) {
       viewArr.push(
-        <Image source={this.statusIcons[key]} />
+        <Image key={`startImg-${key}`} source={this.statusIcons[key]} />
       )
     }
     // console.log('this.props.misc', this.props.internetConnection)
