@@ -89,7 +89,7 @@ class ListItemWrapper extends Component {
       swipeBtnOption = [
         {
           text: 'Unlock',
-          backgroundColor: '#6C3D90',
+          backgroundColor: '#2F96DA',
           onPress: () => {
             _this.setState({
               switchValue: false,
@@ -126,11 +126,18 @@ class ListItemWrapper extends Component {
           <View style={{flexDirection: 'row', padding: 10, paddingLeft: 20, borderColor: '#959595', borderWidth: 0, borderTopWidth: 0}}>
             <View style={styles.leftCtr}>
               <Text style={t1Styles}></Text>
+              <Text style={t1Styles}></Text>
               <Image source={this.statusIcons[iconName]} style={iconStyles} />
             </View>
             <View style={bodyStyles}>
               <Text style={t1Styles}>{t1Text}</Text>
               <Text style={t2Styles}>{t2Text}</Text>
+            </View>
+            <View style={[styles.rightCtr, {flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}]}>
+              <View style={{borderWidth: 1, borderColor: '#e8e3e3', width: 1, marginRight: 3, height: 25}}>
+              </View>
+              <View style={{borderWidth: 1, borderColor: '#e8e3e3', width: 1, height: 25}}>
+              </View>
             </View>
           </View>
         </Swipeout>

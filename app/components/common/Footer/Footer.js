@@ -62,8 +62,8 @@ let styles = StyleSheet.create({
     borderWidth: 0.5, borderColor: '#959595',
   },
   footerIcon: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
   },
 })
 

@@ -241,14 +241,10 @@ class HomeContainer extends Component {
     return (
       <Container style={styles.homeWrapper}>
         <View style={{height: 207}}>
-          {
-            /*
           <MapWrapper
             selectDevice={(deviceId) => this.selectDevice(deviceId)}
             mapData={deviceArr}
           />
-            */
-          }
         </View>
         <View style={{flex: 1, position: 'absolute', left: '50%', marginLeft: -65, top: 10}}>
           <Image
