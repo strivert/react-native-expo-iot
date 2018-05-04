@@ -32,6 +32,7 @@ class ListItemWrapper extends Component {
       'security1-disable': require('../../../assets/images/status_icons/security1-disable.png'),
       'security2': require('../../../assets/images/status_icons/security2.png'),
       'security3': require('../../../assets/images/status_icons/security3.png'),
+      'security4': require('../../../assets/images/status_icons/security4.png'),
       'status1': require('../../../assets/images/status_icons/status1.png'),
       'status2': require('../../../assets/images/status_icons/status2.png'),
       'status3': require('../../../assets/images/status_icons/status3.png'),
@@ -126,7 +127,7 @@ class ListItemWrapper extends Component {
           <View style={{flexDirection: 'row', padding: 10, paddingLeft: 20, borderColor: '#959595', borderWidth: 0, borderTopWidth: 0}}>
             <View style={styles.leftCtr}>
               <Text style={t1Styles}></Text>
-              <Text style={t1Styles}></Text>
+              {/* <Text style={t1Styles}></Text> */}
               <Image source={this.statusIcons[iconName]} style={iconStyles} />
             </View>
             <View style={bodyStyles}>

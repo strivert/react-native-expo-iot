@@ -45,6 +45,8 @@ class AppContainer extends Component {
 
       'account3': require('../assets/images/page_icons/account3.png'),
       'setting3': require('../assets/images/page_icons/setting3.png'),
+      'lock': require('../assets/images/page_icons/lock.png'),
+      'spinner': require('../assets/images/page_icons/spinner.gif'),
       'gradient': require('../assets/images/gradient.png'),
       'logo': require('../assets/images/logo.png'),
 
@@ -56,6 +58,7 @@ class AppContainer extends Component {
       'security1-disable': require('../assets/images/status_icons/security1-disable.png'),
       'security2': require('../assets/images/status_icons/security2.png'),
       'security3': require('../assets/images/status_icons/security3.png'),
+      'security4': require('../assets/images/status_icons/security4.png'),
       'status1': require('../assets/images/status_icons/status1.png'),
       'status2': require('../assets/images/status_icons/status2.png'),
       'status3': require('../assets/images/status_icons/status3.png'),

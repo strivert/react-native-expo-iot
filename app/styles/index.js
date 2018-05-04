@@ -113,4 +113,16 @@ export default StyleSheet.create({
     color: '#218FD8',
     fontFamily: 'Proxima_nova_light',
   },
+  paddingLeftRight36: {
+    paddingLeft: 36,
+    paddingRight: 36,
+  },
+  paddingLeftRight42: {
+    paddingLeft: 42,
+    paddingRight: 42,
+  },
+  marginLeftRight16: {
+    marginLeft: 16,
+    marginRight: 16,
+  },
 })

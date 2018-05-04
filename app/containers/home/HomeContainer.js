@@ -153,9 +153,9 @@ class HomeContainer extends Component {
         initStates['security']['iconSty'] = 'grayColor'
       } else {
         initStates['security']['t2Text'] = 'Locked'
-        initStates['security']['t2Sty'] = 'purpleColor'
-        initStates['security']['iconName'] = 'security3'
-        initStates['security']['iconSty'] = 'purpleColor'
+        initStates['security']['t2Sty'] = 'blueColor'
+        initStates['security']['iconName'] = 'security4'
+        initStates['security']['iconSty'] = 'blueColor'
       }
 
       const chargerstatus = this.checkKeyExist('chargerstatus', selectedDevice['variables']) ? selectedDevice['variables']['chargerstatus'] : ''
