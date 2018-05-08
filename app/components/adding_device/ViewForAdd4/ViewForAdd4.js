@@ -22,12 +22,19 @@ class ViewForAdd4 extends Component {
           </BlueBtn>
         </View>
         <View>
-          <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>
-            Now select Wi-Fi networks from your phones settings menu
-          </Text>
-          <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin, {marginBottom: 100, marginTop: 0}]}>
-            Choose Wi-Fi network <Text style={{fontFamily: 'Proxima_nova_altbold'}}>Andersen-XXXX</Text>
-          </Text>
+          <View style={styles.flexCenter}>
+            <View style={pageStyles.txtPaddingMargin}>
+              <Text style={[styles.txtColor2, pageStyles.appText]}>
+                Now select Wi-Fi networks from your phones settings menu
+              </Text>
+            </View>
+
+            <View style={[pageStyles.txtPaddingMargin, {marginBottom: 100, marginTop: 0}]}>
+              <Text style={[styles.txtColor2, pageStyles.appText]}>
+                Choose Wi-Fi network <Text style={{fontFamily: 'Proxima_nova_altbold'}}>Andersen-XXXX</Text>
+              </Text>
+            </View>
+          </View>
           <Border style={styles.marginLeftRight16} />
         </View>
       </Container>

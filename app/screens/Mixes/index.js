@@ -5,6 +5,8 @@ import User from './User'
 import Setting from './Setting'
 import More from './More'
 
+
+
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import Footer from '../../components/common/Footer'
 
@@ -12,6 +14,13 @@ const HomeNav = StackNavigator(
   {
     Home: { screen: Home },
     Charge: { screen: Charge },
+  }, { headerMode: 'none' }
+)
+const SettingNav = StackNavigator(
+  {
+    ChargePoint: { screen: ChargePoint },
+    ChargeSetting: { screen: ChargeSetting },
+    AddCharge: { screen: AddCharge },
   }, { headerMode: 'none' }
 )
 

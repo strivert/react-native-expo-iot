@@ -8,38 +8,35 @@ import Bar2 from '../../common/Bar2'
 import BlueBtn from '../../common/BlueBtn'
 import Border from '../../common/Border'
 
-class ViewForAdd10 extends Component {
+class ViewForAdd11 extends Component {
   render () {
     return (
       <Container style={styles.bgColor}>
-        <Bar2 barText="Setup successfull" />
+        <Bar2 barText="Setup failure" />
         <View style={{flex: 1}}>
           <View style={pageStyles.pageView}>
             <View>
               <Text style={[styles.txtColor2, pageStyles.appText, styles.textCenter]}>
-                Great news
+                Network setup faiure.
               </Text>
               <Text style={[styles.txtColor2, pageStyles.appText, styles.textCenter]}>
-                Your Andersen Konnect
+                Please try the setup
               </Text>
               <Text style={[styles.txtColor2, pageStyles.appText, styles.textCenter]}>
-                charge point setup is now
-              </Text>
-              <Text style={[styles.txtColor2, pageStyles.appText, styles.textCenter]}>
-                complete
+                process again
               </Text>
             </View>
           </View>
           <Border style={styles.marginLeftRight16} />
           <View style={styles.flexCenter}>
             <BlueBtn onClick={() => {}} style={{paddingTop: 40, paddingBottom: 40}}>
-              <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Dashboard</Text>
+              <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Add Charge Point Setup</Text>
             </BlueBtn>
           </View>
           <Border style={styles.marginLeftRight16} />
           <View style={{flex: 0.5, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start'}}>
             <BlueBtn onClick={() => {}} style={{paddingTop: 40, paddingBottom: 40}}>
-              <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Add Another Charge Point</Text>
+              <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Cancel</Text>
             </BlueBtn>
           </View>
         </View>
@@ -61,9 +58,9 @@ let pageStyles = StyleSheet.create({
   },
 })
 
-ViewForAdd10.propTypes = {
+ViewForAdd11.propTypes = {
   onCancel: PropTypes.func,
   onContinue: PropTypes.func,
 }
 
-export default ViewForAdd10
+export default ViewForAdd11

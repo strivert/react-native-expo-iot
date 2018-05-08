@@ -64,6 +64,13 @@ export default StyleSheet.create({
     marginLeft: 16,
     padding: 10,
   },
+  flexCenter: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textCenter: {
+    textAlign: 'center',
+  },
   modalGridButton: {
     alignItems: 'center',
     justifyContent: 'center',

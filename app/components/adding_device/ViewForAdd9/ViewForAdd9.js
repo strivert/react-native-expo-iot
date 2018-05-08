@@ -17,7 +17,7 @@ class ViewForAdd9 extends Component {
       <Container style={styles.bgColor}>
         <Bar2 barText="Completing Wi-Fi setup" />
         <View>
-          <View style={pageStyles.txtPaddingMargin}>
+          <View style={[styles.flexCenter, pageStyles.txtPaddingMargin]}>
             <Text style={[styles.txtColor2, pageStyles.appText]}>
               Finalisign Wi-Fi network setup.
             </Text>
@@ -44,8 +44,8 @@ let pageStyles = StyleSheet.create({
   txtPaddingMargin: {
     marginLeft: 50,
     marginRight: 50,
-    marginTop: 40,
-    marginBottom: 40,
+    marginTop: 100,
+    marginBottom: 70,
   },
 })
 

@@ -21,12 +21,12 @@ class ViewForAdd2 extends Component {
             <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Continue</Text>
           </BlueBtn>
         </View>
-        <View>
+        <View style={styles.flexCenter}>
           <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>
             We now need to connect your chargepoint to your wifi network so that you can manage it with your Konnect app
           </Text>
-          <Border style={styles.marginLeftRight16} />
         </View>
+        <Border style={styles.marginLeftRight16} />
       </Container>
     )
   }

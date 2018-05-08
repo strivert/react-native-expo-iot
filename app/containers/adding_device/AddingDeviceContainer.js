@@ -26,6 +26,7 @@ import ViewForAdd7 from '../../components/adding_device/ViewForAdd7'
 import ViewForAdd8 from '../../components/adding_device/ViewForAdd8'
 import ViewForAdd9 from '../../components/adding_device/ViewForAdd9'
 import ViewForAdd10 from '../../components/adding_device/ViewForAdd10'
+import ViewForAdd11 from '../../components/adding_device/ViewForAdd11'
 
 import PageHeader2 from '../../components/common/PageHeader2'
 
@@ -84,6 +85,9 @@ class AddingDeviceContainer extends Component {
         break
       case 9:
         ViewComponent = ViewForAdd10
+        break
+      case 10:
+        ViewComponent = ViewForAdd11
         break
       default:
         ViewComponent = ViewForAdd1

@@ -17,9 +17,11 @@ class ViewForAdd6 extends Component {
       <Container style={styles.bgColor}>
         <Bar2 barText="Scanning Wi-Fi networks" />
         <View>
-          <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>
-            Scanning Wi-Fi local networks
-          </Text>
+          <View style={styles.flexCenter}>
+            <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>
+              Scanning Wi-Fi local networks
+            </Text>
+          </View>
           <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: 50}}>
             <Image source={require('../../../assets/images/page_icons/spinner.gif')} style={{width: 50, height: 50}} />
           </View>
@@ -39,8 +41,8 @@ let pageStyles = StyleSheet.create({
   txtPaddingMargin: {
     marginLeft: 50,
     marginRight: 50,
-    marginTop: 40,
-    marginBottom: 40,
+    marginTop: 100,
+    marginBottom: 70,
   },
 })
 

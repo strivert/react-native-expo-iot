@@ -23,21 +23,31 @@ class ViewForAdd8 extends Component {
         </View>
 
         <View>
-          <View style={[pageStyles.txtPaddingMargin, {flexDirection: 'row'}]}>
-            <Text style={[styles.txtColor2, pageStyles.appText]}>SSID: </Text>
-            <Text style={[styles.txtColor2, pageStyles.appText, {fontFamily: 'Proxima_nova_altbold'}]}>Network 1</Text>
+          <View style={styles.flexCenter}>
+            <View style={{flexDirection: 'row', marginTop: 40, width: '100%', textAlign: 'left', marginBottom: 20}}>
+              <Text style={[styles.txtColor2, pageStyles.appText, {marginLeft: 60}]}>SSID: </Text>
+              <Text style={[styles.txtColor2, pageStyles.appText, {fontFamily: 'Proxima_nova_altbold', marginRight: 60}]}>Network 1</Text>
+            </View>
           </View>
           <Border style={styles.marginLeftRight16} />
 
-          <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>Password</Text>
+          <View style={styles.flexCenter}>
+            <View style={{width: '100%', textAlign: 'left'}}>
+              <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>Password</Text>
+            </View>
+          </View>
           <Border style={styles.marginLeftRight16} />
 
-          <View style={[pageStyles.txtPaddingMargin, {flexDirection: 'row'}]}>
-            <CheckBox
-              ref={ref => (this.showPasswordCheckbox = ref)}
-              color="#666"
-            />
-            <Text style={[styles.txtColor2, pageStyles.appText, {marginLeft: 20}]}>Show Password</Text>
+          <View style={[{flexDirection: 'row', marginTop: 20}]}>
+            <View style={{marginLeft: 60, alignItems: 'flex-start'}}>
+              <CheckBox
+                ref={ref => (this.showPasswordCheckbox = ref)}
+                color="#666"
+              />
+            </View>
+            <View style={{marginRight: 60}}>
+              <Text style={[styles.txtColor2, pageStyles.appText, {marginLeft: 20}]}>Show Password</Text>
+            </View>
           </View>
         </View>
       </Container>

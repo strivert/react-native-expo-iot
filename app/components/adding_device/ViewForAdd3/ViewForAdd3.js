@@ -22,10 +22,13 @@ class ViewForAdd3 extends Component {
           </BlueBtn>
         </View>
         <View>
-          <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>
-            Press and hold the nework setup button for 3-6 secs
-            The LED should now be falshing
-          </Text>
+          <View style={[styles.flexCenter, pageStyles.txtPaddingMargin]}>
+            <View>
+              <Text style={[styles.txtColor2, pageStyles.appText]}>
+                Press and hold the nework setup button for 3-6 secs The LED should now be flashing
+              </Text>
+            </View>
+          </View>
 
           <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: 50}}>
             <View style={{width: 50, height: 50, borderWidth: 0.5, borderColor: '#bcbcbc'}}>

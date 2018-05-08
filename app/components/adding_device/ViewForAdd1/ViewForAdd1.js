@@ -21,12 +21,18 @@ class ViewForAdd1 extends Component {
             <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Continue</Text>
           </BlueBtn>
         </View>
-        <View>
-          <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>Are you within 5 meters of your charge point?</Text>
+        <View style={{flex: 1}}>
+          <View style={[styles.flexCenter, {flex: 0.3}]}>
+            <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>Are you within 5 meters of your charge point?</Text>
+          </View>
           <Border style={styles.marginLeftRight16} />
-          <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>Are you within range of your chosen WiFi network?</Text>
+          <View style={[styles.flexCenter, {flex: 0.3}]}>
+            <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>Are you within range of your chosen WiFi network?</Text>
+          </View>
           <Border style={styles.marginLeftRight16} />
-          <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>Do you have your WiFi network password?</Text>
+          <View style={[styles.flexCenter, {flex: 0.3}]}>
+            <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>Do you have your WiFi network password?</Text>
+          </View>
         </View>
       </Container>
     )

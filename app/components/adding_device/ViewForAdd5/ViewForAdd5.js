@@ -22,9 +22,11 @@ class ViewForAdd5 extends Component {
           </BlueBtn>
         </View>
         <View>
-          <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>
-            Now scan and select the Wi-Fi network you wish to connect your charge point to
-          </Text>
+          <View style={[styles.flexCenter, pageStyles.txtPaddingMargin]}>
+            <Text style={[styles.txtColor2, pageStyles.appText]}>
+              Now scan and select the Wi-Fi network you wish to connect your charge point to
+            </Text>
+          </View>
           <Border style={styles.marginLeftRight16} />
         </View>
       </Container>
