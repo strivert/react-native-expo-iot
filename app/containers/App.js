@@ -49,6 +49,8 @@ class AppContainer extends Component {
       'spinner': require('../assets/images/page_icons/spinner.gif'),
       'gradient': require('../assets/images/gradient.png'),
       'logo': require('../assets/images/logo.png'),
+      'back': require('../assets/images/page_icons/back.png'),
+      'next': require('../assets/images/page_icons/next.png'),
 
       'charge1': require('../assets/images/status_icons/charge1.png'),
       'charge-disable': require('../assets/images/status_icons/charge-disable.png'),

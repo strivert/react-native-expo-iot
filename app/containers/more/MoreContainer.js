@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import { Container } from 'native-base'
 
 import styles from '../../styles'
@@ -34,7 +34,11 @@ class MoreContainer extends Component {
               <Text style={[styles.txtColor2, pageStyles.percentText]}>%</Text>
             </View>
             <View style={{flex: 0.2, alignItems: 'flex-end'}}>
-              <Text style={[styles.txtColor2, pageStyles.nextText]}>{'>'}</Text>
+              <Image
+                style={{height: 22, width: 13}}
+                source={require('../../assets/images/page_icons/next.png')}
+                resizeMode="contain"
+              />
             </View>
           </View>
           <View style={{height: 17}}>

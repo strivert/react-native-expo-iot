@@ -1,11 +1,24 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View, Image, Text } from 'react-native'
+import BlueBtn from '../BlueBtn'
 
-class PageHeader extends Component {
+class PageHeaderBack extends Component {
   render () {
     return (
       <View style={styles.headerWrapper}>
         <View style={styles.imgWrapper}>
+          <BlueBtn
+            style={{position: 'absolute', left: 0, top: 0, width: 50, height: 60, justifyContent: 'center'}}
+            onClick={() => {
+              this.props.navigation.goBack()
+            }}
+          >
+            <Image
+              style={{height: 22, width: 13}}
+              source={require('../../../assets/images/page_icons/back.png')}
+              resizeMode="contain"
+            />
+          </BlueBtn>
           <Image
             style={{height: 40, width: 130, marginTop: 10}}
             source={require('../../../assets/images/logo.png')}
@@ -36,4 +49,4 @@ let styles = StyleSheet.create({
   },
 })
 
-export default PageHeader
+export default PageHeaderBack

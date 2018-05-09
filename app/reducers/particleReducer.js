@@ -10,6 +10,7 @@ import {
   SOCKET_DISCONNECTED,
   RECEIVED_DEVICE_STATUS,
   LOGOUT,
+  SET_SELECTED_DEVICE_ID,
 } from '../types'
 
 import {keyBy, merge, values, get} from 'lodash'
@@ -21,6 +22,7 @@ const initialState = {
   devicesHash: {},
   creatingClaimCode: false,
   socketConnected: false,
+  selectedDeviceId: null,
 }
 
 export default function data (state = initialState, action) {
@@ -129,6 +131,11 @@ export default function data (state = initialState, action) {
         claimCode: null,
         devices: null,
         devicesHash: {},
+      }
+	case SET_SELECTED_DEVICE_ID:
+      return {
+        ...state,
+        selectedDeviceId: action.payload,
       }
     default:
       return state

@@ -8,9 +8,14 @@ import Bar2 from '../../common/Bar2'
 
 class ViewForAdd6 extends Component {
   componentDidMount () {
-    setTimeout(() => {
+    if (this.props.hotspots) {
       this.props.onContinue()
-    }, 2000)
+    }
+  }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.hotspots) {
+      this.props.onContinue()
+    }
   }
   render () {
     return (
@@ -49,6 +54,7 @@ let pageStyles = StyleSheet.create({
 ViewForAdd6.propTypes = {
   onCancel: PropTypes.func,
   onContinue: PropTypes.func,
+  hotspots: PropTypes.any,
 }
 
 export default ViewForAdd6

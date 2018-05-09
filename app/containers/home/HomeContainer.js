@@ -11,7 +11,7 @@ import shallowCompare from 'react-addons-shallow-compare'
 
 import ListItem from '../../components/home/ListItem'
 import MapWrapper from '../../components/home/MapWrapper'
-import {setEnableCharging} from '../../actions/particleActions'
+import {setEnableCharging, selectedDeviceId} from '../../actions/particleActions'
 
 class HomeContainer extends Component {
   constructor (props) {
@@ -26,6 +26,7 @@ class HomeContainer extends Component {
       this.setState({
         selectedDeviceId: nextProps.devices[0].id,
       })
+      this.props.selectedDeviceId(nextProps.devices[0].id)
     }
   }
 
@@ -37,6 +38,7 @@ class HomeContainer extends Component {
     this.setState({
       selectedDeviceId: deviceId,
     })
+    this.props.selectedDeviceId(deviceId)
   }
 
   checkKeyExist (key, object) {
@@ -241,14 +243,10 @@ class HomeContainer extends Component {
     return (
       <Container style={styles.homeWrapper}>
         <View style={{height: 207}}>
-          {
-          /*
           <MapWrapper
             selectDevice={(deviceId) => this.selectDevice(deviceId)}
             mapData={deviceArr}
           />
-          */
-          }
         </View>
         <View style={{flex: 1, position: 'absolute', left: '50%', marginLeft: -65, top: 10}}>
           <Image
@@ -295,6 +293,7 @@ HomeContainer.propTypes = {
   devicesHash: PropTypes.object,
   devices: PropTypes.array,
   setEnableCharging: PropTypes.func,
+  selectedDeviceId: PropTypes.func,
   token: PropTypes.string,
 }
 
@@ -304,5 +303,5 @@ export default withRouter(connect(
     devices: state.particle.devices,
     token: state.auth.token,
   }),
-  dispatch => bindActionCreators({setEnableCharging}, dispatch)
+  dispatch => bindActionCreators({setEnableCharging, selectedDeviceId}, dispatch)
 )(HomeContainer))

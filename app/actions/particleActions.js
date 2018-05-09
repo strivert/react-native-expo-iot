@@ -12,6 +12,7 @@ import {
   RECEIVED_DEVICE_STATUS,
   SOCKET_CONNECTED,
   SOCKET_DISCONNECTED,
+  SET_SELECTED_DEVICE_ID,
 } from '../types'
 
 import {
@@ -35,6 +36,7 @@ module.exports = {
   renameDevice,
   setSerialNumber,
   setLocation,
+  selectedDeviceId,
 }
 
 function createClaimCode () {
@@ -111,5 +113,12 @@ function setLocation (deviceId, location) {
     type: PUT_DEVICE_LOCATION,
     payload: putDeviceLocation(deviceId, location),
     meta: {deviceId, location},
+  }
+}
+
+function selectedDeviceId (deviceId) {
+  return {
+    type: SET_SELECTED_DEVICE_ID,
+    payload: deviceId,
   }
 }

@@ -11,4 +11,5 @@ module.exports = keyMirror({
   RECEIVED_DEVICE_STATUS: null,
   SOCKET_CONNECTED: null,
   SOCKET_DISCONNECTED: null,
+  SET_SELECTED_DEVICE_ID: null,
 })

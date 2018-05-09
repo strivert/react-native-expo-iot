@@ -7,11 +7,45 @@ import styles from '../../../styles'
 import Bar2 from '../../common/Bar2'
 
 class ViewForAdd9 extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      isOk: false,
+    }
+  }
+
   componentDidMount () {
+    /*
     setTimeout(() => {
       this.props.onContinue()
     }, 2000)
+    */
+    const {selectedHotspot, password} = this.props
+    this.props.configureAndConnectAp(
+      selectedHotspot.ssid,
+      password,
+      selectedHotspot.sec,
+      selectedHotspot.ch
+    )
+      .then(() => {
+        // alert('connected')
+        this.props.setConnectionInter(false)
+        this.setState({
+          isOk: true,
+        })
+      })
+      .catch(() => {
+        // alert('Connection failed')
+        this.props.goFail()
+      })
   }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevState.isOk === false && this.state.isOk === true) {
+      this.props.addDevice()
+    }
+  }
+
   render () {
     return (
       <Container style={styles.bgColor}>
@@ -52,6 +86,13 @@ let pageStyles = StyleSheet.create({
 ViewForAdd9.propTypes = {
   onCancel: PropTypes.func,
   onContinue: PropTypes.func,
+  selectedHotspot: PropTypes.any,
+  password: PropTypes.any,
+  configureAndConnectAp: PropTypes.any,
+  setConnectionInter: PropTypes.any,
+  deviceId: PropTypes.any,
+  addDevice: PropTypes.any,
+  goFail: PropTypes.any,
 }
 
 export default ViewForAdd9

@@ -28,14 +28,43 @@ import ViewForAdd9 from '../../components/adding_device/ViewForAdd9'
 import ViewForAdd10 from '../../components/adding_device/ViewForAdd10'
 import ViewForAdd11 from '../../components/adding_device/ViewForAdd11'
 
-import PageHeader2 from '../../components/common/PageHeader2'
+import reactMixin from 'react-mixin'
+import TimerMixin from 'react-timer-mixin'
+import {fetchId, fetchHotspots, configureAndConnectAp} from '../../actions/chipActions'
+import {setConnectionInter} from '../../actions/storeActions'
+
+import {createClaimCode} from '../../actions/particleActions'
+import {deleteDevice, postDevice} from '../../services/particleService'
 
 class AddingDeviceContainer extends Component {
   constructor (props) {
     super(props)
     this.state = {
       viewState: 0,
+
+      selectedHotspot: null,
+      hotspots: null,
+      connected: false,
+      deviceId: null,
+      addedDevice: false,
+      exceedWaiting: false,
+      password: '',
     }
+
+    this.fetchIdInterval = null
+    this.verifyingConnectionInterval = null
+  }
+
+  componentDidMount () {
+    this.props.fetchId()
+      .then(response => this.setState({connected: true, deviceId: response.action.payload.data.id}))
+      .catch(() => this.setState({connected: false}))
+
+    this.fetchIdInterval = this.setInterval(() => {
+      this.props.fetchId()
+        .then(response => this.setState({connected: true, deviceId: response.action.payload.data.id}))
+        .catch(() => this.setState({connected: false}))
+    }, 2000)
   }
 
   increaseViewState () {
@@ -45,12 +74,81 @@ class AddingDeviceContainer extends Component {
   }
 
   onCancel () {
+    this.props.navigation.goBack()
   }
 
   onContinue () {
     this.setState({
       viewState: (this.state.viewState + 1),
     })
+  }
+
+  getHotspots () {
+    this.props.fetchHotspots()
+      .then(() => this.setState({hotspots: this.props.hotspots}))
+      .catch(() => this.setState({hotspots: null}))
+  }
+
+  handleSelectHotspot (hotspot) {
+    this.setState({
+      selectedHotspot: hotspot,
+      showPassword: false,
+      password: '',
+    })
+  }
+
+  setPassword (passwordText) {
+    this.setState({
+      password: passwordText,
+    })
+  }
+
+  addDevice () {
+    const _this = this
+    const {deviceId} = this.state
+    this.verifyingConnectionInterval = this.setInterval(() => {
+      deleteDevice(deviceId)
+        .then((a) => {
+          // alert('a')
+          return postDevice(deviceId)
+        })
+        .then((b) => {
+          _this.onContinue()
+          _this.setState({
+            addedDevice: true,
+          })
+          // alert('b')
+          // console.log(b)
+        })
+        .catch((err) => {
+          console.log(err)
+          // alert(err)
+        })
+    }, 3000)
+
+    setTimeout(() => {
+      if (!this.state.addedDevice) {
+        this.setState({
+          viewState: 10,
+        })
+      }
+    }, 30000)
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (this.state.viewState === 5) {
+      if (!this.state.hotspots && this.props.connected) {
+        this.getHotspots()
+      }
+    }
+
+    if (this.state.viewState !== 8) {
+      this.clearInterval(this.verifyingConnectionInterval)
+    }
+
+    if (this.state.viewState > 7) {
+      this.clearInterval(this.fetchIdInterval)
+    }
   }
 
   render () {
@@ -95,7 +193,6 @@ class AddingDeviceContainer extends Component {
 
     return (
       <Container style={styles.bgColor}>
-        <PageHeader2 />
         <ViewComponent
           onCancel={() => {
             this.onCancel()
@@ -103,18 +200,58 @@ class AddingDeviceContainer extends Component {
           onContinue={() => {
             this.onContinue()
           }}
+
+          { ...this.state }
+
+          handleSelectHotspot={(item) => this.handleSelectHotspot(item)}
+          setPassword={(passwordText) => this.setPassword(passwordText)}
+          configureAndConnectAp={this.props.configureAndConnectAp}
+          setConnectionInter={this.props.setConnectionInter}
+          addDevice={() => this.addDevice()}
+          goFail={() => {
+            this.setState({
+              viewState: 10,
+            })
+          }}
         />
       </Container>
     )
   }
 }
 
+reactMixin(AddingDeviceContainer.prototype, TimerMixin)
+
 AddingDeviceContainer.propTypes = {
+  fetchId: PropTypes.func.isRequired,
+  fetchHotspots: PropTypes.func.isRequired,
+  configureAndConnectAp: PropTypes.func.isRequired,
+  createClaimCode: PropTypes.func.isRequired,
+  hotspots: PropTypes.array,
+  fetchingHotspots: PropTypes.bool,
+  connected: PropTypes.bool,
+  attemptingConnection: PropTypes.bool,
+  creatingClaimCode: PropTypes.bool,
+  claimCode: PropTypes.string,
+
+  navigation: PropTypes.object,
+  refresh: PropTypes.number,
+  setConnectionInter: PropTypes.func.isRequired,
 }
 
 export default connect(
   state => ({
+    hotspots: state.chip.hotspots,
+    fetchingHotspots: state.chip.fetchingHotspots,
+    connected: state.chip.connected,
+    attemptingConnection: state.chip.attemptingConnection,
+    creatingClaimCode: state.particle.creatingClaimCode,
+    claimCode: state.particle.claimCode,
   }),
   dispatch => bindActionCreators({
+    fetchId,
+    fetchHotspots,
+    configureAndConnectAp,
+    createClaimCode,
+    setConnectionInter,
   }, dispatch)
 )(AddingDeviceContainer)

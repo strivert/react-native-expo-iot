@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
 
 import {
-  Container,
+  Container, Header, Left, Button, Icon, Body, Title, Text, Right
 } from 'native-base'
 
+import ChargePointContainer from '../../containers/adding_device/ChargePointContainer'
+import PageHeader from '../../components/common/PageHeader'
+
 class ChargePoint extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    header: (
+      <PageHeader />
+    )
+  });
+
   render () {
     return (
-      <Container style={{ backgroundColor: 'white' }}>
-      </Container>
+      <ChargePointContainer {...this.props} />
     )
   }
 }

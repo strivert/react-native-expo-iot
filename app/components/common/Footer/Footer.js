@@ -32,7 +32,7 @@ class FooterWrapper extends Component {
           <Button
             vertical
             active={this.props.navigationState.index === 2}
-            onPress={() => this.props.navigation.navigate('Setting', { isRefresh: Date.now() })}>
+            onPress={() => this.props.navigation.navigate('SettingNav', { isRefresh: Date.now() })}>
             {
               (this.props.navigationState.index === 2 ?
                 <Image source={require('../../../assets/images/bottom_icons/setting2.png')} style={styles.footerIcon} />

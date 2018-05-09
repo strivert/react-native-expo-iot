@@ -4,11 +4,22 @@ import {
   Container,
 } from 'native-base'
 
+import AddingDeviceContainer from '../../containers/adding_device/AddingDeviceContainer'
+import PageHeaderBack from '../../components/common/PageHeaderBack'
+
 class AddCharge extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    header: (
+      <PageHeaderBack navigation={navigation} {...this.props} />
+    )
+  });
+
   render () {
     return (
-      <Container style={{ backgroundColor: 'white' }}>
-      </Container>
+      /*
+        <AddingDeviceContainer refresh={this.props.navigation.state.params.isRefresh} />
+      */
+      <AddingDeviceContainer {...this.props} />
     )
   }
 }
