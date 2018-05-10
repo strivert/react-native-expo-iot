@@ -41,6 +41,7 @@ const SettingNav = StackNavigator(
         easing: Easing.step0,
       },
     }),
+    headerMode: 'none',
   }
 )
 

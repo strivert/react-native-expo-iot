@@ -16,6 +16,7 @@ const initialState = {
 export default function data (state = initialState, action) {
   switch (action.type) {
     case `${GET_DEVICE_ID}_REJECTED`:
+		// alert('reject')
       return {
         ...state,
         deviceId: null,
@@ -23,6 +24,7 @@ export default function data (state = initialState, action) {
         connected: false,
       }
     case `${GET_DEVICE_ID}_FULFILLED`:
+		// alert('ok fulti')
       return {
         ...state,
         deviceId: action.payload.data.id,

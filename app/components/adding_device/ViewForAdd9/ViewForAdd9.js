@@ -21,6 +21,9 @@ class ViewForAdd9 extends Component {
     }, 2000)
     */
     const {selectedHotspot, password} = this.props
+    if (!selectedHotspot || password === '') {
+      return
+    }
     this.props.configureAndConnectAp(
       selectedHotspot.ssid,
       password,
@@ -35,7 +38,6 @@ class ViewForAdd9 extends Component {
         })
       })
       .catch(() => {
-        // alert('Connection failed')
         this.props.goFail()
       })
   }

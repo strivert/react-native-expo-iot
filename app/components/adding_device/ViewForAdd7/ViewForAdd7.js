@@ -66,7 +66,7 @@ class ViewForAdd7 extends Component {
         </ScrollView>
 
         <View style={{height: 150, justifyContent: 'center', alignItems: 'center'}}>
-          <BlueBtn onClick={() => {}} style={{paddingTop: 40, paddingBottom: 40}}>
+          <BlueBtn onClick={() => this.props.clearHotspots()} style={{paddingTop: 40, paddingBottom: 40}}>
             <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Scan For More Networks</Text>
           </BlueBtn>
         </View>
@@ -96,6 +96,7 @@ ViewForAdd7.propTypes = {
   hotspots: PropTypes.any,
   onSelectHotspot: PropTypes.any,
   handleSelectHotspot: PropTypes.any,
+  clearHotspots: PropTypes.any,
 }
 
 export default ViewForAdd7

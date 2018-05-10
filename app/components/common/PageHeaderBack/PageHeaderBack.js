@@ -10,7 +10,8 @@ class PageHeaderBack extends Component {
           <BlueBtn
             style={{position: 'absolute', left: 0, top: 0, width: 50, height: 60, justifyContent: 'center'}}
             onClick={() => {
-              this.props.navigation.goBack()
+              // this.props.navigation.goBack()
+              this.props.navigation.navigate(this.props.pageName)
             }}
           >
             <Image

@@ -29,13 +29,13 @@ class ViewForAdd11 extends Component {
           </View>
           <Border style={styles.marginLeftRight16} />
           <View style={styles.flexCenter}>
-            <BlueBtn onClick={() => {}} style={{paddingTop: 40, paddingBottom: 40}}>
+            <BlueBtn onClick={() => this.props.addAgain()} style={{paddingTop: 40, paddingBottom: 40}}>
               <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Add Charge Point Setup</Text>
             </BlueBtn>
           </View>
           <Border style={styles.marginLeftRight16} />
           <View style={{flex: 0.5, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start'}}>
-            <BlueBtn onClick={() => {}} style={{paddingTop: 40, paddingBottom: 40}}>
+            <BlueBtn onClick={this.props.onCancel} style={{paddingTop: 40, paddingBottom: 40}}>
               <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Cancel</Text>
             </BlueBtn>
           </View>
@@ -61,6 +61,7 @@ let pageStyles = StyleSheet.create({
 ViewForAdd11.propTypes = {
   onCancel: PropTypes.func,
   onContinue: PropTypes.func,
+  addAgain: PropTypes.func,
 }
 
 export default ViewForAdd11

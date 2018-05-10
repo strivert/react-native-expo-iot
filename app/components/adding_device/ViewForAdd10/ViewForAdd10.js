@@ -32,13 +32,13 @@ class ViewForAdd10 extends Component {
           </View>
           <Border style={styles.marginLeftRight16} />
           <View style={styles.flexCenter}>
-            <BlueBtn onClick={() => {}} style={{paddingTop: 40, paddingBottom: 40}}>
+            <BlueBtn onClick={() => { this.props.goDashboard() }} style={{paddingTop: 40, paddingBottom: 40}}>
               <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Dashboard</Text>
             </BlueBtn>
           </View>
           <Border style={styles.marginLeftRight16} />
           <View style={{flex: 0.5, flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start'}}>
-            <BlueBtn onClick={() => {}} style={{paddingTop: 40, paddingBottom: 40}}>
+            <BlueBtn onClick={() => { this.props.addAgain() }} style={{paddingTop: 40, paddingBottom: 40}}>
               <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Add Another Charge Point</Text>
             </BlueBtn>
           </View>
@@ -64,6 +64,8 @@ let pageStyles = StyleSheet.create({
 ViewForAdd10.propTypes = {
   onCancel: PropTypes.func,
   onContinue: PropTypes.func,
+  goDashboard: PropTypes.any,
+  addAgain: PropTypes.any,
 }
 
 export default ViewForAdd10

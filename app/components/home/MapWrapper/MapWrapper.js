@@ -52,8 +52,8 @@ class MapWrapper extends Component {
           <MapView
             style={{ flex: 1 }}
             initialRegion={{
-              latitude: item.location.latitude + 0.004,
-              longitude: item.location.longitude - 0.015,
+              latitude: item.location.latitude + 0.185,
+              longitude: item.location.longitude - 0.525,
               latitudeDelta: item.location.latitudeDelta,
               longitudeDelta: item.location.longitudeDelta,
             }}

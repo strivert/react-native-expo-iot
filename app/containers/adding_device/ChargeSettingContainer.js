@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import { Container } from 'native-base'
 
 import {withRouter} from 'react-router-native'
@@ -10,6 +10,7 @@ import styles from '../../styles'
 
 import Bar from '../../components/common/Bar'
 import BlueBtn from '../../components/common/BlueBtn'
+import PageHeaderBack from '../../components/common/PageHeaderBack'
 
 import { MapView } from 'expo'
 
@@ -28,13 +29,14 @@ class ChargeSettingContainer extends Component {
         longitude: ('variables' in selectedDevice) ? parseFloat(parseFloat(selectedDevice.variables.location.longitude).toFixed(10)) : 0,
         // latitudeDelta: this.checkKeyExist('location', item.variables) ? parseFloat(item.variables.location.latitudeDelta) : 0,
         // longitudeDelta: this.checkKeyExist('location', item.variables) ? parseFloat(item.variables.location.longitudeDelta) : 0,
-        latitudeDelta: 0.017,
-        longitudeDelta: 0.017,
+        latitudeDelta: 0.6,
+        longitudeDelta: 0.6,
       },
     }
 
     return (
       <Container style={pageStyles.moreWrapper}>
+        <PageHeaderBack pageName='ChargePoint' {...this.props}/>
         <View style={{marginTop: 20}}></View>
         <Bar
           barText='Name'
@@ -76,12 +78,12 @@ class ChargeSettingContainer extends Component {
           </View>
         </View>
 
-        <View style={{ height: 400 }}>
+        <View style={{ height: 207, justifyContent: 'flex-end' }}>
           <MapView
             style={{ flex: 1 }}
             initialRegion={{
-              latitude: locationItem.location.latitude + 0.004,
-              longitude: locationItem.location.longitude - 0.015,
+              latitude: locationItem.location.latitude + 0.145,
+              longitude: locationItem.location.longitude - 0.525,
               latitudeDelta: locationItem.location.latitudeDelta,
               longitudeDelta: locationItem.location.longitudeDelta,
             }}
@@ -93,7 +95,12 @@ class ChargeSettingContainer extends Component {
                 longitude: locationItem.location.longitude,
               }}
             />
+            <View style={{flex: 1, position: 'absolute', width: '100%', height: 207}}>
+              <Image source={ require('../../assets/images/gradient.png') } style={{width: '100%', height: '100%', resizeMode: 'stretch'}} />
+            </View>
           </MapView>
+          <View style={{flex: 1, position: 'absolute', bottom: 0, width: '100%', height: 207, backgroundColor: 'transparent'}}>
+          </View>
         </View>
       </Container>
     )

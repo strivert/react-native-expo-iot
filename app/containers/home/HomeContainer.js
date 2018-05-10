@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
-import { Container } from 'native-base'
+import { Container, Spinner } from 'native-base'
 
 import {withRouter} from 'react-router-native'
 import {connect} from 'react-redux'
@@ -80,7 +80,11 @@ class HomeContainer extends Component {
       // alert('Ok')
     }
     if (!selectedDeviceId || !this.props.token) {
-      return null
+      return (
+        <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
+          <Spinner />
+        </Container>
+      )
     }
 
     // console.log('this.props.devicesHash', this.props.devicesHash)
@@ -234,8 +238,8 @@ class HomeContainer extends Component {
           longitude: this.checkKeyExist('location', item.variables) ? parseFloat(parseFloat(item.variables.location.longitude).toFixed(10)) : 0,
           // latitudeDelta: this.checkKeyExist('location', item.variables) ? parseFloat(item.variables.location.latitudeDelta) : 0,
           // longitudeDelta: this.checkKeyExist('location', item.variables) ? parseFloat(item.variables.location.longitudeDelta) : 0,
-          latitudeDelta: 0.017,
-          longitudeDelta: 0.017,
+          latitudeDelta: 0.6,
+          longitudeDelta: 0.6,
         },
       }
     })

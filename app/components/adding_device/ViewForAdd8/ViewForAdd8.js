@@ -25,6 +25,12 @@ class ViewForAdd8 extends Component {
     })
   }
 
+  handlePressShowPassword () {
+    this.setState({
+      showPassword: !this.state.showPassword,
+    })
+  }
+
   handleSubmitConnect () {
     if (this.state.passwordText !== '') {
       this.props.onContinue()
@@ -77,7 +83,8 @@ class ViewForAdd8 extends Component {
               <CheckBox
                 ref={ref => (this.showPasswordCheckbox = ref)}
                 color="#666"
-              />
+                checked={showPassword}
+                onPress={() => this.handlePressShowPassword()} />
             </View>
             <View style={{marginRight: 60}}>
               <Text style={[styles.txtColor2, pageStyles.appText, {marginLeft: 20}]}>Show Password</Text>

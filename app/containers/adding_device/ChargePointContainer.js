@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
-import { Container } from 'native-base'
+import { Container, Spinner } from 'native-base'
 
 import {withRouter} from 'react-router-native'
 import {connect} from 'react-redux'
@@ -12,13 +12,34 @@ import PageTop from '../../components/common/PageTop'
 import Bar from '../../components/common/Bar'
 import BlueBtn from '../../components/common/BlueBtn'
 import Border from '../../components/common/Border'
+import PageHeader from '../../components/common/PageHeader'
 
 class ChargePointContainer extends Component {
+  componentDidMount () {
+    const fromIsFrom = this.props.navigation.getParam('isFrom', '')
+    if (fromIsFrom === 'addAgain') {
+      this.props.navigation.navigate('AddCharge')
+    }
+  }
+
   render () {
     const {devicesHash, selectedDeviceId, user} = this.props
     if (!selectedDeviceId) {
-      return null
+      return (
+        <Container style={[pageStyles.moreWrapper, {alignItems: 'center', justifyContent: 'center'}]}>
+          <Spinner />
+        </Container>
+      )
     }
+    const fromIsFrom = this.props.navigation.getParam('isFrom', '')
+    if (fromIsFrom === 'addAgain') {
+      return (
+        <Container style={[pageStyles.moreWrapper, {alignItems: 'center', justifyContent: 'center'}]}>
+          <Spinner />
+        </Container>
+      )
+    }
+
     const selectedDevice = devicesHash[selectedDeviceId]
 
     const deviceName = selectedDevice.name
@@ -27,6 +48,7 @@ class ChargePointContainer extends Component {
 
     return (
       <Container style={pageStyles.moreWrapper}>
+        <PageHeader />
         <PageTop
           iconName='setting3'
           firstText='Manage'
@@ -40,9 +62,9 @@ class ChargePointContainer extends Component {
         <BlueBtn style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]} onClick={() => { this.props.navigation.navigate('ChargeSetting') }}>
           <View style={pageStyles.flexRowView}>
             <View style={{flex: 0.8}}>
-              <Text style={[styles.txtColor2, pageStyles.currenctyText]}>{deviceName}</Text>
+              <Text style={[styles.txtColor2, pageStyles.currenctyText, {fontFamily: 'Proxima_nova_ltsemibold'}]}>{deviceName}</Text>
             </View>
-            <View style={{flex: 0.2, alignItems: 'flex-end'}}>
+            <View style={{flex: 0.2, alignItems: 'flex-end', justifyContent: 'center'}}>
               <Image
                 style={{height: 22, width: 13}}
                 source={require('../../assets/images/page_icons/next.png')}
@@ -61,7 +83,7 @@ class ChargePointContainer extends Component {
                 <View style={{flex: 0.8}}>
                   <Text style={[styles.txtColor2, pageStyles.currenctyText]}>{userAddress1}</Text>
                 </View>
-                <View style={{flex: 0.2, alignItems: 'flex-end'}}>
+                <View style={{flex: 0.2, alignItems: 'flex-end', justifyContent: 'center'}}>
                   <Image
                     style={{height: 22, width: 13}}
                     source={require('../../assets/images/page_icons/next.png')}
@@ -86,7 +108,7 @@ class ChargePointContainer extends Component {
                 <View style={{flex: 0.8}}>
                   <Text style={[styles.txtColor2, pageStyles.currenctyText]}>{userAddress2}</Text>
                 </View>
-                <View style={{flex: 0.2, alignItems: 'flex-end'}}>
+                <View style={{flex: 0.2, alignItems: 'flex-end', justifyContent: 'center'}}>
                   <Image
                     style={{height: 22, width: 13}}
                     source={require('../../assets/images/page_icons/next.png')}
@@ -109,7 +131,7 @@ class ChargePointContainer extends Component {
         />
 
         <BlueBtn style={[pageStyles.paddingLeftRight42, pageStyles.AppWrapper]} onClick={() => { this.props.navigation.navigate('AddCharge') }}>
-          <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>App Support</Text>
+          <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>App Charge Point</Text>
         </BlueBtn>
 
       </Container>
@@ -163,6 +185,7 @@ ChargePointContainer.propTypes = {
   devicesHash: PropTypes.object,
   navigation: PropTypes.any,
   selectedDeviceId: PropTypes.any,
+  isFrom: PropTypes.any,
 }
 
 export default withRouter(connect(

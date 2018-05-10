@@ -15,6 +15,7 @@ function getId () {
   setTimeout(() => {
     source.cancel()
   }, 2000)
+  // alert(source.token)
   return chipHttp.get('device-id', {cancelToken: source.token})
 }
 

@@ -28,6 +28,8 @@ import ViewForAdd9 from '../../components/adding_device/ViewForAdd9'
 import ViewForAdd10 from '../../components/adding_device/ViewForAdd10'
 import ViewForAdd11 from '../../components/adding_device/ViewForAdd11'
 
+import PageHeaderBack from '../../components/common/PageHeaderBack'
+
 import reactMixin from 'react-mixin'
 import TimerMixin from 'react-timer-mixin'
 import {fetchId, fetchHotspots, configureAndConnectAp} from '../../actions/chipActions'
@@ -35,6 +37,8 @@ import {setConnectionInter} from '../../actions/storeActions'
 
 import {createClaimCode} from '../../actions/particleActions'
 import {deleteDevice, postDevice} from '../../services/particleService'
+
+import odiff from 'odiff'
 
 class AddingDeviceContainer extends Component {
   constructor (props) {
@@ -55,6 +59,17 @@ class AddingDeviceContainer extends Component {
     this.verifyingConnectionInterval = null
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    if (odiff.equal(this.props, nextProps) && odiff.equal(this.state, nextState)) {
+      // console.log('false')
+      return false
+    } else {
+      // console.log('this.props.mapData', this.props.mapData)
+      // console.log('nextProps.mapData', nextProps.mapData)
+      return true
+    }
+  }
+
   componentDidMount () {
     this.props.fetchId()
       .then(response => this.setState({connected: true, deviceId: response.action.payload.data.id}))
@@ -65,6 +80,7 @@ class AddingDeviceContainer extends Component {
         .then(response => this.setState({connected: true, deviceId: response.action.payload.data.id}))
         .catch(() => this.setState({connected: false}))
     }, 2000)
+    // alert('amount')
   }
 
   increaseViewState () {
@@ -106,6 +122,9 @@ class AddingDeviceContainer extends Component {
   addDevice () {
     const _this = this
     const {deviceId} = this.state
+    if (!deviceId) {
+      return
+    }
     this.verifyingConnectionInterval = this.setInterval(() => {
       deleteDevice(deviceId)
         .then((a) => {
@@ -128,17 +147,78 @@ class AddingDeviceContainer extends Component {
 
     setTimeout(() => {
       if (!this.state.addedDevice) {
+        // alert('no added Device no')
+        this.clearInterval(this.verifyingConnectionInterval)
         this.setState({
           viewState: 10,
         })
       }
-    }, 30000)
+    }, 60000)
+  }
+
+  clearHotspots () {
+    this.setState({
+      viewState: 5,
+      selectedHotspot: null,
+      hotspots: null,
+    })
+  }
+
+  addAgain () {
+    /*
+    this.setState({
+      viewState: 0,
+
+      selectedHotspot: null,
+      hotspots: null,
+      connected: false,
+      deviceId: null,
+      addedDevice: false,
+      exceedWaiting: false,
+      password: '',
+      showPassword: false,
+    })
+    
+    this.fetchIdInterval = null
+
+    this.props.fetchId()
+      .then(response => this.setState({connected: true, deviceId: response.action.payload.data.id}))
+      .catch(() => this.setState({connected: false}))
+
+    this.fetchIdInterval = this.setInterval(() => {
+      this.props.fetchId()
+        .then(response => {
+          this.setState({connected: true, deviceId: response.action.payload.data.id})
+        })
+        .catch(() => {
+          this.setState({connected: false})
+        })
+    }, 2000)
+    this.clearInterval(this.verifyingConnectionInterval)
+    this.verifyingConnectionInterval = null
+    */
+    this.clearInterval(this.verifyingConnectionInterval)
+    this.verifyingConnectionInterval = null
+
+    this.clearInterval(this.verifyingConnectionInterval)
+    this.verifyingConnectionInterval = null
+    this.props.navigation.navigate('ChargePoint', { isFrom: 'addAgain' })
   }
 
   componentDidUpdate (prevProps, prevState) {
     if (this.state.viewState === 5) {
       if (!this.state.hotspots && this.props.connected) {
+        // alert('connected ang get hotsp')
         this.getHotspots()
+      } else {
+        if (!this.state.hotspots && !this.props.connected) {
+          // alert('from 5 no');
+          setTimeout(() => {
+            this.setState({
+              viewState: 10,
+            })
+          }, 2000)
+        }
       }
     }
 
@@ -193,6 +273,7 @@ class AddingDeviceContainer extends Component {
 
     return (
       <Container style={styles.bgColor}>
+        <PageHeaderBack pageName='ChargePoint' {...this.props} />
         <ViewComponent
           onCancel={() => {
             this.onCancel()
@@ -213,6 +294,11 @@ class AddingDeviceContainer extends Component {
               viewState: 10,
             })
           }}
+          clearHotspots={() => this.clearHotspots()}
+          goDashboard={() => {
+            this.props.navigation.navigate('HomeNav')
+          }}
+          addAgain={() => this.addAgain() }
         />
       </Container>
     )
