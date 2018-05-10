@@ -83,6 +83,10 @@ class AddingDeviceContainer extends Component {
     // alert('amount')
   }
 
+  clearVerifyingConnectionInterval () {
+    this.clearInterval(this.verifyingConnectionInterval)
+  }
+
   increaseViewState () {
     this.setState({
       viewState: (this.state.viewState + 1),
@@ -94,6 +98,7 @@ class AddingDeviceContainer extends Component {
   }
 
   onContinue () {
+    // alert('onContinue')
     this.setState({
       viewState: (this.state.viewState + 1),
     })
@@ -132,8 +137,9 @@ class AddingDeviceContainer extends Component {
           return postDevice(deviceId)
         })
         .then((b) => {
-          _this.onContinue()
+          // _this.onContinue()
           _this.setState({
+            viewState: 9,
             addedDevice: true,
           })
           // alert('b')
@@ -165,7 +171,6 @@ class AddingDeviceContainer extends Component {
   }
 
   addAgain () {
-    /*
     this.setState({
       viewState: 0,
 
@@ -178,7 +183,7 @@ class AddingDeviceContainer extends Component {
       password: '',
       showPassword: false,
     })
-    
+
     this.fetchIdInterval = null
 
     this.props.fetchId()
@@ -196,13 +201,15 @@ class AddingDeviceContainer extends Component {
     }, 2000)
     this.clearInterval(this.verifyingConnectionInterval)
     this.verifyingConnectionInterval = null
-    */
+
+    /*
     this.clearInterval(this.verifyingConnectionInterval)
     this.verifyingConnectionInterval = null
 
     this.clearInterval(this.verifyingConnectionInterval)
     this.verifyingConnectionInterval = null
     this.props.navigation.navigate('ChargePoint', { isFrom: 'addAgain' })
+    */
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -212,8 +219,8 @@ class AddingDeviceContainer extends Component {
         this.getHotspots()
       } else {
         if (!this.state.hotspots && !this.props.connected) {
-          // alert('from 5 no');
           setTimeout(() => {
+            // alert('from 5 no')
             this.setState({
               viewState: 10,
             })
@@ -290,6 +297,7 @@ class AddingDeviceContainer extends Component {
           setConnectionInter={this.props.setConnectionInter}
           addDevice={() => this.addDevice()}
           goFail={() => {
+            // alert('go fail')
             this.setState({
               viewState: 10,
             })
@@ -299,6 +307,7 @@ class AddingDeviceContainer extends Component {
             this.props.navigation.navigate('HomeNav')
           }}
           addAgain={() => this.addAgain() }
+          clearVerifyingConnectionInterval={() => this.clearVerifyingConnectionInterval() }
         />
       </Container>
     )

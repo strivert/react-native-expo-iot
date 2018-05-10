@@ -9,6 +9,9 @@ import BlueBtn from '../../common/BlueBtn'
 import Border from '../../common/Border'
 
 class ViewForAdd10 extends Component {
+  componentDidMount () {
+    this.props.clearVerifyingConnectionInterval()
+  }
   render () {
     return (
       <Container style={styles.bgColor}>
@@ -66,6 +69,7 @@ ViewForAdd10.propTypes = {
   onContinue: PropTypes.func,
   goDashboard: PropTypes.any,
   addAgain: PropTypes.any,
+  clearVerifyingConnectionInterval: PropTypes.any,
 }
 
 export default ViewForAdd10
