@@ -27,6 +27,7 @@ import ViewForAdd8 from '../../components/adding_device/ViewForAdd8'
 import ViewForAdd9 from '../../components/adding_device/ViewForAdd9'
 import ViewForAdd10 from '../../components/adding_device/ViewForAdd10'
 import ViewForAdd11 from '../../components/adding_device/ViewForAdd11'
+import ViewForAdd12 from '../../components/adding_device/ViewForAdd12'
 
 import PageHeaderBack from '../../components/common/PageHeaderBack'
 
@@ -34,10 +35,11 @@ import reactMixin from 'react-mixin'
 import TimerMixin from 'react-timer-mixin'
 import {fetchId, fetchHotspots, configureAndConnectAp} from '../../actions/chipActions'
 import {setConnectionInter} from '../../actions/storeActions'
+import {setSerialNumber, setLocation} from '../../actions/particleActions'
 
 import {createClaimCode} from '../../actions/particleActions'
 import {deleteDevice, postDevice} from '../../services/particleService'
-
+import locationService from '../../services/locationService'
 import odiff from 'odiff'
 
 class AddingDeviceContainer extends Component {
@@ -53,6 +55,7 @@ class AddingDeviceContainer extends Component {
       addedDevice: false,
       exceedWaiting: false,
       password: '',
+      saving: false,
     }
 
     this.fetchIdInterval = null
@@ -139,7 +142,7 @@ class AddingDeviceContainer extends Component {
         .then((b) => {
           // _this.onContinue()
           _this.setState({
-            viewState: 9,
+            viewState: 11,
             addedDevice: true,
           })
           // alert('b')
@@ -238,6 +241,27 @@ class AddingDeviceContainer extends Component {
     }
   }
 
+  handleSerialRead (data, saveLocation) {
+    this.setState({saving: true})
+
+    const promises = [this.props.setSerialNumber(this.state.deviceId, data.data.toString())]
+
+    if (saveLocation) {
+      promises.push(
+        locationService.getLocation()
+          .then(coords => {
+            return this.props.setLocation(this.state.deviceId, coords)
+          }, err => alert('Error', err))
+      )
+    }
+
+    Promise.all(promises)
+      .then(() => this.setState({
+        saving: false,
+        viewState: 9,
+      }))
+  }
+
   render () {
     let ViewComponent = null
     switch (this.state.viewState) {
@@ -274,6 +298,9 @@ class AddingDeviceContainer extends Component {
       case 10:
         ViewComponent = ViewForAdd11
         break
+      case 11:
+        ViewComponent = ViewForAdd12
+        break
       default:
         ViewComponent = ViewForAdd1
     }
@@ -308,6 +335,7 @@ class AddingDeviceContainer extends Component {
           }}
           addAgain={() => this.addAgain() }
           clearVerifyingConnectionInterval={() => this.clearVerifyingConnectionInterval() }
+          handleSerialRead={(data, saveLocation) => this.handleSerialRead(data, saveLocation)}
         />
       </Container>
     )
@@ -331,6 +359,8 @@ AddingDeviceContainer.propTypes = {
   navigation: PropTypes.object,
   refresh: PropTypes.number,
   setConnectionInter: PropTypes.func.isRequired,
+  setLocation: PropTypes.func,
+  setSerialNumber: PropTypes.func,
 }
 
 export default connect(
@@ -348,5 +378,7 @@ export default connect(
     configureAndConnectAp,
     createClaimCode,
     setConnectionInter,
+    setSerialNumber,
+    setLocation,
   }, dispatch)
 )(AddingDeviceContainer)

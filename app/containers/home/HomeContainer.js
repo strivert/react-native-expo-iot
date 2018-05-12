@@ -7,7 +7,8 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {bindActionCreators} from 'redux'
 
-import shallowCompare from 'react-addons-shallow-compare'
+// import shallowCompare from 'react-addons-shallow-compare'
+import odiff from 'odiff'
 
 import ListItem from '../../components/home/ListItem'
 import MapWrapper from '../../components/home/MapWrapper'
@@ -30,8 +31,17 @@ class HomeContainer extends Component {
     }
   }
 
+  /*
   shouldComponentUpdate (nextProps, nextState) {
     return shallowCompare(this, nextProps, nextState)
+  }
+  */
+  shouldComponentUpdate (nextProps, nextState) {
+    if (odiff.equal(this.props, nextProps) && odiff.equal(this.state, nextState)) {
+      return false
+    } else {
+      return true
+    }
   }
 
   selectDevice (deviceId) {
@@ -92,7 +102,7 @@ class HomeContainer extends Component {
 
     const selectedDevice = this.props.devicesHash[selectedDeviceId]
     // console.log('selectedDevice', selectedDevice)
-    let initStates = {
+    let initProtoStates = {
       'status': {
         't1Text': 'Status',
         't2Text': 'Offline',
@@ -126,6 +136,8 @@ class HomeContainer extends Component {
         'hasSwitch': false,
       },
     }
+
+    let initStates = Object.assign({}, initProtoStates)
 
     const evccoffline = this.checkKeyExist('evccoffline', selectedDevice['variables']) ? selectedDevice['variables']['evccoffline'] : undefined
     // console.log('evccoffline', selectedDevice['variables']['evccoffline'])
@@ -243,6 +255,48 @@ class HomeContainer extends Component {
         },
       }
     })
+
+    let resultStates = {}
+
+    if (this.props.internetConnection === false) {
+      resultStates = {
+        'status': {
+          't1Text': 'Status',
+          't2Text': 'Offline',
+          'iconName': 'status5-disable',
+          'iconSty': 'disableColor',
+          't2Sty': 'disableColor',
+          'hasSwitch': false,
+        },
+        'security': {
+          't1Text': 'Security',
+          't2Text': 'Unlocked',
+          'iconName': 'security1-disable',
+          'iconSty': 'disableColor',
+          't2Sty': 'disableColor',
+          'hasSwitch': true,
+        },
+        'charge': {
+          't1Text': 'Last Charge',
+          't2Text': '00:00:00',
+          'iconName': 'charge-disable',
+          'iconSty': 'disableColor',
+          't2Sty': 'disableColor',
+          'hasSwitch': false,
+        },
+        'mainternance': {
+          't1Text': 'Mainternance',
+          't2Text': 'No Action',
+          'iconName': 'maintenance1-disable',
+          'iconSty': 'disableColor',
+          't2Sty': 'disableColor',
+          'hasSwitch': false,
+        },
+      }
+    } else {
+      resultStates = Object.assign({}, initStates)
+    }
+
     // console.log('deviceArr', deviceArr)
     return (
       <Container style={styles.homeWrapper}>
@@ -266,16 +320,16 @@ class HomeContainer extends Component {
               return (
                 <ListItem
                   key={`listitem-${i}`}
-                  iconName={initStates[key]['iconName']}
-                  hasSwitch={initStates[key]['hasSwitch']}
-                  iconSty={initStates[key]['iconSty']}
-                  t2Sty={initStates[key]['t2Sty']}
-                  t1Text={initStates[key]['t1Text']}
-                  t2Text={initStates[key]['t2Text']}
+                  iconName={resultStates[key]['iconName']}
+                  hasSwitch={resultStates[key]['hasSwitch']}
+                  iconSty={resultStates[key]['iconSty']}
+                  t2Sty={resultStates[key]['t2Sty']}
+                  t1Text={resultStates[key]['t1Text']}
+                  t2Text={resultStates[key]['t2Text']}
                   isLast={ i === 3 }
                   setEnableCharging={this.props.setEnableCharging}
                   deviceId={this.state.selectedDeviceId}
-                  isEnableSwitch={initStates['status']['t2Text'] === 'Ready'}
+                  isEnableSwitch={resultStates['status']['t2Text'] === 'Ready'}
                 />)
             })
           }
@@ -299,6 +353,7 @@ HomeContainer.propTypes = {
   setEnableCharging: PropTypes.func,
   selectedDeviceId: PropTypes.func,
   token: PropTypes.string,
+  internetConnection: PropTypes.any,
 }
 
 export default withRouter(connect(
@@ -306,6 +361,7 @@ export default withRouter(connect(
     devicesHash: state.particle.devicesHash,
     devices: state.particle.devices,
     token: state.auth.token,
+    internetConnection: state.misc.internetConnection,
   }),
   dispatch => bindActionCreators({setEnableCharging, selectedDeviceId}, dispatch)
 )(HomeContainer))

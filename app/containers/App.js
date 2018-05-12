@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Container, StyleProvider} from 'native-base'
 import PropTypes from 'prop-types'
-import {NetInfo, View, Image} from 'react-native'
+import {NetInfo, View, Image, AppState} from 'react-native'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import io from 'socket.io-client'
@@ -16,6 +16,36 @@ import {logout} from '../actions/azureActions'
 
 import BootStrap from '../screens/Bootstrap'
 
+import {Notifications} from 'expo'
+
+const notification1 = {
+  "title": "No Server Connection!",
+  "body": "Check your network",
+  "data": {
+    "iWantData": "yesPlease"
+  },
+  "ios": {
+    "sound": true
+  },
+  "android": {
+    "sound": true
+  },
+}
+
+const notification2 = {
+  "title": "Network Connected!",
+  "body": "Network connected",
+  "data": {
+    "iWantData": "yesPlease"
+  },
+  "ios": {
+    "sound": true
+  },
+  "android": {
+    "sound": true
+  },
+}
+
 class AppContainer extends Component {
   constructor (props) {
     // console.log('constructor');
@@ -23,12 +53,18 @@ class AppContainer extends Component {
 
     this.socket = null
     this.socketAuthenticated = false
+    this.state = {
+      appState: AppState.currentState,
+    }
+    // this._handleAppStateChange.bind(this)
   }
 
   componentDidMount () {
     // this.props.logout()
     NetInfo.getConnectionInfo().then(connectionInfo => this.props.setConnectionStatus(connectionInfo))
     NetInfo.addEventListener('connectionChange', connectionInfo => this.props.setConnectionStatus(connectionInfo))
+
+    AppState.addEventListener('change', this._handleAppStateChange)
 
     this.setupSocket()
     this.connectSocket()
@@ -73,9 +109,19 @@ class AppContainer extends Component {
   componentWillUnmount () {
     // console.log('unmount');
     this.socket.disconnect()
+    AppState.removeEventListener('change', this._handleAppStateChange)
   }
 
   componentWillReceiveProps (nextProps) {
+    const scheduleOptions = {
+      "time": Date.now() + 1000
+    }
+    if (this.props.internetConnection === true && nextProps.internetConnection === false) {
+      Notifications.scheduleLocalNotificationAsync(notification1, scheduleOptions)
+    }
+    if (this.props.token && this.props.internetConnection === false && nextProps.internetConnection === true) {
+      // Notifications.scheduleLocalNotificationAsync(notification2, scheduleOptions)
+    }
     /*
     console.log('this.props.internetConnection', this.props.internetConnection)
     console.log('nextProps.internetConnection', nextProps.internetConnection)
@@ -107,6 +153,13 @@ class AppContainer extends Component {
       this.socket.disconnect()
       this.socketAuthenticated = false
     }
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      this.reconnectSocket()
+    }
+    this.setState({appState: nextAppState});
   }
 
   setupSocket () {
