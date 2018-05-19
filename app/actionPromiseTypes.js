@@ -25,4 +25,5 @@ module.exports = keyMirror({
   PUT_RENAME_DEVICE: null,
   PUT_DEVICE_SERIAL_NUMBER: null,
   PUT_DEVICE_LOCATION: null,
+  PUT_DEVICE_COUNT: null,
 })

@@ -127,7 +127,6 @@ class ListItemWrapper extends Component {
           <View style={{flexDirection: 'row', padding: 10, paddingLeft: 20, borderColor: '#959595', borderWidth: 0, borderTopWidth: 0}}>
             <View style={styles.leftCtr}>
               <Text style={t1Styles}></Text>
-              {/* <Text style={t1Styles}></Text> */}
               <Image source={this.statusIcons[iconName]} style={iconStyles} />
             </View>
             <View style={bodyStyles}>

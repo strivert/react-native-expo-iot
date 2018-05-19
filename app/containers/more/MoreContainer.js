@@ -41,8 +41,6 @@ class MoreContainer extends Component {
               />
             </View>
           </View>
-          <View style={{height: 17}}>
-          </View>
         </BlueBtn>
 
         <Bar
@@ -71,8 +69,6 @@ class MoreContainer extends Component {
             <View style={{flex: 0.4}}>
               <Text style={[styles.txtColor2, pageStyles.appText]}>4.3.4</Text>
             </View>
-          </View>
-          <View style={{height: 18}}>
           </View>
         </View>
 
@@ -104,7 +100,6 @@ let pageStyles = StyleSheet.create({
     paddingBottom: 17,
   },
   flexRowView: {
-    flex: 1,
     flexDirection: 'row',
   },
   currenctyText: {

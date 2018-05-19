@@ -2,17 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import {
-  Button,
-  Text,
-  Spinner,
-  View,
-  Content,
-  Footer,
-  FooterTab,
-  Container,
-  H1,
-} from 'native-base'
+import { Container } from 'native-base'
 
 import styles from '../../styles'
 
@@ -35,9 +25,8 @@ import reactMixin from 'react-mixin'
 import TimerMixin from 'react-timer-mixin'
 import {fetchId, fetchHotspots, configureAndConnectAp} from '../../actions/chipActions'
 import {setConnectionInter} from '../../actions/storeActions'
-import {setSerialNumber, setLocation} from '../../actions/particleActions'
+import {setSerialNumber, setLocation, createClaimCode} from '../../actions/particleActions'
 
-import {createClaimCode} from '../../actions/particleActions'
 import {deleteDevice, postDevice} from '../../services/particleService'
 import locationService from '../../services/locationService'
 import odiff from 'odiff'
@@ -64,11 +53,8 @@ class AddingDeviceContainer extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     if (odiff.equal(this.props, nextProps) && odiff.equal(this.state, nextState)) {
-      // console.log('false')
       return false
     } else {
-      // console.log('this.props.mapData', this.props.mapData)
-      // console.log('nextProps.mapData', nextProps.mapData)
       return true
     }
   }
@@ -136,21 +122,16 @@ class AddingDeviceContainer extends Component {
     this.verifyingConnectionInterval = this.setInterval(() => {
       deleteDevice(deviceId)
         .then((a) => {
-          // alert('a')
           return postDevice(deviceId)
         })
         .then((b) => {
-          // _this.onContinue()
           _this.setState({
             viewState: 11,
             addedDevice: true,
           })
-          // alert('b')
-          // console.log(b)
         })
         .catch((err) => {
           console.log(err)
-          // alert(err)
         })
     }, 3000)
 
@@ -204,26 +185,15 @@ class AddingDeviceContainer extends Component {
     }, 2000)
     this.clearInterval(this.verifyingConnectionInterval)
     this.verifyingConnectionInterval = null
-
-    /*
-    this.clearInterval(this.verifyingConnectionInterval)
-    this.verifyingConnectionInterval = null
-
-    this.clearInterval(this.verifyingConnectionInterval)
-    this.verifyingConnectionInterval = null
-    this.props.navigation.navigate('ChargePoint', { isFrom: 'addAgain' })
-    */
   }
 
   componentDidUpdate (prevProps, prevState) {
     if (this.state.viewState === 5) {
       if (!this.state.hotspots && this.props.connected) {
-        // alert('connected ang get hotsp')
         this.getHotspots()
       } else {
         if (!this.state.hotspots && !this.props.connected) {
           setTimeout(() => {
-            // alert('from 5 no')
             this.setState({
               viewState: 10,
             })
@@ -324,7 +294,6 @@ class AddingDeviceContainer extends Component {
           setConnectionInter={this.props.setConnectionInter}
           addDevice={() => this.addDevice()}
           goFail={() => {
-            // alert('go fail')
             this.setState({
               viewState: 10,
             })

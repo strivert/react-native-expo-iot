@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Spinner, StyleProvider} from 'native-base'
 import {Provider} from 'react-redux'
 import {NativeRouter} from 'react-router-native'
-import {AsyncStorage} from 'react-native'
+import {AsyncStorage, View, Image} from 'react-native'
 import {Font} from 'expo'
 import getTheme from '../native-base-theme/components'
 import material from '../native-base-theme/variables/material'
@@ -62,7 +62,16 @@ export default class App extends Component {
   render () {
     const {fontLoaded} = this.state
 
-    return !fontLoaded || !store ? <Spinner /> : (
+    return !fontLoaded || !store ? (
+      <View style={{flex: 1, resizeMode: 'cover'}}>
+        <Image
+          source={require('./assets/images/splash.png')}
+          style={{flex: 1, width: undefined, height: undefined}}
+        >
+        </Image>
+        <Spinner style={{position: 'absolute', left: '50%', top: '50%', marginLeft: -10, marginTop: -10}} />
+      </View>
+    ) : (
       <StyleProvider style={getTheme(material)}>
         <Provider store={store}>
           <NativeRouter>

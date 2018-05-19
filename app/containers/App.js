@@ -9,7 +9,7 @@ import {withRouter} from 'react-router-native'
 import {ANDERSEN_IOT_DOMAIN} from 'react-native-dotenv'
 import getTheme from '../../native-base-theme/components'
 import platform from '../../native-base-theme/variables/platform'
-import {receivedDeviceStatus, socketConnected, socketDisconnected} from '../actions/particleActions'
+import {receivedDeviceStatus, socketConnected, socketDisconnected, receivedDeviceCount} from '../actions/particleActions'
 import {setConnectionStatus, setConnectionInter} from '../actions/storeActions'
 import {fetchUser} from '../actions/andersenActions'
 import {logout} from '../actions/azureActions'
@@ -56,7 +56,6 @@ class AppContainer extends Component {
     this.state = {
       appState: AppState.currentState,
     }
-    // this._handleAppStateChange.bind(this)
   }
 
   componentDidMount () {
@@ -64,7 +63,7 @@ class AppContainer extends Component {
     NetInfo.getConnectionInfo().then(connectionInfo => this.props.setConnectionStatus(connectionInfo))
     NetInfo.addEventListener('connectionChange', connectionInfo => this.props.setConnectionStatus(connectionInfo))
 
-    AppState.addEventListener('change', this._handleAppStateChange)
+    AppState.addEventListener('change', this.handleAppStateChange)
 
     this.setupSocket()
     this.connectSocket()
@@ -109,7 +108,7 @@ class AppContainer extends Component {
   componentWillUnmount () {
     // console.log('unmount');
     this.socket.disconnect()
-    AppState.removeEventListener('change', this._handleAppStateChange)
+    AppState.removeEventListener('change', this.handleAppStateChange)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -122,16 +121,7 @@ class AppContainer extends Component {
     if (this.props.token && this.props.internetConnection === false && nextProps.internetConnection === true) {
       // Notifications.scheduleLocalNotificationAsync(notification2, scheduleOptions)
     }
-    /*
-    console.log('this.props.internetConnection', this.props.internetConnection)
-    console.log('nextProps.internetConnection', nextProps.internetConnection)
-    console.log('this.props.token', this.props.token)
-    console.log('nextProps.token', nextProps.token)
-    */
-    // if ((this.props.internetConnection !== nextProps.internetConnection) && nextProps.internetConnection === false) {
     if (this.props.internetConnection === false && nextProps.internetConnection === true) {
-      // alert('Resocket')
-      // this.socket.disconnect()
       this.reconnectSocket()
     }
     if (this.props.token !== nextProps.token && nextProps.token !== null) {
@@ -144,9 +134,7 @@ class AppContainer extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    // console.log('componentDidUpdate')
     if (prevProps.token !== this.props.token) {
-      // console.log('componentDidUpdated')
       this.reconnectSocket()
     }
     if (!this.props.token && this.socket) {
@@ -155,7 +143,7 @@ class AppContainer extends Component {
     }
   }
 
-  _handleAppStateChange = (nextAppState) => {
+  handleAppStateChange = (nextAppState) => {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       this.reconnectSocket()
     }
@@ -171,6 +159,9 @@ class AppContainer extends Component {
     this.socket.on('chargerstatus', data => {
       // console.log('chargerstatus', data)
       this.props.receivedDeviceStatus(data)
+    })
+    this.socket.on('devicecount', data => {
+      this.props.receivedDeviceCount(data)
     })
     this.socket.on('authenticated', () => {
       this.socketAuthenticated = true
@@ -191,15 +182,8 @@ class AppContainer extends Component {
   }
 
   reconnectSocket () {
-    // console.log('this.socket', this.socket)
-    // console.log('this.socket.socketAuthenticated', this.socket.socketAuthenticated)
     if (this.socket && !this.socket.socketAuthenticated) {
-      console.log('RRReconnect')
-      /*
-      this.socket.disconnect()
-      this.setupSocket()
-      this.socket.connect()
-      */
+      // console.log('RRReconnect')      
       this.setupSocket()
       this.connectSocket()
       this.props.setConnectionInter(true)
@@ -213,11 +197,11 @@ class AppContainer extends Component {
         <Image key={`startImg-${key}`} source={this.statusIcons[key]} />
       )
     }
-    // console.log('this.props.misc', this.props.internetConnection)
+
     return <StyleProvider style={getTheme(platform)}>
       <Container style={{marginTop: 24}}>
         <BootStrap />
-        <View style={{height: 0, opacity: 0, position: 'absolute', top: -999}}>
+        <View style={{height: 0, opacity: 0, position: 'absolute', right: -9999}}>
           {viewArr}
         </View>
       </Container>
@@ -235,6 +219,7 @@ AppContainer.propTypes = {
   logout: PropTypes.func.isRequired,
   internetConnection: PropTypes.bool,
   setConnectionInter: PropTypes.func,
+  receivedDeviceCount: PropTypes.func,
 }
 
 export default withRouter(connect(
@@ -242,5 +227,5 @@ export default withRouter(connect(
     token: state.auth.token,
     internetConnection: state.misc.internetConnection,
   }),
-  dispatch => bindActionCreators({receivedDeviceStatus, socketConnected, socketDisconnected, fetchUser, setConnectionStatus, logout, setConnectionInter}, dispatch)
+  dispatch => bindActionCreators({receivedDeviceStatus, socketConnected, socketDisconnected, fetchUser, setConnectionStatus, logout, setConnectionInter, receivedDeviceCount}, dispatch)
 )(AppContainer))

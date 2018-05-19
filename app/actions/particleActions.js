@@ -6,6 +6,7 @@ import {
   PUT_RENAME_DEVICE,
   PUT_DEVICE_SERIAL_NUMBER,
   PUT_DEVICE_LOCATION,
+  PUT_DEVICE_COUNT,
 } from '../actionPromiseTypes'
 
 import {
@@ -37,6 +38,7 @@ module.exports = {
   setSerialNumber,
   setLocation,
   selectedDeviceId,
+  receivedDeviceCount,
 }
 
 function createClaimCode () {
@@ -120,5 +122,12 @@ function selectedDeviceId (deviceId) {
   return {
     type: SET_SELECTED_DEVICE_ID,
     payload: deviceId,
+  }
+}
+
+function receivedDeviceCount (data) {
+  return {
+    type: PUT_DEVICE_COUNT,
+    payload: data,
   }
 }

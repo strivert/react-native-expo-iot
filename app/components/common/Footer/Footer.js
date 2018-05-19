@@ -59,7 +59,7 @@ class FooterWrapper extends Component {
 
 let styles = StyleSheet.create({
   footerWrapper: {
-    borderWidth: 0.5, borderColor: '#959595',
+    borderWidth: 0.5, borderColor: '#959595', backgroundColor: '#F2F2F2',
   },
   footerIcon: {
     width: 25,

@@ -5,15 +5,15 @@
   "dependencies": {
     "axios": "^0.16.2",
     "axios-mock-adapter": "^1.9.0",
-    "expo": "^25.0.0",
+    "expo": "^27.0.1",
     "keymirror": "^0.1.1",
     "native-base": "^2.3.3",
     "odiff": "^1.1.0",
     "qs": "^6.5.1",
-    "react": "16.2.0",
+    "react": "16.3.1",
     "react-addons-shallow-compare": "^15.6.2",
     "react-mixin": "^4.0.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-27.0.0.tar.gz",
     "react-native-azure-ad": "^0.2.4",
     "react-native-button": "^2.1.0",
     "react-native-dotenv": "^0.1.0",
@@ -24,7 +24,7 @@
     "react-native-swipeout": "^2.3.3",
     "react-native-swiper": "^1.5.13",
     "react-native-vector-icons": "^4.4.2",
-    "react-navigation": "^1.0.0-beta.27",
+    "react-navigation": "2.0.0",
     "react-redux": "^5.0.6",
     "react-router-native": "^4.2.0",
     "react-test-renderer": "16.0.0",
@@ -45,7 +45,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "jest": "^21.2.1",
     "jest-cli": "^21.2.1",
-    "jest-expo": "^25.0.0"
+    "jest-expo": "^27.0.0"
   },
   "resolutions": {
     "uglify-es": "3.2.2"

@@ -81,14 +81,6 @@ class HomeContainer extends Component {
   render () {
     const { selectedDeviceId } = this.state
 
-    if (!this.props.token) {
-      // alert('??')
-    }
-    if (!selectedDeviceId) {
-      // alert('deciceiD')
-    } else {
-      // alert('Ok')
-    }
     if (!selectedDeviceId || !this.props.token) {
       return (
         <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
@@ -99,6 +91,7 @@ class HomeContainer extends Component {
 
     // console.log('this.props.devicesHash', this.props.devicesHash)
     // console.log('this.props.devices', this.props.devices)
+    // alert(this.props.devicesHash.length)
 
     const selectedDevice = this.props.devicesHash[selectedDeviceId]
     // console.log('selectedDevice', selectedDevice)
@@ -140,7 +133,7 @@ class HomeContainer extends Component {
     let initStates = Object.assign({}, initProtoStates)
 
     const evccoffline = this.checkKeyExist('evccoffline', selectedDevice['variables']) ? selectedDevice['variables']['evccoffline'] : undefined
-    // console.log('evccoffline', selectedDevice['variables']['evccoffline'])
+    const online = this.checkKeyExist('online', selectedDevice['variables']) ? selectedDevice['variables']['online'] : undefined
     if (evccoffline === true) {
       initStates['status']['t2Sty'] = 'grayColor'
       initStates['status']['iconSty'] = 'grayColor'
@@ -178,7 +171,6 @@ class HomeContainer extends Component {
 
       const chargerstatus = this.checkKeyExist('chargerstatus', selectedDevice['variables']) ? selectedDevice['variables']['chargerstatus'] : ''
       const lastchargingtime = this.checkKeyExist('lastchargingtime', selectedDevice['variables']) ? selectedDevice['variables']['lastchargingtime'] : ''
-      // console.log('this.catchCharFromChargerStatus(chargerstatus)', this.catchCharFromChargerStatus(chargerstatus))
       switch (this.catchCharFromChargerStatus(chargerstatus)) {
         case '':
           initStates['status']['t2Text'] = 'Offline'
@@ -240,7 +232,6 @@ class HomeContainer extends Component {
       if (i === 1) {
         // alert(this.checkKeyExist('location', item.variables) ? parseFloat(parseFloat(item.variables.location.latitude).toFixed(10)) : 0);
       }
-      // console.log('item', item)
       return {
         deviceId: item.id,
         deviceName: item.name,
@@ -258,7 +249,7 @@ class HomeContainer extends Component {
 
     let resultStates = {}
 
-    if (this.props.internetConnection === false) {
+    if (this.props.internetConnection === false || online === false) {
       resultStates = {
         'status': {
           't1Text': 'Status',
@@ -297,14 +288,20 @@ class HomeContainer extends Component {
       resultStates = Object.assign({}, initStates)
     }
 
-    // console.log('deviceArr', deviceArr)
     return (
       <Container style={styles.homeWrapper}>
         <View style={{height: 207}}>
-          <MapWrapper
-            selectDevice={(deviceId) => this.selectDevice(deviceId)}
-            mapData={deviceArr}
-          />
+          {
+            (this.props.deviceCount !== null && deviceArr.length === this.props.deviceCount) ? (
+              <MapWrapper
+                selectDevice={(deviceId) => this.selectDevice(deviceId)}
+                mapData={deviceArr}
+              />) : (
+              <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
+                <Spinner />
+              </Container>
+            )
+          }
         </View>
         <View style={{flex: 1, position: 'absolute', left: '50%', marginLeft: -65, top: 10}}>
           <Image
@@ -329,7 +326,7 @@ class HomeContainer extends Component {
                   isLast={ i === 3 }
                   setEnableCharging={this.props.setEnableCharging}
                   deviceId={this.state.selectedDeviceId}
-                  isEnableSwitch={resultStates['status']['t2Text'] === 'Ready'}
+                  isEnableSwitch={resultStates['status']['t2Text'] === 'Ready' || resultStates['status']['t2Text'] === 'Connected'}
                 />)
             })
           }
@@ -354,12 +351,14 @@ HomeContainer.propTypes = {
   selectedDeviceId: PropTypes.func,
   token: PropTypes.string,
   internetConnection: PropTypes.any,
+  deviceCount: PropTypes.any,
 }
 
 export default withRouter(connect(
   state => ({
     devicesHash: state.particle.devicesHash,
     devices: state.particle.devices,
+    deviceCount: state.particle.deviceCount,
     token: state.auth.token,
     internetConnection: state.misc.internetConnection,
   }),

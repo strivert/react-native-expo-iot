@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, Text } from 'react-native'
+import { StyleSheet, View, Image } from 'react-native'
+import PropTypes from 'prop-types'
+
 import BlueBtn from '../BlueBtn'
 
 class PageHeaderBack extends Component {
@@ -29,6 +31,11 @@ class PageHeaderBack extends Component {
       </View>
     )
   }
+}
+
+PageHeaderBack.propTypes = {
+  navigation: PropTypes.any,
+  pageName: PropTypes.any,
 }
 
 let styles = StyleSheet.create({

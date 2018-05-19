@@ -6,13 +6,17 @@
     "icon": "./logo.png",
     "slug": "andersen-app",
     "version": "1.0.0",
-    "sdkVersion": "25.0.0",
+    "sdkVersion": "27.0.0",
     "privacy": "unlisted",
     "android": {
       "package": "com.irdev.andersen_app"
     },
     "ios": {
       "bundleIdentifier": "com.appleio.exp"
+    },
+    "splash": {
+      "image": "./app/assets/images/splash.png",
+      "resizeMode": "cover"
     },
     "orientation": "portrait"
   }

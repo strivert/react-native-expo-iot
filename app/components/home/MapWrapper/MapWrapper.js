@@ -20,11 +20,8 @@ class MapWrapper extends Component {
     }
 
     if (odiff.equal(this.props.mapData, nextProps.mapData)) {
-      // console.log('false')
       return false
     } else {
-      // console.log('this.props.mapData', this.props.mapData)
-      // console.log('nextProps.mapData', nextProps.mapData)
       return true
     }
   }

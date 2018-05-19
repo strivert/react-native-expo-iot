@@ -7,8 +7,8 @@ import urlParse from 'url-parse'
 import {stringify} from 'qs'
 import {fetchToken} from '../../actions/azureActions'
 import {fetchUser} from '../../actions/andersenActions'
-import { Platform, BackHandler } from 'react-native'
-
+import { Platform, BackHandler, View, Image } from 'react-native'
+import {Spinner} from 'native-base'
 
 class AdView extends Component {
   static navigationOptions = { // no-eslint
@@ -83,7 +83,16 @@ class AdView extends Component {
   render () {
 
     if (this.props.token) {
-      return null
+      return (
+        <View style={{flex: 1, resizeMode: 'cover'}}>
+          <Image
+            source={require('../../assets/images/splash.png')}
+            style={{flex: 1, width: undefined, height: undefined}}
+          >
+          </Image>
+        <Spinner style={{position: 'absolute', left: '50%', top: '50%', marginLeft: -10, marginTop: -10}} />
+      </View>
+      )
     }
 
     const {handleADToken} = this
@@ -105,7 +114,7 @@ class AdView extends Component {
     document.getElementsByTagName('body')[0].style.backgroundColor = 'white';`
 
     return (
-      <WebView
+      <View style={{flex: 1}}><WebView
         automaticallyAdjustContentInsets={false}
         style={[{
           flex: 1,
@@ -124,7 +133,7 @@ class AdView extends Component {
         scalesPageToFit={true}
         thirdPartyCookiesEnabled={false}
         bounces={false}
-      />
+      /></View>
     )
   }
 }

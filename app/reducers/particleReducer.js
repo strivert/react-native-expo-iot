@@ -3,6 +3,7 @@ import {
   GET_DEVICES,
   // GET_DEVICE,
   PUT_RENAME_DEVICE,
+  PUT_DEVICE_COUNT,
 } from '../actionPromiseTypes'
 
 import {
@@ -23,6 +24,7 @@ const initialState = {
   creatingClaimCode: false,
   socketConnected: false,
   selectedDeviceId: null,
+  deviceCount: null,
 }
 
 export default function data (state = initialState, action) {
@@ -132,10 +134,15 @@ export default function data (state = initialState, action) {
         devices: null,
         devicesHash: {},
       }
-	case SET_SELECTED_DEVICE_ID:
+    case SET_SELECTED_DEVICE_ID:
       return {
         ...state,
         selectedDeviceId: action.payload,
+      }
+    case PUT_DEVICE_COUNT:
+      return {
+        ...state,
+        deviceCount: action.payload.devcount,
       }
     default:
       return state

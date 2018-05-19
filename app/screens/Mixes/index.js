@@ -57,6 +57,7 @@ export default ( MainScreenNavigator = TabNavigator(
     tabBarComponent: props=> (<Footer {...props} />),
     swipeEnabled: false,
     animationEnabled: false,
+    backBehavior: 'none',
     lazy: true,
     transitionConfig: () => ({
       transitionSpec: {
