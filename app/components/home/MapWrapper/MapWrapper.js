@@ -63,16 +63,14 @@ class MapWrapper extends Component {
                 longitude: item.location.longitude,
               }}
             />
-
             <View style={{flex: 1, position: 'absolute', width: '100%', height: 207}}>
               <Image source={ require('../../../assets/images/gradient.png') } style={{width: '100%', height: '100%', resizeMode: 'stretch'}} />
             </View>
-
-            <View style={{flex: 1, position: 'absolute', left: 40, top: 80}}>
-              <Text style={{fontSize: 30, fontFamily: 'Proxima_nova_light'}}>{item.deviceName}</Text>
-              <Text style={{fontSize: 14, marginTop: 5, fontFamily: 'Proxima_nova_ltsemibold'}}>{item.serialNumber}</Text>
-            </View>
           </MapView>
+          <View style={{flex: 1, position: 'absolute', left: 40, top: 80}}>
+            <Text style={{fontSize: 30, fontFamily: 'Proxima_nova_light'}}>{item.deviceName}</Text>
+            <Text style={{fontSize: 14, marginTop: 5, fontFamily: 'Proxima_nova_ltsemibold'}}>{item.serialNumber}</Text>
+          </View>
           <View style={{flex: 1, position: 'absolute', width: '100%', height: 207, backgroundColor: 'transparent'}}>
           </View>
         </View>

@@ -94,6 +94,13 @@ class HomeContainer extends Component {
     // alert(this.props.devicesHash.length)
 
     const selectedDevice = this.props.devicesHash[selectedDeviceId]
+    if( !this.checkKeyExist('variables', selectedDevice) ) {
+      return (
+        <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
+          <Spinner />
+        </Container>
+      )
+    }
     // console.log('selectedDevice', selectedDevice)
     let initProtoStates = {
       'status': {
@@ -135,19 +142,20 @@ class HomeContainer extends Component {
     const evccoffline = this.checkKeyExist('evccoffline', selectedDevice['variables']) ? selectedDevice['variables']['evccoffline'] : undefined
     const online = this.checkKeyExist('online', selectedDevice['variables']) ? selectedDevice['variables']['online'] : undefined
     if (evccoffline === true) {
-      initStates['status']['t2Sty'] = 'grayColor'
-      initStates['status']['iconSty'] = 'grayColor'
-      initStates['security']['t2Sty'] = 'grayColor'
-      initStates['security']['iconSty'] = 'grayColor'
+      initStates['status']['t2Sty'] = 'redColor'
+      initStates['status']['iconSty'] = 'redColor'
+      initStates['status']['t2Text'] = 'No CP'
+
       initStates['charge']['t2Sty'] = 'grayColor'
       initStates['charge']['iconSty'] = 'grayColor'
-      initStates['mainternance']['t2Sty'] = 'grayColor'
-      initStates['mainternance']['iconSty'] = 'grayColor'
 
-      initStates['status']['iconName'] = 'status5'
-      initStates['security']['iconName'] = 'security1'
+      initStates['mainternance']['t2Sty'] = 'redColor'
+      initStates['mainternance']['iconSty'] = 'redColor'
+      initStates['mainternance']['t2Text'] = 'Chargepoint Error'
+
+      initStates['status']['iconName'] = 'status6'
       initStates['charge']['iconName'] = 'charge1'
-      initStates['mainternance']['iconName'] = 'maintenance1'
+      initStates['mainternance']['iconName'] = 'maintenance2'
     }
 
     if (evccoffline === false) {
@@ -235,7 +243,8 @@ class HomeContainer extends Component {
       return {
         deviceId: item.id,
         deviceName: item.name,
-        serialNumber: ('variables' in item) ? item.variables.serialNumber : '',
+        // serialNumber: ('variables' in item) ? item.variables.serialNumber : '',
+        serialNumber: 'ANDERSEN A1',
         location: {
           latitude: this.checkKeyExist('location', item.variables) ? parseFloat(parseFloat(item.variables.location.latitude).toFixed(10)) : 0,
           longitude: this.checkKeyExist('location', item.variables) ? parseFloat(parseFloat(item.variables.location.longitude).toFixed(10)) : 0,
@@ -288,6 +297,13 @@ class HomeContainer extends Component {
       resultStates = Object.assign({}, initStates)
     }
 
+    let displayKeyArray = [];
+    if (resultStates['status']['t2Text'] === 'Ready') {
+      displayKeyArray = ['status', 'security', 'charge', 'mainternance']
+    } else {
+      displayKeyArray = ['status', 'charge', 'mainternance']      
+    }
+
     return (
       <Container style={styles.homeWrapper}>
         <View style={{height: 207}}>
@@ -313,7 +329,7 @@ class HomeContainer extends Component {
 
         <View style={{flex: 1, paddingLeft: 10, paddingRight: 10}}>
           {
-            ['status', 'security', 'charge', 'mainternance'].map((key, i) => {
+            displayKeyArray.map((key, i) => {
               return (
                 <ListItem
                   key={`listitem-${i}`}
@@ -323,7 +339,7 @@ class HomeContainer extends Component {
                   t2Sty={resultStates[key]['t2Sty']}
                   t1Text={resultStates[key]['t1Text']}
                   t2Text={resultStates[key]['t2Text']}
-                  isLast={ i === 3 }
+                  isLast={ i === (displayKeyArray.length-1) }
                   setEnableCharging={this.props.setEnableCharging}
                   deviceId={this.state.selectedDeviceId}
                   isEnableSwitch={resultStates['status']['t2Text'] === 'Ready' || resultStates['status']['t2Text'] === 'Connected'}

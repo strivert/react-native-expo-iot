@@ -63,7 +63,7 @@ export default class App extends Component {
     const {fontLoaded} = this.state
 
     return !fontLoaded || !store ? (
-      <View style={{flex: 1, resizeMode: 'cover'}}>
+      <View style={{flex: 1}}>
         <Image
           source={require('./assets/images/splash.png')}
           style={{flex: 1, width: undefined, height: undefined}}

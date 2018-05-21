@@ -304,7 +304,7 @@ class AddingDeviceContainer extends Component {
           }}
           addAgain={() => this.addAgain() }
           clearVerifyingConnectionInterval={() => this.clearVerifyingConnectionInterval() }
-          handleSerialRead={(data, saveLocation) => this.handleSerialRead(data, saveLocation)}
+          onBarCodeRead={(data, saveLocation) => this.handleSerialRead(data, saveLocation)}
         />
       </Container>
     )

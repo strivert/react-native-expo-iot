@@ -7,14 +7,8 @@ import urlParse from 'url-parse'
 import {stringify} from 'qs'
 import {fetchToken} from '../../actions/azureActions'
 import {fetchUser} from '../../actions/andersenActions'
-import { Platform, BackHandler, View, Image } from 'react-native'
-import {Spinner} from 'native-base'
 
 class AdView extends Component {
-  static navigationOptions = { // no-eslint
-    header: null,
-  }
-
   constructor (props) {
     super(props)
 
@@ -23,31 +17,6 @@ class AdView extends Component {
     this.state = {
       policy: 'B2C_1_customer-sign-up-sign-in',
       gotCode: false,
-    }
-  }
-
-  componentWillMount() {
-    if (Platform.OS !== 'android') return
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      return true
-    })
-  }
-
-  componentWillUnmount() {
-    if (Platform.OS === 'android') BackHandler.removeEventListener('hardwareBackPress')
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (!this.props.token && nextProps.token) {
-      this.props.navigation.navigate('HomeNav')
-    }
-  }
-
-  componentDidMount () {
-    if (this.props.token) {
-      return this.props.fetchUser().then(() => {
-        this.props.navigation.navigate('HomeNav')
-      })
     }
   }
 
@@ -81,20 +50,6 @@ class AdView extends Component {
   }
 
   render () {
-
-    if (this.props.token) {
-      return (
-        <View style={{flex: 1}}>
-          <Image
-            source={require('../../assets/images/splash.png')}
-            style={{flex: 1, width: undefined, height: undefined}}
-          >
-          </Image>
-        <Spinner style={{position: 'absolute', left: '50%', top: '50%', marginLeft: -10, marginTop: -10}} />
-      </View>
-      )
-    }
-
     const {handleADToken} = this
     const {policy} = this.state
 
@@ -111,17 +66,17 @@ class AdView extends Component {
 
     // Fix visibility problem on Android webview
     const js = `document.getElementsByTagName('body')[0].style.height = '${Dimensions.get('window').height}px';
-    document.getElementsByTagName('body')[0].style.backgroundColor = 'white';`
+    document.getElementsByTagName('body')[0].style.backgroundColor = '#212121';`
 
     return (
-      <View style={{flex: 1}}><WebView
+      <WebView
         automaticallyAdjustContentInsets={false}
         style={[{
           flex: 1,
           alignSelf: 'stretch',
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').height,
-          backgroundColor: 'white',
+          backgroundColor: '#212121',
         }]}
         source={{uri: source}}
         javaScriptEnabled={true}
@@ -133,7 +88,7 @@ class AdView extends Component {
         scalesPageToFit={true}
         thirdPartyCookiesEnabled={false}
         bounces={false}
-      /></View>
+      />
     )
   }
 }
@@ -141,13 +96,10 @@ class AdView extends Component {
 AdView.propTypes = {
   fetchToken: PropTypes.func.isRequired,
   fetchUser: PropTypes.func.isRequired,
-  navigation: PropTypes.object.isRequired,
-  token: PropTypes.string,
 }
 
 export default connect(
   state => ({
-    token: state.auth.token,
   }),
   dispatch => bindActionCreators({fetchToken, fetchUser}, dispatch)
 )(AdView)

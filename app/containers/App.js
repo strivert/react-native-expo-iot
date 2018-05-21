@@ -90,6 +90,7 @@ class AppContainer extends Component {
       'charge1': require('../assets/images/status_icons/charge1.png'),
       'charge-disable': require('../assets/images/status_icons/charge-disable.png'),
       'maintenance1': require('../assets/images/status_icons/maintenance1.png'),
+      'maintenance2': require('../assets/images/status_icons/maintenance2.png'),
       'maintenance1-disable': require('../assets/images/status_icons/maintenance1-disable.png'),
       'security1': require('../assets/images/status_icons/security1.png'),
       'security1-disable': require('../assets/images/status_icons/security1-disable.png'),
@@ -102,6 +103,7 @@ class AppContainer extends Component {
       'status4': require('../assets/images/status_icons/status4.png'),
       'status5': require('../assets/images/status_icons/status5.png'),
       'status5-disable': require('../assets/images/status_icons/status5-disable.png'),
+      'status6': require('../assets/images/status_icons/status6.png'),
     }
   }
 
