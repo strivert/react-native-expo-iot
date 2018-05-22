@@ -320,6 +320,10 @@ class HomeContainer extends Component {
           'hasSwitch': false,
         },
       }
+
+      if (this.props.internetConnection === false) {
+        resultStates['status']['t2Text'] = 'Network Offline'
+      }
     } else {
       resultStates = Object.assign({}, initStates)
     }
@@ -334,10 +338,17 @@ class HomeContainer extends Component {
     return (
       <Container style={pageStyles.homeWrapper}>
         <View style={{height: 207}}>
-          <MapWrapper
-            selectDevice={(deviceId) => this.selectDevice(deviceId)}
-            mapData={deviceArr}
-          />
+          {
+            (this.props.deviceCount !== null && deviceArr.length === this.props.deviceCount) ? (
+              <MapWrapper
+                selectDevice={(deviceId) => this.selectDevice(deviceId)}
+                mapData={deviceArr}
+              />) : (
+              <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
+                <Spinner />
+              </Container>
+            )
+          }
         </View>
         <View style={{flex: 1, position: 'absolute', left: '50%', marginLeft: -65, top: 10}}>
           <Image
