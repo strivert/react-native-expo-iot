@@ -15,7 +15,11 @@ class Home extends Component {
 
   render () {
     return (
-      <HomeContainer />
+      <HomeContainer
+        goAddPage={()=>{
+          this.props.navigation.navigate('AddCharge')
+        }}
+      />
     )
   }
 }

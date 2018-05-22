@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View, Image, Text } from 'react-native'
 import { Container, Spinner } from 'native-base'
 
 import {withRouter} from 'react-router-native'
@@ -13,6 +13,12 @@ import odiff from 'odiff'
 import ListItem from '../../components/home/ListItem'
 import MapWrapper from '../../components/home/MapWrapper'
 import {setEnableCharging, selectedDeviceId} from '../../actions/particleActions'
+import BlueBtn from '../../components/common/BlueBtn'
+import PageHeader from '../../components/common/PageHeader'
+import PageTop from '../../components/common/PageTop'
+import Bar from '../../components/common/Bar'
+
+import appStyles from '../../styles'
 
 class HomeContainer extends Component {
   constructor (props) {
@@ -24,10 +30,12 @@ class HomeContainer extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (!this.state.selectedDeviceId && (nextProps.devices && nextProps.devices.length > 0)) {
-      this.setState({
-        selectedDeviceId: nextProps.devices[0].id,
-      })
-      this.props.selectedDeviceId(nextProps.devices[0].id)
+      if (nextProps.deviceCount === nextProps.devices.length) {
+        this.setState({
+          selectedDeviceId: nextProps.devices[0].id,
+        })
+        this.props.selectedDeviceId(nextProps.devices[0].id)
+      }
     }
   }
 
@@ -80,6 +88,25 @@ class HomeContainer extends Component {
 
   render () {
     const { selectedDeviceId } = this.state
+
+    if (this.props.deviceCount === 0) {
+      return (
+        <Container style={{backgroundColor: '#FFFFFF'}}>
+          <PageHeader />
+          <PageTop
+            iconName='setting3'
+            firstText=''
+            secondText={'No Points'}
+          />
+          <Bar
+            barText='Add Charge Point'
+          />
+          <BlueBtn style={{paddingLeft: 42, paddingRight: 42, paddingTop: 18, paddingBottom: 18}} onClick={()=>this.props.goAddPage()}>
+            <Text style={[appStyles.blueBtnTextColor, {fontSize: 18}]}>Please Click Here To Add Charge Point</Text>
+          </BlueBtn>          
+        </Container>
+      )
+    }
 
     if (!selectedDeviceId || !this.props.token) {
       return (
@@ -305,19 +332,12 @@ class HomeContainer extends Component {
     }
 
     return (
-      <Container style={styles.homeWrapper}>
+      <Container style={pageStyles.homeWrapper}>
         <View style={{height: 207}}>
-          {
-            (this.props.deviceCount !== null && deviceArr.length === this.props.deviceCount) ? (
-              <MapWrapper
-                selectDevice={(deviceId) => this.selectDevice(deviceId)}
-                mapData={deviceArr}
-              />) : (
-              <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
-                <Spinner />
-              </Container>
-            )
-          }
+          <MapWrapper
+            selectDevice={(deviceId) => this.selectDevice(deviceId)}
+            mapData={deviceArr}
+          />
         </View>
         <View style={{flex: 1, position: 'absolute', left: '50%', marginLeft: -65, top: 10}}>
           <Image
@@ -354,7 +374,7 @@ class HomeContainer extends Component {
 }
 
 // ios-unlock-outline
-let styles = StyleSheet.create({
+let pageStyles = StyleSheet.create({
   homeWrapper: {
     backgroundColor: '#FFFFFF',
   },
@@ -368,6 +388,7 @@ HomeContainer.propTypes = {
   token: PropTypes.string,
   internetConnection: PropTypes.any,
   deviceCount: PropTypes.any,
+  goAddPage: PropTypes.func,
 }
 
 export default withRouter(connect(

@@ -23,7 +23,28 @@ class ChargePointContainer extends Component {
   }
 
   render () {
-    const {devicesHash, selectedDeviceId, user} = this.props
+    const {devicesHash, selectedDeviceId, user, deviceCount} = this.props
+
+    if (this.props.deviceCount === 0) {
+      return (
+        <Container style={pageStyles.moreWrapper}>
+          <PageHeader />
+          <PageTop
+            iconName='setting3'
+            firstText=''
+            secondText='No Points'
+          />         
+          <Bar
+            barText='Add Charge Point'
+          />
+
+          <BlueBtn style={[pageStyles.paddingLeftRight42, pageStyles.AppWrapper]} onClick={() => { this.props.navigation.navigate('AddCharge') }}>
+            <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>App Charge Point</Text>
+          </BlueBtn>
+        </Container>
+      )
+    }
+
     if (!selectedDeviceId) {
       return (
         <Container style={[pageStyles.moreWrapper, {alignItems: 'center', justifyContent: 'center'}]}>
@@ -186,6 +207,7 @@ ChargePointContainer.propTypes = {
   navigation: PropTypes.any,
   selectedDeviceId: PropTypes.any,
   isFrom: PropTypes.any,
+  deviceCount: PropTypes.any,
 }
 
 export default withRouter(connect(
@@ -193,6 +215,7 @@ export default withRouter(connect(
     devicesHash: state.particle.devicesHash,
     selectedDeviceId: state.particle.selectedDeviceId,
     user: state.user,
+    deviceCount: state.particle.deviceCount,
   }),
   null
 )(ChargePointContainer))
