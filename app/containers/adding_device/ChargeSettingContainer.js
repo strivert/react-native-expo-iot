@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Image, Modal as NativeModal, Dimensions } from 'react-native'
-import { Container, Header, Left, Right, Button, Icon, Spinner } from 'native-base'
+import { Container, Header, Left, Button, Icon, Spinner } from 'native-base'
 
 import {withRouter} from 'react-router-native'
 import {bindActionCreators} from 'redux'
@@ -53,7 +53,7 @@ class ChargeSettingContainer extends Component {
     const { handleOpenScan, handleCloseScan, handleBarcodeRead } = this
     const selectedDevice = devicesHash[selectedDeviceId]
 
-	if (!selectedDevice) {
+    if (!selectedDevice || !('variables' in selectedDevice) || !('location' in selectedDevice.variables) || !('latitude' in selectedDevice.variables.location)) {
       return (
         <Container style={[pageStyles.moreWrapper, {alignItems: 'center', justifyContent: 'center'}]}>
           <Spinner />

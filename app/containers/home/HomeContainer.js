@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, Text, Alert } from 'react-native'
+import { StyleSheet, View, Image, Text } from 'react-native'
 import { Container, Spinner } from 'native-base'
 
 import {withRouter} from 'react-router-native'
@@ -29,11 +29,13 @@ class HomeContainer extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    /*
     if (nextProps.devices && nextProps.deviceCount !== nextProps.devices.length) {
       this.setState({
         selectedDeviceId: null,
       })
     }
+    */
     if ( nextProps.devices && nextProps.devices.length > 0) {
       if (nextProps.deviceCount === nextProps.devices.length) {
         if (!this.state.selectedDeviceId) {

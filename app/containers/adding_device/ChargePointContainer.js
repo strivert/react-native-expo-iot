@@ -23,7 +23,7 @@ class ChargePointContainer extends Component {
   }
 
   render () {
-    const {devicesHash, selectedDeviceId, user, deviceCount} = this.props
+    const {devicesHash, selectedDeviceId, user} = this.props
 
     if (this.props.deviceCount === 0) {
       return (
@@ -33,7 +33,7 @@ class ChargePointContainer extends Component {
             iconName='setting3'
             firstText=''
             secondText='No Points'
-          />         
+          />
           <Bar
             barText='Add Charge Point'
           />
@@ -63,7 +63,7 @@ class ChargePointContainer extends Component {
 
     const selectedDevice = devicesHash[selectedDeviceId]
 
-	if (!selectedDevice) {
+    if (!selectedDevice) {
       return (
         <Container style={[pageStyles.moreWrapper, {alignItems: 'center', justifyContent: 'center'}]}>
           <Spinner />
