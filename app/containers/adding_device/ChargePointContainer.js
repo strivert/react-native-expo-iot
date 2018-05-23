@@ -63,6 +63,14 @@ class ChargePointContainer extends Component {
 
     const selectedDevice = devicesHash[selectedDeviceId]
 
+	if (!selectedDevice) {
+      return (
+        <Container style={[pageStyles.moreWrapper, {alignItems: 'center', justifyContent: 'center'}]}>
+          <Spinner />
+        </Container>
+      )
+    }
+
     const deviceName = selectedDevice.name
     const userAddress1 = user.address1
     const userAddress2 = user.address2

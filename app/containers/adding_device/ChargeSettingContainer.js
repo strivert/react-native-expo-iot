@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Image, Modal as NativeModal, Dimensions } from 'react-native'
-import { Container, Header, Left, Right, Button, Icon } from 'native-base'
+import { Container, Header, Left, Right, Button, Icon, Spinner } from 'native-base'
 
 import {withRouter} from 'react-router-native'
 import {bindActionCreators} from 'redux'
@@ -52,6 +52,14 @@ class ChargeSettingContainer extends Component {
     const { scanningSerial } = this.state
     const { handleOpenScan, handleCloseScan, handleBarcodeRead } = this
     const selectedDevice = devicesHash[selectedDeviceId]
+
+	if (!selectedDevice) {
+      return (
+        <Container style={[pageStyles.moreWrapper, {alignItems: 'center', justifyContent: 'center'}]}>
+          <Spinner />
+        </Container>
+      )
+    }
 
     const deviceName = selectedDevice.name
     const deviceSerialNumber = ('variables' in selectedDevice) ? selectedDevice.variables.serialNumber : ''

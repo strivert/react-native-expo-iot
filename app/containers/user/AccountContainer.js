@@ -45,7 +45,7 @@ class AccountContainer extends Component {
         <PageTop
           iconName='account3'
           firstText='AndersenId'
-          secondText={`${user.firstName} ${user.lastName}`}
+          secondText={user ? `${user.firstName} ${user.lastName}` : ''}
         />
         <Bar
           barText='Your Account'

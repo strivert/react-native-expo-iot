@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, Text } from 'react-native'
+import { StyleSheet, View, Image, Text, Alert } from 'react-native'
 import { Container, Spinner } from 'native-base'
 
 import {withRouter} from 'react-router-native'
@@ -29,15 +29,23 @@ class HomeContainer extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!this.state.selectedDeviceId && (nextProps.devices && nextProps.devices.length > 0)) {
+    if (nextProps.devices && nextProps.deviceCount !== nextProps.devices.length) {
+      this.setState({
+        selectedDeviceId: null,
+      })
+    }
+    if ( nextProps.devices && nextProps.devices.length > 0) {
       if (nextProps.deviceCount === nextProps.devices.length) {
-        this.setState({
-          selectedDeviceId: nextProps.devices[0].id,
-        })
-        this.props.selectedDeviceId(nextProps.devices[0].id)
+        if (!this.state.selectedDeviceId) {
+          this.setState({
+            selectedDeviceId: nextProps.devices[0].id,
+          })
+          this.props.selectedDeviceId(nextProps.devices[0].id)
+        }
       }
     }
   }
+  
 
   /*
   shouldComponentUpdate (nextProps, nextState) {
@@ -103,31 +111,41 @@ class HomeContainer extends Component {
           />
           <BlueBtn style={{paddingLeft: 42, paddingRight: 42, paddingTop: 18, paddingBottom: 18}} onClick={()=>this.props.goAddPage()}>
             <Text style={[appStyles.blueBtnTextColor, {fontSize: 18}]}>Please Click Here To Add Charge Point</Text>
-          </BlueBtn>          
+          </BlueBtn>
         </Container>
       )
     }
 
-    if (!selectedDeviceId || !this.props.token) {
+    if ( !this.props.token) {
       return (
         <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
           <Spinner />
         </Container>
       )
     }
+
+    if (!selectedDeviceId) {
+      return (
+        <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
+          <Spinner />
+        </Container>
+      )
+    }
+    
 
     // console.log('this.props.devicesHash', this.props.devicesHash)
     // console.log('this.props.devices', this.props.devices)
     // alert(this.props.devicesHash.length)
 
     const selectedDevice = this.props.devicesHash[selectedDeviceId]
-    if( !this.checkKeyExist('variables', selectedDevice) ) {
+    if( !selectedDevice || !this.checkKeyExist('variables', selectedDevice) || !selectedDevice['variables']) {
       return (
         <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
           <Spinner />
         </Container>
       )
     }
+
     // console.log('selectedDevice', selectedDevice)
     let initProtoStates = {
       'status': {
@@ -284,12 +302,13 @@ class HomeContainer extends Component {
     })
 
     let resultStates = {}
+    // console.log('this.props.internetConnection', this.props.internetConnection)
 
     if (this.props.internetConnection === false || online === false) {
       resultStates = {
         'status': {
           't1Text': 'Status',
-          't2Text': 'Offline',
+          't2Text': (this.props.internetConnection === false) ? 'Network Offline' : 'Offline',
           'iconName': 'status5-disable',
           'iconSty': 'disableColor',
           't2Sty': 'disableColor',
@@ -319,10 +338,6 @@ class HomeContainer extends Component {
           't2Sty': 'disableColor',
           'hasSwitch': false,
         },
-      }
-
-      if (this.props.internetConnection === false) {
-        resultStates['status']['t2Text'] = 'Network Offline'
       }
     } else {
       resultStates = Object.assign({}, initStates)

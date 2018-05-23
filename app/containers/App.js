@@ -19,7 +19,7 @@ import BootStrap from '../screens/Bootstrap'
 import {Notifications} from 'expo'
 
 const notification1 = {
-  "title": "No Server Connection!",
+  "title": "Network Offline!",
   "body": "Check your network",
   "data": {
     "iWantData": "yesPlease"
@@ -186,9 +186,13 @@ class AppContainer extends Component {
   reconnectSocket () {
     if (this.socket && !this.socket.socketAuthenticated) {
       // console.log('RRReconnect')      
-      this.setupSocket()
+      if (!this.socket) {
+        this.setupSocket()
+      }
       this.connectSocket()
-      this.props.setConnectionInter(true)
+      if (this.props.internetConnection === true) {
+        this.props.setConnectionInter(true)
+      }
     }
   }
 
