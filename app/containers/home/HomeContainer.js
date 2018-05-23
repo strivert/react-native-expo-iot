@@ -45,7 +45,18 @@ class HomeContainer extends Component {
           this.props.selectedDeviceId(nextProps.devices[0].id)
         }
       }
-    }
+      // for add
+      if (nextProps.deviceCount === nextProps.devices.length) {
+        if (this.props.devices.length != nextProps.devices.length) {
+          if (this.state.selectedDeviceId !== null) {
+            this.setState({
+              selectedDeviceId: nextProps.devices[0].id,
+            })
+            this.props.selectedDeviceId(nextProps.devices[0].id)
+          }
+        }
+      }
+    }    
   }
   
 
