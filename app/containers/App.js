@@ -185,17 +185,18 @@ class AppContainer extends Component {
 
   reconnectSocket () {
     if (this.socket && !this.socket.socketAuthenticated) {
-      // console.log('RRReconnect')      
-      if (!this.socket) {
-        this.setupSocket()
-      }
-      this.connectSocket()
-      if (this.props.internetConnection === true) {
-        this.props.setConnectionInter(true)
-      }
+      this.socket.disconnect()
+      this.socket.connect()
+    } else {
+      this.freshConnectSocket();
     }
   }
 
+  freshConnectSocket() {
+    this.setupSocket()
+    this.connectSocket()
+  }
+  
   render () {
     let viewArr = []
     for (var key in this.statusIcons) {
