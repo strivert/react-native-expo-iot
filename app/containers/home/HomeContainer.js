@@ -160,7 +160,7 @@ class HomeContainer extends Component {
     }
 
     // console.log('selectedDevice', selectedDevice)
-    let initProtoStates = {
+    let initStates = {
       'status': {
         't1Text': 'Status',
         't2Text': 'Offline',
@@ -194,8 +194,6 @@ class HomeContainer extends Component {
         'hasSwitch': false,
       },
     }
-
-    let initStates = Object.assign({}, initProtoStates)
 
     const evccoffline = this.checkKeyExist('evccoffline', selectedDevice['variables']) ? selectedDevice['variables']['evccoffline'] : undefined
     const online = this.checkKeyExist('online', selectedDevice['variables']) ? selectedDevice['variables']['online'] : undefined
@@ -314,7 +312,7 @@ class HomeContainer extends Component {
       }
     })
 
-    let resultStates = {}
+    let resultStates = null
     // console.log('this.props.internetConnection', this.props.internetConnection)
 
     if (this.props.internetConnection === false || online === false) {

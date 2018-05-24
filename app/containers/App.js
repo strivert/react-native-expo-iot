@@ -17,6 +17,8 @@ import {logout} from '../actions/azureActions'
 import BootStrap from '../screens/Bootstrap'
 
 import {Notifications} from 'expo'
+import store from '../store'
+import {useRefreshToken} from '../actions/azureActions'
 
 const notification1 = {
   "title": "Network Offline!",
@@ -48,7 +50,6 @@ const notification2 = {
 
 class AppContainer extends Component {
   constructor (props) {
-    // console.log('constructor');
     super(props)
 
     this.socket = null
@@ -108,8 +109,7 @@ class AppContainer extends Component {
   }
 
   componentWillUnmount () {
-    // console.log('unmount');
-    this.socket.disconnect()
+    // this.socket.disconnect()
     AppState.removeEventListener('change', this.handleAppStateChange)
   }
 
@@ -124,7 +124,7 @@ class AppContainer extends Component {
       // Notifications.scheduleLocalNotificationAsync(notification2, scheduleOptions)
     }
     if (this.props.internetConnection === false && nextProps.internetConnection === true) {
-      this.reconnectSocket()
+      // this.reconnectSocket()
     }
     if (this.props.token !== nextProps.token && nextProps.token !== null) {
       this.reconnectSocket()
@@ -147,7 +147,9 @@ class AppContainer extends Component {
 
   handleAppStateChange = (nextAppState) => {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-      this.reconnectSocket()
+      if (this.props.internetConnection) {
+        this.reconnectSocket()
+      }
     }
     this.setState({appState: nextAppState});
   }
@@ -159,7 +161,6 @@ class AppContainer extends Component {
       this.socket.emit('authorize', {id_token: this.props.token})
     })
     this.socket.on('chargerstatus', data => {
-      // console.log('chargerstatus', data)
       this.props.receivedDeviceStatus(data)
     })
     this.socket.on('devicecount', data => {
@@ -170,6 +171,13 @@ class AppContainer extends Component {
     })
     this.socket.on('invalidToken', () => {
       this.socketAuthenticated = false
+
+      store.dispatch(useRefreshToken(this.props.refreshToken))
+      .then(() => {
+      })
+      .catch(err => {
+        // console.warn('refreshtoken failed', err)
+      })
     })
     this.socket.on('disconnect', () => {
       this.props.socketDisconnected()
@@ -180,12 +188,14 @@ class AppContainer extends Component {
     if (!this.props.token || (this.socket && this.socket.connected)) {
       return
     }
-    this.socket.connect()
+    this.socket.connect()    
   }
 
   reconnectSocket () {
     if (this.socket && !this.socket.socketAuthenticated) {
-      this.socket.disconnect()
+      // if (this.props.socketConnectedVariable) {
+        this.socket.disconnect()
+      // }
       this.socket.connect()
     } else {
       this.freshConnectSocket();
@@ -193,8 +203,12 @@ class AppContainer extends Component {
   }
 
   freshConnectSocket() {
-    this.setupSocket()
-    this.connectSocket()
+    this.socket = null
+    this.socketAuthenticated = false
+    setTimeout( ()=> {
+      this.setupSocket()
+      this.connectSocket()
+    }, 100);
   }
   
   render () {
@@ -233,6 +247,8 @@ export default withRouter(connect(
   state => ({
     token: state.auth.token,
     internetConnection: state.misc.internetConnection,
+    socketConnectedVariable: state.particle.socketConnected,
+    refreshToken: state.auth.refreshToken,
   }),
-  dispatch => bindActionCreators({receivedDeviceStatus, socketConnected, socketDisconnected, fetchUser, setConnectionStatus, logout, setConnectionInter, receivedDeviceCount}, dispatch)
+  dispatch => bindActionCreators({receivedDeviceStatus, socketConnected, socketDisconnected, fetchUser, setConnectionStatus, logout, setConnectionInter, receivedDeviceCount, useRefreshToken}, dispatch)
 )(AppContainer))

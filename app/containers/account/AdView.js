@@ -42,6 +42,7 @@ class AdView extends Component {
         policy: 'B2C_1_customer-sign-up-sign-in',
       })
     }
+    // console.log('query.code', query.code)
 
     this.props.fetchToken(query.code, policy)
       .then(() => this.props.fetchUser())
