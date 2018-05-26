@@ -98,6 +98,7 @@ class AppContainer extends Component {
       'security2': require('../assets/images/status_icons/security2.png'),
       'security3': require('../assets/images/status_icons/security3.png'),
       'security4': require('../assets/images/status_icons/security4.png'),
+      'security5': require('../assets/images/status_icons/security5.png'),
       'status1': require('../assets/images/status_icons/status1.png'),
       'status2': require('../assets/images/status_icons/status2.png'),
       'status3': require('../assets/images/status_icons/status3.png'),
@@ -118,10 +119,10 @@ class AppContainer extends Component {
       "time": Date.now() + 1000
     }
     if (this.props.internetConnection === true && nextProps.internetConnection === false) {
-      Notifications.scheduleLocalNotificationAsync(notification1, scheduleOptions)
+      // Notifications.scheduleLocalNotificationAsync(notification1, scheduleOptions)
     }
     if (this.props.token && this.props.internetConnection === false && nextProps.internetConnection === true) {
-      // Notifications.scheduleLocalNotificationAsync(notification2, scheduleOptions)
+      //  Notifications.scheduleLocalNotificationAsync(notification2, scheduleOptions)
     }
     if (this.props.internetConnection === false && nextProps.internetConnection === true) {
       // this.reconnectSocket()
@@ -137,9 +138,11 @@ class AppContainer extends Component {
 
   componentDidUpdate (prevProps, prevState) {
     if (prevProps.token !== this.props.token) {
+      // console.log('ttttt ttttt ttttt ttttt ttttt ');
       this.reconnectSocket()
     }
     if (!this.props.token && this.socket) {
+      // console.log('ttttt ttttt ttttt ttttt ttttt 123- 123- 123- 123');
       this.socket.disconnect()
       this.socketAuthenticated = false
     }
@@ -147,9 +150,7 @@ class AppContainer extends Component {
 
   handleAppStateChange = (nextAppState) => {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-      if (this.props.internetConnection) {
-        this.reconnectSocket()
-      }
+      this.reconnectSocket()
     }
     this.setState({appState: nextAppState});
   }
@@ -157,19 +158,23 @@ class AppContainer extends Component {
   setupSocket () {
     this.socket = io(`${ANDERSEN_IOT_DOMAIN}/iot`)
     this.socket.on('connect', () => {
+      // console.log('connect');
       this.props.socketConnected()
       this.socket.emit('authorize', {id_token: this.props.token})
     })
     this.socket.on('chargerstatus', data => {
+      // console.log('chargerstatus');
       this.props.receivedDeviceStatus(data)
     })
     this.socket.on('devicecount', data => {
       this.props.receivedDeviceCount(data)
     })
     this.socket.on('authenticated', () => {
+      // console.log('authenticated');
       this.socketAuthenticated = true
     })
     this.socket.on('invalidToken', () => {
+      // console.log('invalidToken');
       this.socketAuthenticated = false
 
       store.dispatch(useRefreshToken(this.props.refreshToken))
@@ -180,6 +185,7 @@ class AppContainer extends Component {
       })
     })
     this.socket.on('disconnect', () => {
+      // console.log('disconnect');
       this.props.socketDisconnected()
     })
   }
@@ -192,6 +198,9 @@ class AppContainer extends Component {
   }
 
   reconnectSocket () {
+    if (!this.props.internetConnection) {
+      return false
+    }
     if (this.socket && !this.socket.socketAuthenticated) {
       // if (this.props.socketConnectedVariable) {
         this.socket.disconnect()

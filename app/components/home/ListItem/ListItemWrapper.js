@@ -34,6 +34,7 @@ class ListItemWrapper extends Component {
       'security2': require('../../../assets/images/status_icons/security2.png'),
       'security3': require('../../../assets/images/status_icons/security3.png'),
       'security4': require('../../../assets/images/status_icons/security4.png'),
+      'security5': require('../../../assets/images/status_icons/security5.png'),
       'status1': require('../../../assets/images/status_icons/status1.png'),
       'status2': require('../../../assets/images/status_icons/status2.png'),
       'status3': require('../../../assets/images/status_icons/status3.png'),
@@ -57,6 +58,10 @@ class ListItemWrapper extends Component {
         })
       }
     }
+  }
+
+  reviewRow = () => {
+
   }
 
   render () {
@@ -117,59 +122,64 @@ class ListItemWrapper extends Component {
         },
       ]
     }
-    return (
-      (hasSwitch && isEnableSwitch) ? (
-        <Swipeout
-          backgroundColor={'white'}
-          right={swipeBtnOption}
-          style={{borderColor: '#959595', borderWidth: 0, borderBottomWidth: 0.5}}
-          buttonWidth={120}
-          autoClose={true}
-        >
-          <View style={{flexDirection: 'row', padding: 10, paddingLeft: 20, borderColor: '#959595', borderWidth: 0, borderTopWidth: 0}}>
-            <View style={styles.leftCtr}>
-              <Text style={t1Styles}></Text>
-              <Image source={this.statusIcons[iconName]} style={iconStyles} />
-            </View>
-            <View style={bodyStyles}>
-              <Text style={t1Styles}>{t1Text}</Text>
-              <Text style={t2Styles}>{t2Text}</Text>
-            </View>
-            <View style={[styles.rightCtr, {flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}]}>
-              <View style={{borderWidth: 1, borderColor: '#e8e3e3', width: 1, marginRight: 3, height: 25}}>
-              </View>
-              <View style={{borderWidth: 1, borderColor: '#e8e3e3', width: 1, height: 25}}>
-              </View>
-            </View>
-          </View>
-        </Swipeout>
-      ) : (
-        <View style={itemWrapperStyles}>
-          <View style={styles.leftCtr}>
-            <Text style={t1Styles}></Text>
-            <Image source={this.statusIcons[iconName]} style={iconStyles} />
-          </View>
-          <View style={bodyStyles}>
-            <Text style={t1Styles}>{t1Text}</Text>
-            <Text style={t2Styles}>{t2Text}</Text>
-          </View>
 
-          {
-            (hasSwitch && isEnableSwitch) &&
-              <View style={styles.rightCtr}>
-                {
-                }
+
+    let renderItem = null;
+
+    if (hasSwitch && isEnableSwitch) {
+      renderItem = 
+          <Swipeout
+            backgroundColor={'white'}
+            right={swipeBtnOption}
+            style={{flex: 1, borderColor: '#959595', borderWidth: 0, borderBottomWidth: 0.5, paddingLeft: 20, paddingRight: 20}}
+            buttonWidth={120}
+            autoClose={true}
+          >
+            <View style={{height: '100%', flexDirection: 'row', backgroundColor: 'white', alignItems: 'center'}}>
+              <View style={styles.leftCtr}>
+                <Text style={t1Styles}></Text>
+                <Image source={this.statusIcons[iconName]} style={iconStyles} />
               </View>
-          }
+              <View style={bodyStyles}>
+                <Text style={t1Styles}>{t1Text}</Text>
+                <Text style={t2Styles}>{t2Text}</Text>
+              </View>
+              <View style={[styles.rightCtr, {flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}]}>
+                <View style={{borderWidth: 1, borderColor: '#e8e3e3', width: 1, marginRight: 3, height: 25}}>
+                </View>
+                <View style={{borderWidth: 1, borderColor: '#e8e3e3', width: 1, height: 25}}>
+                </View>
+              </View>
+            </View>
+          </Swipeout>
+    } else {
+      renderItem = <View style={itemWrapperStyles}>
+        <View style={styles.leftCtr}>
+          <Text style={t1Styles}></Text>
+          <Image source={this.statusIcons[iconName]} style={iconStyles} />
         </View>
-      )
-    )
+        <View style={bodyStyles}>
+          <Text style={t1Styles}>{t1Text}</Text>
+          <Text style={t2Styles}>{t2Text}</Text>
+        </View>
+
+        {
+          (hasSwitch && isEnableSwitch) &&
+            <View style={styles.rightCtr}>
+              {
+              }
+            </View>
+        }
+      </View>
+    }
+
+    return (renderItem)
   }
 }
 
 let styles = StyleSheet.create({
   itemWrapper: {
-    flex: 1, flexDirection: 'row', borderColor: '#959595', borderWidth: 0, borderBottomWidth: 0.5, padding: 20, alignItems: 'center',
+    flex: 1, flexDirection: 'row', borderColor: '#959595', borderWidth: 0, borderBottomWidth: 0.5, alignItems: 'center', paddingLeft: 20, paddingRight: 20
   },
   noBorder: {
     borderBottomWidth: 0,
@@ -184,13 +194,13 @@ let styles = StyleSheet.create({
     flexDirection: 'column',
   },
   rightCtr: {
-    flex: 0.3,
+    flex: 0.1,
   },
   bodyCtr: {
     flexDirection: 'column', flex: 0.8,
   },
   flex_6: {
-    flex: 0.5,
+    flex: 0.7,
   },
   t1: {
     color: '#707070',

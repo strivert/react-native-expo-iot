@@ -68,7 +68,7 @@ class MapWrapper extends Component {
             </View>
           </MapView>
           <View style={{flex: 1, position: 'absolute', left: 40, top: 80}}>
-            <Text style={{fontSize: 30, fontFamily: 'Proxima_nova_light'}}>{item.deviceName}</Text>
+            <Text style={{fontSize: 30, fontFamily: 'Proxima_nova_light'}}>{item.friendlyName}</Text>
             <Text style={{fontSize: 14, marginTop: 5, fontFamily: 'Proxima_nova_ltsemibold'}}>{item.serialNumber}</Text>
           </View>
           <View style={{flex: 1, position: 'absolute', width: '100%', height: 207, backgroundColor: 'transparent'}}>

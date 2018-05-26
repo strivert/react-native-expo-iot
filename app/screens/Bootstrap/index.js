@@ -15,6 +15,9 @@ const BootstrapRouter = StackNavigator(
         easing: Easing.step0,
       },
     }),
+    navigationOptions: () => ({
+      gesturesEnabled: false,
+    }),
     headerMode: 'none',
   }
 )

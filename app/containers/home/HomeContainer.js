@@ -167,7 +167,7 @@ class HomeContainer extends Component {
         'iconName': 'status5-disable',
         'iconSty': 'disableColor',
         't2Sty': 'disableColor',
-        'hasSwitch': false,
+        'hasSwitch': true,
       },
       'security': {
         't1Text': 'Security',
@@ -185,6 +185,22 @@ class HomeContainer extends Component {
         't2Sty': 'disableColor',
         'hasSwitch': false,
       },
+      'cost': {
+        't1Text': 'Last Charge Cost',
+        't2Text': '£ 0.00',
+        'iconName': 'maintenance1-disable',
+        'iconSty': 'disableColor',
+        't2Sty': 'disableColor',
+        'hasSwitch': false,
+      },
+      'power': {
+        't1Text': 'Total Charge Power',
+        't2Text': '0.00 kW',
+        'iconName': 'maintenance1-disable',
+        'iconSty': 'disableColor',
+        't2Sty': 'disableColor',
+        'hasSwitch': false,
+      },
       'mainternance': {
         't1Text': 'Mainternance',
         't2Text': 'No Action',
@@ -197,6 +213,17 @@ class HomeContainer extends Component {
 
     const evccoffline = this.checkKeyExist('evccoffline', selectedDevice['variables']) ? selectedDevice['variables']['evccoffline'] : undefined
     const online = this.checkKeyExist('online', selectedDevice['variables']) ? selectedDevice['variables']['online'] : undefined
+    let consume = this.checkKeyExist('consume', selectedDevice['variables']) ? selectedDevice['variables']['consume'] : undefined
+    consume = (consume === undefined) ? '0.00' : consume.toFixed(2)
+    let evccpower = this.checkKeyExist('evccpower', selectedDevice['variables']) ? selectedDevice['variables']['evccpower'] : undefined
+    evccpower = (evccpower === undefined) ? '0.00' : evccpower.toFixed(2)
+    let totalcost = this.checkKeyExist('totalcost', selectedDevice['variables']) ? selectedDevice['variables']['totalcost'] : undefined
+    totalcost = (totalcost === undefined) ? '0.00' : totalcost.toFixed(2)
+    let costunit = this.checkKeyExist('costunit', selectedDevice['variables']) ? selectedDevice['variables']['costunit'] : undefined
+    costunit = (costunit === undefined) ? '0.00' : costunit.toFixed(2)
+
+    let dis_char = ''
+
     if (evccoffline === true) {
       initStates['status']['t2Sty'] = 'redColor'
       initStates['status']['iconSty'] = 'redColor'
@@ -226,15 +253,24 @@ class HomeContainer extends Component {
         initStates['security']['t2Sty'] = 'grayColor'
         initStates['security']['iconName'] = 'security1'
         initStates['security']['iconSty'] = 'grayColor'
+
+        initStates['status']['t2Text'] = 'Unlocked'
+        initStates['status']['t2Sty'] = 'blueColor'
+        initStates['status']['iconName'] = 'security5'
       } else {
         initStates['security']['t2Text'] = 'Locked'
         initStates['security']['t2Sty'] = 'blueColor'
         initStates['security']['iconName'] = 'security4'
         initStates['security']['iconSty'] = 'blueColor'
+
+        initStates['status']['t2Text'] = 'Locked'
+        initStates['status']['t2Sty'] = 'grayColor'
+        initStates['status']['iconName'] = 'security1'
       }
 
       const chargerstatus = this.checkKeyExist('chargerstatus', selectedDevice['variables']) ? selectedDevice['variables']['chargerstatus'] : ''
       const lastchargingtime = this.checkKeyExist('lastchargingtime', selectedDevice['variables']) ? selectedDevice['variables']['lastchargingtime'] : ''
+      dis_char = this.catchCharFromChargerStatus(chargerstatus);
       switch (this.catchCharFromChargerStatus(chargerstatus)) {
         case '':
           initStates['status']['t2Text'] = 'Offline'
@@ -243,10 +279,7 @@ class HomeContainer extends Component {
           initStates['status']['iconSty'] = 'grayColor'
           break
         case 'A':
-          initStates['status']['t2Text'] = 'Ready'
-          initStates['status']['t2Sty'] = 'blueColor'
-          initStates['status']['iconName'] = 'status3'
-          initStates['status']['iconSty'] = 'blueColor'
+          
           break
         case 'B':
           initStates['status']['t2Text'] = 'Connected'
@@ -283,6 +316,48 @@ class HomeContainer extends Component {
           initStates['charge']['iconName'] = 'charge1'
           break
       }
+      switch (this.catchCharFromChargerStatus(chargerstatus)) {
+        case '':
+        case 'A':
+        case 'B':
+          initStates['cost']['t1Text'] = 'Last Charge Cost'
+          initStates['cost']['t2Text'] = `£ ${totalcost}`
+          initStates['cost']['t2Sty'] = 'grayColor'
+          initStates['cost']['iconSty'] = 'grayColor'
+
+          initStates['cost']['iconName'] = 'charge1'
+          break
+        case 'C':
+        case 'D':
+          initStates['cost']['t1Text'] = 'Charging Cost'
+          initStates['cost']['t2Text'] = `£ ${costunit}`
+          initStates['cost']['t2Sty'] = 'greenColor'
+          initStates['cost']['iconSty'] = 'grayColor'
+
+          initStates['cost']['iconName'] = 'charge1'
+          break
+      }
+      switch (this.catchCharFromChargerStatus(chargerstatus)) {
+        case '':
+        case 'A':
+        case 'B':
+          initStates['power']['t1Text'] = 'Power Used'
+          initStates['power']['t2Text'] = `${consume} kWh`
+          initStates['power']['t2Sty'] = 'grayColor'
+          initStates['power']['iconSty'] = 'grayColor'
+
+          initStates['power']['iconName'] = 'charge1'
+          break
+        case 'C':
+        case 'D':
+          initStates['power']['t1Text'] = 'Charging Power'
+          initStates['power']['t2Text'] = `${evccpower} kW`
+          initStates['power']['t2Sty'] = 'greenColor'
+          initStates['power']['iconSty'] = 'greenColor'
+
+          initStates['power']['iconName'] = 'charge1'
+          break
+      }
 
       if (!enablecharger) {
         initStates['status']['iconSty'] = 'disableColor'
@@ -299,6 +374,7 @@ class HomeContainer extends Component {
       return {
         deviceId: item.id,
         deviceName: item.name,
+        friendlyName: ('variables' in item) ? item.variables.friendlyName : '',
         // serialNumber: ('variables' in item) ? item.variables.serialNumber : '',
         serialNumber: 'ANDERSEN A1',
         location: {
@@ -323,7 +399,7 @@ class HomeContainer extends Component {
           'iconName': 'status5-disable',
           'iconSty': 'disableColor',
           't2Sty': 'disableColor',
-          'hasSwitch': false,
+          'hasSwitch': true,
         },
         'security': {
           't1Text': 'Security',
@@ -337,6 +413,22 @@ class HomeContainer extends Component {
           't1Text': 'Last Charge',
           't2Text': '00:00:00',
           'iconName': 'charge-disable',
+          'iconSty': 'disableColor',
+          't2Sty': 'disableColor',
+          'hasSwitch': false,
+        },
+        'cost': {
+          't1Text': 'Last Charge Cost',
+          't2Text': '£ 0.00',
+          'iconName': 'maintenance1-disable',
+          'iconSty': 'disableColor',
+          't2Sty': 'disableColor',
+          'hasSwitch': false,
+        },
+        'power': {
+          't1Text': 'Total Charge Power',
+          't2Text': '0.00 kW',
+          'iconName': 'maintenance1-disable',
           'iconSty': 'disableColor',
           't2Sty': 'disableColor',
           'hasSwitch': false,
@@ -355,10 +447,10 @@ class HomeContainer extends Component {
     }
 
     let displayKeyArray = [];
-    if (resultStates['status']['t2Text'] === 'Ready') {
-      displayKeyArray = ['status', 'security', 'charge', 'mainternance']
+    if (evccoffline=== false && ['A', 'B', 'C'].indexOf(dis_char) !== -1) {
+      displayKeyArray = ['status', 'charge', 'cost', 'power', 'mainternance']
     } else {
-      displayKeyArray = ['status', 'charge', 'mainternance']      
+      displayKeyArray = ['status', 'charge', 'cost', 'power', 'mainternance']
     }
 
     return (
@@ -399,7 +491,7 @@ class HomeContainer extends Component {
                   isLast={ i === (displayKeyArray.length-1) }
                   setEnableCharging={this.props.setEnableCharging}
                   deviceId={this.state.selectedDeviceId}
-                  isEnableSwitch={resultStates['status']['t2Text'] === 'Ready' || resultStates['status']['t2Text'] === 'Connected'}
+                  isEnableSwitch={resultStates['status']['t2Text'] === 'Unlocked' || resultStates['status']['t2Text'] === 'Locked'}
                 />)
             })
           }
