@@ -8,7 +8,7 @@ import {stringify} from 'qs'
 import {fetchToken} from '../../actions/azureActions'
 import {fetchUser} from '../../actions/andersenActions'
 import { Platform, BackHandler, View, Image } from 'react-native'
-import {Spinner} from 'native-base'
+import Spinner from '../../components/common/Spinner'
 
 class AdView extends Component {
   static navigationOptions = { // no-eslint
@@ -90,7 +90,7 @@ class AdView extends Component {
             style={{flex: 1, width: undefined, height: undefined}}
           >
           </Image>
-        <Spinner style={{position: 'absolute', left: '50%', top: '50%', marginLeft: -10, marginTop: -10}} />
+        <Spinner style={{position: 'absolute', left: '50%', top: '50%', marginLeft: -25, marginTop: -25}} />
       </View>
       )
     }

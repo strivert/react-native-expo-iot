@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
-import { Container, Spinner } from 'native-base'
+import { Container } from 'native-base'
 
 import {withRouter} from 'react-router-native'
 import {connect} from 'react-redux'
@@ -13,6 +13,7 @@ import Bar from '../../components/common/Bar'
 import BlueBtn from '../../components/common/BlueBtn'
 import Border from '../../components/common/Border'
 import PageHeader from '../../components/common/PageHeader'
+import Spinner from '../../components/common/Spinner'
 
 class ChargePointContainer extends Component {
   componentDidMount () {

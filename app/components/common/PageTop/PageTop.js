@@ -33,7 +33,7 @@ let pageStyles = StyleSheet.create({
     paddingRight: 16,
     flexDirection: 'row',
     marginBottom: 19,
-    marginTop: 8,
+    marginTop: 19,
   },
   leftTop: {
     width: 77,

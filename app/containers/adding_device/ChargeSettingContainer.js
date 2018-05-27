@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Image, Modal as NativeModal, Dimensions } from 'react-native'
-import { Container, Header, Left, Button, Icon, Spinner } from 'native-base'
+import { Container, Header, Left, Button, Icon } from 'native-base'
 
 import {withRouter} from 'react-router-native'
 import {bindActionCreators} from 'redux'
@@ -13,6 +13,8 @@ import Bar from '../../components/common/Bar'
 import BlueBtn from '../../components/common/BlueBtn'
 import PageHeaderBack from '../../components/common/PageHeaderBack'
 import Bar2 from '../../components/common/Bar2'
+import Spinner from '../../components/common/Spinner'
+
 import { setSerialNumber } from '../../actions/particleActions'
 
 import { MapView, Svg, BarCodeScanner } from 'expo'

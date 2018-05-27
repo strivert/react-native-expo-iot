@@ -5,6 +5,7 @@ import Charge from './Charge'
 import User from './User'
 import Setting from './Setting'
 import More from './More'
+import TermsWeb from './TermsWeb'
 
 import ChargePoint from './ChargePoint'
 import ChargeSetting from './ChargeSetting'
@@ -45,10 +46,26 @@ const SettingNav = StackNavigator(
   }
 )
 
+const UserNav = StackNavigator(
+  {
+    User: { screen: User },
+    TermsWeb: { screen: TermsWeb },
+  }, {
+    transitionConfig: () => ({
+      transitionSpec: {
+        duration: 0,
+        timing: Animated.timing,
+        easing: Easing.step0,
+      },
+    }),
+    headerMode: 'none',
+  }
+)
+
 export default ( MainScreenNavigator = TabNavigator(
   {
     HomeNav: { screen: HomeNav },
-    User: { screen: User },
+    UserNav: { screen: UserNav },
     SettingNav: { screen: SettingNav },
     More: { screen: More },
   },

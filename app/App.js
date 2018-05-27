@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Spinner, StyleProvider} from 'native-base'
+import {StyleProvider} from 'native-base'
 import {Provider} from 'react-redux'
 import {NativeRouter} from 'react-router-native'
 import {AsyncStorage, View, Image} from 'react-native'
@@ -9,6 +9,7 @@ import material from '../native-base-theme/variables/material'
 import {setDefaults} from './actions/storeActions'
 import AppContainer from './containers/App'
 import store from './store'
+import Spinner from './components/common/Spinner'
 
 console.disableYellowBox = true
 
@@ -69,7 +70,7 @@ export default class App extends Component {
           style={{flex: 1, width: undefined, height: undefined}}
         >
         </Image>
-        <Spinner style={{position: 'absolute', left: '50%', top: '50%', marginLeft: -10, marginTop: -10}} />
+        <Spinner style={{position: 'absolute', left: '50%', top: '50%', marginLeft: -25, marginTop: -25}} />
       </View>
     ) : (
       <StyleProvider style={getTheme(material)}>

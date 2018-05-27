@@ -5,7 +5,7 @@ import AccountContainer from '../../containers/user/AccountContainer'
 class User extends Component {
   render () {
     return (
-      <AccountContainer />
+      <AccountContainer {...this.props} />
     )
   }
 }

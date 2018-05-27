@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image, Text } from 'react-native'
-import { Container, Spinner } from 'native-base'
+import { Container } from 'native-base'
 
 import {withRouter} from 'react-router-native'
 import {connect} from 'react-redux'
@@ -13,18 +13,14 @@ import odiff from 'odiff'
 import ListItem from '../../components/home/ListItem'
 import MapWrapper from '../../components/home/MapWrapper'
 import {setEnableCharging, selectedDeviceId} from '../../actions/particleActions'
-import BlueBtn from '../../components/common/BlueBtn'
-import PageHeader from '../../components/common/PageHeader'
-import PageTop from '../../components/common/PageTop'
-import Bar from '../../components/common/Bar'
-
-import appStyles from '../../styles'
+import Spinner from '../../components/common/Spinner'
 
 class HomeContainer extends Component {
   constructor (props) {
     super(props)
     this.state = {
       selectedDeviceId: null,
+      visibleTabBar: false,
     }
   }
 
@@ -73,6 +69,34 @@ class HomeContainer extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { selectedDeviceId } = prevState
+    if ( !prevProps.token) {
+      this.setState({
+        visibleTabBar: false,
+      })
+      return
+    }
+
+    if (!selectedDeviceId) {
+      this.setState({
+        visibleTabBar: false,
+      })
+      return
+    }
+
+    const selectedDevice = prevProps.devicesHash[selectedDeviceId]
+    if( !selectedDevice || !this.checkKeyExist('variables', selectedDevice) || !selectedDevice['variables']) {
+      return
+    }
+
+    this.setState({
+      visibleTabBar: true
+    }, () => {
+      this.props.setTabVisible()
+    })
+  }
+
   selectDevice (deviceId) {
     this.setState({
       selectedDeviceId: deviceId,
@@ -110,54 +134,20 @@ class HomeContainer extends Component {
   render () {
     const { selectedDeviceId } = this.state
 
-    if (this.props.deviceCount === 0) {
+    if (!this.state.visibleTabBar) {
       return (
-        <Container style={{backgroundColor: '#FFFFFF'}}>
-          <PageHeader />
-          <PageTop
-            iconName='setting3'
-            firstText=''
-            secondText={'No Points'}
-          />
-          <Bar
-            barText='Add Charge Point'
-          />
-          <BlueBtn style={{paddingLeft: 42, paddingRight: 42, paddingTop: 18, paddingBottom: 18}} onClick={()=>this.props.goAddPage()}>
-            <Text style={[appStyles.blueBtnTextColor, {fontSize: 18}]}>Please Click Here To Add Charge Point</Text>
-          </BlueBtn>
-        </Container>
+        <View style={{flex: 1, position: 'absolute', left: 0, top: 0, height: '100%', width: '100%'}}>
+            <Image
+              source={require('../../assets/images/splash.png')}
+              style={{flex: 1, width: undefined, height: undefined}}
+            >
+            </Image>
+          <Spinner style={{position: 'absolute', left: '50%', top: '50%', marginLeft: -25, marginTop: -25}} />
+        </View>
       )
-    }
-
-    if ( !this.props.token) {
-      return (
-        <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
-          <Spinner />
-        </Container>
-      )
-    }
-
-    if (!selectedDeviceId) {
-      return (
-        <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
-          <Spinner />
-        </Container>
-      )
-    }
-    
-
-    // console.log('this.props.devicesHash', this.props.devicesHash)
-    // console.log('this.props.devices', this.props.devices)
-    // alert(this.props.devicesHash.length)
+    }    
 
     const selectedDevice = this.props.devicesHash[selectedDeviceId]
-    if( !selectedDevice || !this.checkKeyExist('variables', selectedDevice) || !selectedDevice['variables']) {
-      return (
-        <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
-          <Spinner />
-        </Container>
-      )
-    }
 
     // console.log('selectedDevice', selectedDevice)
     let initStates = {
@@ -188,7 +178,7 @@ class HomeContainer extends Component {
       'cost': {
         't1Text': 'Last Charge Cost',
         't2Text': '£ 0.00',
-        'iconName': 'maintenance1-disable',
+        'iconName': 'cost2',
         'iconSty': 'disableColor',
         't2Sty': 'disableColor',
         'hasSwitch': false,
@@ -196,7 +186,7 @@ class HomeContainer extends Component {
       'power': {
         't1Text': 'Total Charge Power',
         't2Text': '0.00 kW',
-        'iconName': 'maintenance1-disable',
+        'iconName': 'power2',
         'iconSty': 'disableColor',
         't2Sty': 'disableColor',
         'hasSwitch': false,
@@ -325,7 +315,7 @@ class HomeContainer extends Component {
           initStates['cost']['t2Sty'] = 'grayColor'
           initStates['cost']['iconSty'] = 'grayColor'
 
-          initStates['cost']['iconName'] = 'charge1'
+          initStates['cost']['iconName'] = 'cost1'
           break
         case 'C':
         case 'D':
@@ -334,7 +324,7 @@ class HomeContainer extends Component {
           initStates['cost']['t2Sty'] = 'greenColor'
           initStates['cost']['iconSty'] = 'grayColor'
 
-          initStates['cost']['iconName'] = 'charge1'
+          initStates['cost']['iconName'] = 'cost1'
           break
       }
       switch (this.catchCharFromChargerStatus(chargerstatus)) {
@@ -346,7 +336,7 @@ class HomeContainer extends Component {
           initStates['power']['t2Sty'] = 'grayColor'
           initStates['power']['iconSty'] = 'grayColor'
 
-          initStates['power']['iconName'] = 'charge1'
+          initStates['power']['iconName'] = 'power1'
           break
         case 'C':
         case 'D':
@@ -355,7 +345,7 @@ class HomeContainer extends Component {
           initStates['power']['t2Sty'] = 'greenColor'
           initStates['power']['iconSty'] = 'greenColor'
 
-          initStates['power']['iconName'] = 'charge1'
+          initStates['power']['iconName'] = 'power1'
           break
       }
 
@@ -420,7 +410,7 @@ class HomeContainer extends Component {
         'cost': {
           't1Text': 'Last Charge Cost',
           't2Text': '£ 0.00',
-          'iconName': 'maintenance1-disable',
+          'iconName': 'cost2',
           'iconSty': 'disableColor',
           't2Sty': 'disableColor',
           'hasSwitch': false,
@@ -428,7 +418,7 @@ class HomeContainer extends Component {
         'power': {
           't1Text': 'Total Charge Power',
           't2Text': '0.00 kW',
-          'iconName': 'maintenance1-disable',
+          'iconName': 'power2',
           'iconSty': 'disableColor',
           't2Sty': 'disableColor',
           'hasSwitch': false,
@@ -471,7 +461,7 @@ class HomeContainer extends Component {
         <View style={{flex: 1, position: 'absolute', left: '50%', marginLeft: -65, top: 10}}>
           <Image
             style={{flex: 1, height: 40, width: 130}}
-            source={require('../../assets/images/logo.png')}
+            source={require('../../assets/images/logo1.png')}
             resizeMode="contain"
           />
         </View>
@@ -518,6 +508,7 @@ HomeContainer.propTypes = {
   internetConnection: PropTypes.any,
   deviceCount: PropTypes.any,
   goAddPage: PropTypes.func,
+  setTabVisible: PropTypes.func,
 }
 
 export default withRouter(connect(

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { Container } from 'native-base'
 
 import {withRouter} from 'react-router-native'
@@ -44,7 +44,7 @@ class AccountContainer extends Component {
         <PageHeader />
         <PageTop
           iconName='account3'
-          firstText='AndersenId'
+          firstText='Andersen ID'
           secondText={user.firstName !== null ? `${user.firstName} ${user.lastName}` : ''}
         />
         <Bar
@@ -56,15 +56,9 @@ class AccountContainer extends Component {
 
         <Border style={pageStyles.marginLeftRight16} />
 
-        <BlueBtn style={[pageStyles.manageWrapper, pageStyles.paddingLeftRight36]} onClick={() => {}}>
+        <BlueBtn style={[pageStyles.signOutWrapper, pageStyles.paddingLeftRight36]} onClick={() => this.props.logout()}>
           <Text style={[styles.blueBtnTextColor, pageStyles.manageText]}>Manage your Andersen ID</Text>
-          <Text style={[styles.txtColor2, pageStyles.changeText]}>Change your password, delete account</Text>
-        </BlueBtn>
-
-        <Border style={pageStyles.width50} />
-
-        <BlueBtn style={[pageStyles.paddingLeftRight36, pageStyles.termsWrapper]} onClick={() => {}}>
-          <Text style={[styles.blueBtnTextColor, pageStyles.termsText]}>Terms and Conditions</Text>
+          <Text style={[styles.txtColor2, pageStyles.changeText]}>Reset your password, delete account</Text>
         </BlueBtn>
 
         <Border style={pageStyles.marginLeftRight16} />
@@ -72,6 +66,42 @@ class AccountContainer extends Component {
         <BlueBtn style={[pageStyles.paddingLeftRight36, pageStyles.signOutWrapper]} onClick={() => this.props.logout()}>
           <Text style={[styles.blueBtnTextColor, pageStyles.signOutText]}>Sign Out</Text>
         </BlueBtn>
+
+        <Border style={pageStyles.marginLeftRight16} />
+
+        <View style={{flex: 1, justifyContent: 'center'}}>
+
+          <BlueBtn style={[pageStyles.paddingLeftRight36, {marginTop: 10, marginBottom: 10}]}
+            onClick={() => {
+              this.props.navigation.navigate('TermsWeb', {
+                pageId: 0,
+              })
+            }}
+          >
+            <Text style={[styles.blueBtnTextColor, pageStyles.termsText]}>Terms Of Service</Text>
+          </BlueBtn>
+
+          <BlueBtn style={[pageStyles.paddingLeftRight36, {marginTop: 10, marginBottom: 10}]}
+            onClick={() => {
+              this.props.navigation.navigate('TermsWeb', {
+                pageId: 1,
+              })
+            }}
+          >
+            <Text style={[styles.blueBtnTextColor, pageStyles.termsText]}>Privacy Statement</Text>
+          </BlueBtn>
+
+          <BlueBtn style={[pageStyles.paddingLeftRight36, {marginTop: 10, marginBottom: 10}]}
+            onClick={() => {
+              this.props.navigation.navigate('TermsWeb', {
+                pageId: 2,
+              })
+            }}
+          >
+            <Text style={[styles.blueBtnTextColor, pageStyles.termsText]}>Privacy Policy</Text>
+          </BlueBtn>
+        </View>
+
       </Container>
     )
   }
@@ -98,8 +128,8 @@ let pageStyles = StyleSheet.create({
     fontSize: 18,
   },
   manageWrapper: {
-    paddingTop: 17,
-    paddingBottom: 17,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
   manageText: {
     fontSize: 18,
@@ -118,7 +148,8 @@ let pageStyles = StyleSheet.create({
     fontSize: 18,
   },
   signOutWrapper: {
-    paddingTop: 25,
+    paddingTop: 17,
+    paddingBottom: 17,
   },
   signOutText: {
     fontSize: 18,
@@ -131,6 +162,7 @@ AccountContainer.propTypes = {
   token: PropTypes.string,
   fetchUser: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
+  navigation: PropTypes.any,
 }
 
 export default withRouter(connect(

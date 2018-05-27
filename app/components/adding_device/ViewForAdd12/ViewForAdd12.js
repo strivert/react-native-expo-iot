@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Container, CheckBox, Spinner } from 'native-base'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native'
+import { Container, CheckBox } from 'native-base'
+import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import PropTypes from 'prop-types'
 import { BarCodeScanner, Permissions, Svg } from 'expo'
 
 import styles from '../../../styles'
 import Bar2 from '../../common/Bar2'
+import Spinner from '../../common/Spinner'
 
 class ViewForAdd12 extends Component {
   constructor (props) {

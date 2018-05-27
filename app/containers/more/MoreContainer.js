@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, Linking } from 'react-native'
 import { Container } from 'native-base'
 
 import styles from '../../styles'
@@ -31,7 +31,7 @@ class MoreContainer extends Component {
               <Text style={[styles.txtColor2, pageStyles.currenctyText]}>Currency</Text>
             </View>
             <View style={{flex: 0.2, alignItems: 'center'}}>
-              <Text style={[styles.txtColor2, pageStyles.percentText]}>%</Text>
+              <Text style={[styles.txtColor2, pageStyles.percentText]}>£</Text>
             </View>
             <View style={{flex: 0.2, alignItems: 'flex-end'}}>
               <Image
@@ -43,17 +43,33 @@ class MoreContainer extends Component {
           </View>
         </BlueBtn>
 
+        <BlueBtn style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49, {paddingTop: 0}]} onClick={() => {}}>
+          <View style={pageStyles.flexRowView}>
+            <View style={{flex: 0.6}}>
+              <Text style={[styles.txtColor2, pageStyles.currenctyText]}>Cost kWh</Text>
+            </View>
+            <View style={{flex: 0.2, alignItems: 'center'}}>
+              <Text style={[styles.txtColor2, pageStyles.percentText]}>0.50</Text>
+            </View>
+            <View style={{flex: 0.2, alignItems: 'flex-end'}}>
+              <BlueBtn style={[]} onClick={() => {}}>
+                <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Edit</Text>
+              </BlueBtn>
+            </View>
+          </View>
+        </BlueBtn>
+
         <Bar
           barText='App Support And Tutorial'
         />
 
-        <BlueBtn style={[pageStyles.paddingLeftRight42, pageStyles.AppWrapper]} onClick={() => {}}>
+        <BlueBtn style={[pageStyles.paddingLeftRight42, pageStyles.AppWrapper]} onClick={() => { Linking.openURL('https://andersen-ev.com/support/') }}>
           <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>App Support</Text>
         </BlueBtn>
 
         <Border style={pageStyles.marginLeftRight16} />
 
-        <BlueBtn style={[pageStyles.paddingLeftRight42, pageStyles.AppWrapper]} onClick={() => {}}>
+        <BlueBtn style={[pageStyles.paddingLeftRight42, pageStyles.AppWrapper]} onClick={() => { Linking.openURL('https://andersen-ev.com/support/') }}>
           <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>App Tutorial</Text>
         </BlueBtn>
 

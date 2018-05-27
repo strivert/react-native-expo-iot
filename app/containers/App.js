@@ -70,6 +70,7 @@ class AppContainer extends Component {
     this.connectSocket()
 
     this.statusIcons = {
+      'splash': require('../assets/images/splash.png'),
       'account1': require('../assets/images/bottom_icons/account1.png'),
       'account2': require('../assets/images/bottom_icons/account2.png'),
       'home1': require('../assets/images/bottom_icons/home1.png'),
@@ -85,6 +86,7 @@ class AppContainer extends Component {
       'spinner': require('../assets/images/page_icons/spinner.gif'),
       'gradient': require('../assets/images/gradient.png'),
       'logo': require('../assets/images/logo.png'),
+      'logo1': require('../assets/images/logo1.png'),
       'back': require('../assets/images/page_icons/back.png'),
       'next': require('../assets/images/page_icons/next.png'),
 
@@ -106,6 +108,10 @@ class AppContainer extends Component {
       'status5': require('../assets/images/status_icons/status5.png'),
       'status5-disable': require('../assets/images/status_icons/status5-disable.png'),
       'status6': require('../assets/images/status_icons/status6.png'),
+      'cost1': require('../assets/images/status_icons/cost1.png'),
+      'power1': require('../assets/images/status_icons/power1.png'),
+      'cost2': require('../assets/images/status_icons/cost2.png'),
+      'power2': require('../assets/images/status_icons/power2.png'),
     }
   }
 
@@ -138,11 +144,9 @@ class AppContainer extends Component {
 
   componentDidUpdate (prevProps, prevState) {
     if (prevProps.token !== this.props.token) {
-      // console.log('ttttt ttttt ttttt ttttt ttttt ');
       this.reconnectSocket()
     }
     if (!this.props.token && this.socket) {
-      // console.log('ttttt ttttt ttttt ttttt ttttt 123- 123- 123- 123');
       this.socket.disconnect()
       this.socketAuthenticated = false
     }
@@ -158,23 +162,19 @@ class AppContainer extends Component {
   setupSocket () {
     this.socket = io(`${ANDERSEN_IOT_DOMAIN}/iot`)
     this.socket.on('connect', () => {
-      // console.log('connect');
       this.props.socketConnected()
       this.socket.emit('authorize', {id_token: this.props.token})
     })
     this.socket.on('chargerstatus', data => {
-      // console.log('chargerstatus');
       this.props.receivedDeviceStatus(data)
     })
     this.socket.on('devicecount', data => {
       this.props.receivedDeviceCount(data)
     })
     this.socket.on('authenticated', () => {
-      // console.log('authenticated');
       this.socketAuthenticated = true
     })
     this.socket.on('invalidToken', () => {
-      // console.log('invalidToken');
       this.socketAuthenticated = false
 
       store.dispatch(useRefreshToken(this.props.refreshToken))
@@ -185,7 +185,6 @@ class AppContainer extends Component {
       })
     })
     this.socket.on('disconnect', () => {
-      // console.log('disconnect');
       this.props.socketDisconnected()
     })
   }
