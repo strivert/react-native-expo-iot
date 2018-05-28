@@ -121,12 +121,15 @@ class AppContainer extends Component {
       this.socket.emit('authorize', {id_token: this.props.token})
     })
     this.socket.on('chargerstatus', data => {
+      // console.log('chargerstatus', data)
       this.props.receivedDeviceStatus(data)
     })
     this.socket.on('devicecount', data => {
+      // console.log('devicecount', data)
       this.props.receivedDeviceCount(data)
     })
     this.socket.on('authenticated', () => {
+      // console.log('authenticated')
       this.socketAuthenticated = true
     })
     this.socket.on('invalidToken', () => {

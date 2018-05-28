@@ -168,7 +168,7 @@ class HomeContainer extends Component {
       )
     }
 
-    if (!this.state.visibleTabBar) {
+    if (!this.state.visibleTabBar || this.props.deviceCount === null) {
       return (
         <View style={{flex: 1, position: 'absolute', left: 0, top: 0, height: '100%', width: '100%'}}>
             <Image
@@ -182,6 +182,10 @@ class HomeContainer extends Component {
     }    
 
     const selectedDevice = this.props.devicesHash[selectedDeviceId]
+
+    if( !selectedDevice || !this.checkKeyExist('variables', selectedDevice) || !selectedDevice['variables']) {
+      return
+    }
 
     // console.log('selectedDevice', selectedDevice)
     let initStates = {

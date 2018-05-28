@@ -133,6 +133,7 @@ export default function data (state = initialState, action) {
         claimCode: null,
         devices: null,
         devicesHash: {},
+        deviceCount: null,
       }
     case SET_SELECTED_DEVICE_ID:
       return {
