@@ -14,6 +14,11 @@ import ListItem from '../../components/home/ListItem'
 import MapWrapper from '../../components/home/MapWrapper'
 import {setEnableCharging, selectedDeviceId} from '../../actions/particleActions'
 import Spinner from '../../components/common/Spinner'
+import PageHeader from '../../components/common/PageHeader'
+import PageTop from '../../components/common/PageTop'
+import Bar from '../../components/common/Bar'
+import BlueBtn from '../../components/common/BlueBtn'
+import appStyles from '../../styles'
 
 class HomeContainer extends Component {
   constructor (props) {
@@ -71,6 +76,16 @@ class HomeContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { selectedDeviceId } = prevState
+
+    if (this.props.deviceCount === 0) {
+      this.setState({
+        visibleTabBar: true
+      }, () => {
+        this.props.setTabVisible()
+      })
+      return
+    }
+
     if ( !prevProps.token) {
       this.setState({
         visibleTabBar: false,
@@ -133,6 +148,25 @@ class HomeContainer extends Component {
 
   render () {
     const { selectedDeviceId } = this.state
+
+    if (this.props.deviceCount === 0) {
+      return (
+        <Container style={{backgroundColor: '#FFFFFF'}}>
+          <PageHeader />
+          <PageTop
+            iconName='setting3'
+            firstText=''
+            secondText={'No Points'}
+          />
+          <Bar
+            barText='Add Charge Point'
+          />
+          <BlueBtn style={{paddingLeft: 42, paddingRight: 42, paddingTop: 18, paddingBottom: 18}} onClick={()=>this.props.goAddPage()}>
+            <Text style={[appStyles.blueBtnTextColor, {fontSize: 18}]}>Please Click Here To Add Charge Point</Text>
+          </BlueBtn>
+        </Container>
+      )
+    }
 
     if (!this.state.visibleTabBar) {
       return (
