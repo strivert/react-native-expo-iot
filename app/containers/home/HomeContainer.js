@@ -170,7 +170,7 @@ class HomeContainer extends Component {
       'charge': {
         't1Text': 'Last Charge',
         't2Text': '00:00:00',
-        'iconName': 'charge-disable',
+        'iconName': 'status7-disable',
         'iconSty': 'disableColor',
         't2Sty': 'disableColor',
         'hasSwitch': false,
@@ -227,7 +227,7 @@ class HomeContainer extends Component {
       initStates['mainternance']['t2Text'] = 'Chargepoint Error'
 
       initStates['status']['iconName'] = 'status6'
-      initStates['charge']['iconName'] = 'charge1'
+      initStates['charge']['iconName'] = 'status7'
       initStates['mainternance']['iconName'] = 'maintenance2'
     }
 
@@ -294,7 +294,7 @@ class HomeContainer extends Component {
           initStates['charge']['t2Sty'] = 'grayColor'
           initStates['charge']['iconSty'] = 'grayColor'
 
-          initStates['charge']['iconName'] = 'charge1'
+          initStates['charge']['iconName'] = 'status7'
           break
         case 'C':
         case 'D':
@@ -303,7 +303,7 @@ class HomeContainer extends Component {
           initStates['charge']['t2Sty'] = 'greenColor'
           initStates['charge']['iconSty'] = 'grayColor'
 
-          initStates['charge']['iconName'] = 'charge1'
+          initStates['charge']['iconName'] = 'status7'
           break
       }
       switch (this.catchCharFromChargerStatus(chargerstatus)) {
@@ -402,7 +402,7 @@ class HomeContainer extends Component {
         'charge': {
           't1Text': 'Last Charge',
           't2Text': '00:00:00',
-          'iconName': 'charge-disable',
+          'iconName': 'status7-disable',
           'iconSty': 'disableColor',
           't2Sty': 'disableColor',
           'hasSwitch': false,

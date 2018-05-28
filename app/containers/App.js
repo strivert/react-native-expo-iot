@@ -68,51 +68,6 @@ class AppContainer extends Component {
 
     this.setupSocket()
     this.connectSocket()
-
-    this.statusIcons = {
-      'splash': require('../assets/images/splash.png'),
-      'account1': require('../assets/images/bottom_icons/account1.png'),
-      'account2': require('../assets/images/bottom_icons/account2.png'),
-      'home1': require('../assets/images/bottom_icons/home1.png'),
-      'home2': require('../assets/images/bottom_icons/home2.png'),
-      'more1': require('../assets/images/bottom_icons/more1.png'),
-      'more2': require('../assets/images/bottom_icons/more2.png'),
-      'setting1': require('../assets/images/bottom_icons/setting1.png'),
-      'setting2': require('../assets/images/bottom_icons/setting2.png'),
-
-      'account3': require('../assets/images/page_icons/account3.png'),
-      'setting3': require('../assets/images/page_icons/setting3.png'),
-      'lock': require('../assets/images/page_icons/lock.png'),
-      'spinner': require('../assets/images/page_icons/spinner.gif'),
-      'gradient': require('../assets/images/gradient.png'),
-      'logo': require('../assets/images/logo.png'),
-      'logo1': require('../assets/images/logo1.png'),
-      'back': require('../assets/images/page_icons/back.png'),
-      'next': require('../assets/images/page_icons/next.png'),
-
-      'charge1': require('../assets/images/status_icons/charge1.png'),
-      'charge-disable': require('../assets/images/status_icons/charge-disable.png'),
-      'maintenance1': require('../assets/images/status_icons/maintenance1.png'),
-      'maintenance2': require('../assets/images/status_icons/maintenance2.png'),
-      'maintenance1-disable': require('../assets/images/status_icons/maintenance1-disable.png'),
-      'security1': require('../assets/images/status_icons/security1.png'),
-      'security1-disable': require('../assets/images/status_icons/security1-disable.png'),
-      'security2': require('../assets/images/status_icons/security2.png'),
-      'security3': require('../assets/images/status_icons/security3.png'),
-      'security4': require('../assets/images/status_icons/security4.png'),
-      'security5': require('../assets/images/status_icons/security5.png'),
-      'status1': require('../assets/images/status_icons/status1.png'),
-      'status2': require('../assets/images/status_icons/status2.png'),
-      'status3': require('../assets/images/status_icons/status3.png'),
-      'status4': require('../assets/images/status_icons/status4.png'),
-      'status5': require('../assets/images/status_icons/status5.png'),
-      'status5-disable': require('../assets/images/status_icons/status5-disable.png'),
-      'status6': require('../assets/images/status_icons/status6.png'),
-      'cost1': require('../assets/images/status_icons/cost1.png'),
-      'power1': require('../assets/images/status_icons/power1.png'),
-      'cost2': require('../assets/images/status_icons/cost2.png'),
-      'power2': require('../assets/images/status_icons/power2.png'),
-    }
   }
 
   componentWillUnmount () {
@@ -220,19 +175,9 @@ class AppContainer extends Component {
   }
   
   render () {
-    let viewArr = []
-    for (var key in this.statusIcons) {
-      viewArr.push(
-        <Image key={`startImg-${key}`} source={this.statusIcons[key]} />
-      )
-    }
-
     return <StyleProvider style={getTheme(platform)}>
       <Container style={{marginTop: 24}}>
         <BootStrap />
-        <View style={{height: 0, opacity: 0, position: 'absolute', right: -9999}}>
-          {viewArr}
-        </View>
       </Container>
     </StyleProvider>
   }
