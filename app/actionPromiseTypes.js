@@ -26,4 +26,5 @@ module.exports = keyMirror({
   PUT_DEVICE_SERIAL_NUMBER: null,
   PUT_DEVICE_LOCATION: null,
   PUT_DEVICE_COUNT: null,
+  PUT_UNLOCKED_EVENT: null,
 })

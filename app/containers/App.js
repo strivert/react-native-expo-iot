@@ -1,24 +1,27 @@
 import React, { Component } from 'react'
 import {Container, StyleProvider} from 'native-base'
 import PropTypes from 'prop-types'
-import {NetInfo, View, Image, AppState} from 'react-native'
+import {NetInfo, View, Image, AppState, Platform} from 'react-native'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import io from 'socket.io-client'
 import {withRouter} from 'react-router-native'
 import {ANDERSEN_IOT_DOMAIN} from 'react-native-dotenv'
+
 import getTheme from '../../native-base-theme/components'
 import platform from '../../native-base-theme/variables/platform'
-import {receivedDeviceStatus, socketConnected, socketDisconnected, receivedDeviceCount} from '../actions/particleActions'
+import {receivedDeviceStatus, socketConnected, socketDisconnected, receivedDeviceCount, putUnlockedEvent} from '../actions/particleActions'
 import {setConnectionStatus, setConnectionInter} from '../actions/storeActions'
 import {fetchUser} from '../actions/andersenActions'
 import {logout} from '../actions/azureActions'
 
 import BootStrap from '../screens/Bootstrap'
 
-import {Notifications} from 'expo'
+import {Permissions, Notifications} from 'expo'
 import store from '../store'
 import {useRefreshToken} from '../actions/azureActions'
+
+import DropdownAlert from 'react-native-dropdownalert'
 
 const notification1 = {
   "title": "Network Offline!",
@@ -48,6 +51,29 @@ const notification2 = {
   },
 }
 
+let notification3 = {
+  "title": "Chargepoint Unlocked!",
+  "body": "",
+  "data": {
+    "iWantData": "yesPlease"
+  },
+  "ios": {
+    "sound": true
+  },
+  "android": {
+    "sound": true
+  },
+}
+
+async function getiOSNotificationPermission() {
+  const { status } = await Permissions.getAsync(
+    Permissions.NOTIFICATIONS
+  );
+  if (status !== 'granted') {
+    await Permissions.askAsync(Permissions.NOTIFICATIONS);
+  }
+}
+
 class AppContainer extends Component {
   constructor (props) {
     super(props)
@@ -68,11 +94,17 @@ class AppContainer extends Component {
 
     this.setupSocket()
     this.connectSocket()
+
+        
   }
 
   componentWillUnmount () {
     // this.socket.disconnect()
     AppState.removeEventListener('change', this.handleAppStateChange)
+  }
+
+  componentWillMount() {
+    getiOSNotificationPermission();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -94,6 +126,17 @@ class AppContainer extends Component {
 
     if (this.props.token !== null && nextProps.token === null) {
       this.socket.disconnect()
+    }
+
+    if (this.props.unlockedEvent === null && nextProps.unlockedEvent !== null) {
+      notification3.title = nextProps.unlockedEvent.data.payload
+      notification3.body = nextProps.unlockedEvent.data.payload
+      Notifications.scheduleLocalNotificationAsync(notification3, scheduleOptions)
+      
+      if (Platform.OS === 'ios') {
+        this.dropdown.alertWithType('info', notification3.body, notification3.body)
+      }
+      this.props.putUnlockedEvent(null)
     }
   }
 
@@ -127,6 +170,10 @@ class AppContainer extends Component {
     this.socket.on('devicecount', data => {
       // console.log('devicecount', data)
       this.props.receivedDeviceCount(data)
+    })
+    this.socket.on('unlockedevent', data => {
+      console.log('unlockedevent', data);
+      this.props.putUnlockedEvent(data)
     })
     this.socket.on('authenticated', () => {
       // console.log('authenticated')
@@ -179,8 +226,11 @@ class AppContainer extends Component {
   
   render () {
     return <StyleProvider style={getTheme(platform)}>
-      <Container style={{marginTop: 24}}>
-        <BootStrap />
+      <Container style={{backgroundColor: 'white'}}>
+        <Container style={{marginTop: 24}}>
+          <BootStrap />
+        </Container>
+        <DropdownAlert ref={ref => this.dropdown = ref} onClose={()=>{}} />
       </Container>
     </StyleProvider>
   }
@@ -197,6 +247,7 @@ AppContainer.propTypes = {
   internetConnection: PropTypes.bool,
   setConnectionInter: PropTypes.func,
   receivedDeviceCount: PropTypes.func,
+  putUnlockedEvent: PropTypes.func,
 }
 
 export default withRouter(connect(
@@ -205,6 +256,7 @@ export default withRouter(connect(
     internetConnection: state.misc.internetConnection,
     socketConnectedVariable: state.particle.socketConnected,
     refreshToken: state.auth.refreshToken,
+    unlockedEvent: state.particle.unlockedEvent,
   }),
-  dispatch => bindActionCreators({receivedDeviceStatus, socketConnected, socketDisconnected, fetchUser, setConnectionStatus, logout, setConnectionInter, receivedDeviceCount, useRefreshToken}, dispatch)
+  dispatch => bindActionCreators({receivedDeviceStatus, socketConnected, socketDisconnected, fetchUser, setConnectionStatus, logout, setConnectionInter, receivedDeviceCount, putUnlockedEvent, useRefreshToken}, dispatch)
 )(AppContainer))

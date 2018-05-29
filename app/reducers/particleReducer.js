@@ -4,6 +4,7 @@ import {
   // GET_DEVICE,
   PUT_RENAME_DEVICE,
   PUT_DEVICE_COUNT,
+  PUT_UNLOCKED_EVENT,
 } from '../actionPromiseTypes'
 
 import {
@@ -25,6 +26,7 @@ const initialState = {
   socketConnected: false,
   selectedDeviceId: null,
   deviceCount: null,
+  unlockedEvent: null,
 }
 
 export default function data (state = initialState, action) {
@@ -144,6 +146,11 @@ export default function data (state = initialState, action) {
       return {
         ...state,
         deviceCount: action.payload.devcount,
+      }
+    case PUT_UNLOCKED_EVENT:
+      return {
+        ...state,
+        unlockedEvent: action.payload,
       }
     default:
       return state

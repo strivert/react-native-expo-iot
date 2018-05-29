@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, Linking } from 'react-native'
 import { Container } from 'native-base'
 
 import {withRouter} from 'react-router-native'
@@ -72,31 +72,19 @@ class AccountContainer extends Component {
         <View style={{flex: 1, justifyContent: 'center'}}>
 
           <BlueBtn style={[pageStyles.paddingLeftRight36, {marginTop: 10, marginBottom: 10}]}
-            onClick={() => {
-              this.props.navigation.navigate('TermsWeb', {
-                pageId: 0,
-              })
-            }}
+            onClick={() => { Linking.openURL('https://andersen-ev.com/terms-and-conditions/') }}
           >
             <Text style={[styles.blueBtnTextColor, pageStyles.termsText]}>Terms Of Service</Text>
           </BlueBtn>
 
           <BlueBtn style={[pageStyles.paddingLeftRight36, {marginTop: 10, marginBottom: 10}]}
-            onClick={() => {
-              this.props.navigation.navigate('TermsWeb', {
-                pageId: 1,
-              })
-            }}
+            onClick={() => { Linking.openURL('https://andersen-ev.com/privacy-statement/') }}
           >
             <Text style={[styles.blueBtnTextColor, pageStyles.termsText]}>Privacy Statement</Text>
           </BlueBtn>
 
           <BlueBtn style={[pageStyles.paddingLeftRight36, {marginTop: 10, marginBottom: 10}]}
-            onClick={() => {
-              this.props.navigation.navigate('TermsWeb', {
-                pageId: 2,
-              })
-            }}
+            onClick={() => { Linking.openURL('https://andersen-ev.com/privacy-policy/') }}
           >
             <Text style={[styles.blueBtnTextColor, pageStyles.termsText]}>Privacy Policy</Text>
           </BlueBtn>

@@ -7,6 +7,7 @@ import {
   PUT_DEVICE_SERIAL_NUMBER,
   PUT_DEVICE_LOCATION,
   PUT_DEVICE_COUNT,
+  PUT_UNLOCKED_EVENT,
 } from '../actionPromiseTypes'
 
 import {
@@ -39,6 +40,7 @@ module.exports = {
   setLocation,
   selectedDeviceId,
   receivedDeviceCount,
+  putUnlockedEvent,
 }
 
 function createClaimCode () {
@@ -128,6 +130,13 @@ function selectedDeviceId (deviceId) {
 function receivedDeviceCount (data) {
   return {
     type: PUT_DEVICE_COUNT,
+    payload: data,
+  }
+}
+
+function putUnlockedEvent (data) {
+  return {
+    type: PUT_UNLOCKED_EVENT,
     payload: data,
   }
 }
