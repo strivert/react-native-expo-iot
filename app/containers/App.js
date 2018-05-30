@@ -129,12 +129,20 @@ class AppContainer extends Component {
     }
 
     if (this.props.unlockedEvent === null && nextProps.unlockedEvent !== null) {
-      notification3.title = nextProps.unlockedEvent.data.payload
+      notification3.title = nextProps.unlockedEvent.type
       notification3.body = nextProps.unlockedEvent.data.payload
       Notifications.scheduleLocalNotificationAsync(notification3, scheduleOptions)
       
       if (Platform.OS === 'ios') {
-        this.dropdown.alertWithType('info', notification3.body, notification3.body)
+        if (nextProps.unlockedEvent.type === 'Warning') {
+          this.dropdown.alertWithType('warn', 'Warning', notification3.body)
+        } else if (nextProps.unlockedEvent.type === 'Error') {
+          this.dropdown.alertWithType('error', 'Error', notification3.body)
+        } else if (nextProps.unlockedEvent.type === 'Info') {
+          this.dropdown.alertWithType('info', 'Info', notification3.body)
+        } else if (nextProps.unlockedEvent.type === 'Success') {
+          this.dropdown.alertWithType('success', 'Success', notification3.body)
+        }
       }
       this.props.putUnlockedEvent(null)
     }
@@ -172,7 +180,7 @@ class AppContainer extends Component {
       this.props.receivedDeviceCount(data)
     })
     this.socket.on('unlockedevent', data => {
-      console.log('unlockedevent', data);
+      // console.log('unlockedevent', data);
       this.props.putUnlockedEvent(data)
     })
     this.socket.on('authenticated', () => {
@@ -230,7 +238,7 @@ class AppContainer extends Component {
         <Container style={{marginTop: 24}}>
           <BootStrap />
         </Container>
-        <DropdownAlert ref={ref => this.dropdown = ref} onClose={()=>{}} />
+        <DropdownAlert ref={ref => this.dropdown = ref} onClose={()=>{}} closeInterval={8000} />
       </Container>
     </StyleProvider>
   }

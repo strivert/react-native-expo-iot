@@ -389,9 +389,9 @@ class HomeContainer extends Component {
 
       if (!enablecharger) {
         initStates['status']['iconSty'] = 'disableColor'
-        initStates['status']['t2Sty'] = 'disableColor'
+        initStates['status']['t2Sty'] = 'redColor'
 
-        initStates['status']['iconName'] = 'status5-disable'
+        initStates['status']['iconName'] = 'status8'
       }
     }
 

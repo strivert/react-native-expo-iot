@@ -79,6 +79,7 @@ export default class App extends Component {
         require('./assets/images/status_icons/status6.png'),
         require('./assets/images/status_icons/status7.png'),
         require('./assets/images/status_icons/status7-disable.png'),
+        require('./assets/images/status_icons/status8.png'),
         require('./assets/images/status_icons/cost1.png'),
         require('./assets/images/status_icons/power1.png'),
         require('./assets/images/status_icons/cost2.png'),
