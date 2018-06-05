@@ -35,6 +35,7 @@ class ListItemWrapper extends Component {
       'security3': require('../../../assets/images/status_icons/security3.png'),
       'security4': require('../../../assets/images/status_icons/security4.png'),
       'security5': require('../../../assets/images/status_icons/security5.png'),
+      'security6': require('../../../assets/images/status_icons/security6.png'),
       'status1': require('../../../assets/images/status_icons/status1.png'),
       'status2': require('../../../assets/images/status_icons/status2.png'),
       'status3': require('../../../assets/images/status_icons/status3.png'),

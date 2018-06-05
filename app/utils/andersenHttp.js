@@ -21,11 +21,11 @@ http.interceptors.request.use(request => {
 http.interceptors.response.use(undefined, err => {
   return new Promise(function (resolve, reject) {
     const state = store.getState()
-    if ((err.response.status === 401 && !state.auth.refreshToken) || err.config._retry) {
+    if ((err.response!== undefined && err.response.status === 401 && !state.auth.refreshToken) || err.config._retry) {
       return store.dispatch(logout)
     }
 
-    if (err.response.status !== 401 || !err.config) {
+    if ((err.response!== undefined && err.response.status !== 401) || !err.config) {
       return reject(err)
     }
 

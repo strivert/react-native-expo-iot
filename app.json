@@ -15,7 +15,7 @@
       "bundleIdentifier": "com.appleio.exp"
     },
     "splash": {
-      "image": "./app/assets/images/splash.png",
+      "image": "./app/assets/images/splash_960.png",
       "resizeMode": "cover"
     },
     "orientation": "portrait"

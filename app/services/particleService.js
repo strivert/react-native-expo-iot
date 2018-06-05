@@ -10,6 +10,7 @@ module.exports = {
   putDeviceLocation,
   deleteDevice,
   postDevice,
+  putDeviceChargeCost,
 }
 
 function postCreateClaimCode () {
@@ -37,7 +38,7 @@ function postDevice (deviceId) {
  * @param {bool} enabled
  */
 function postSetEnableCharging (deviceId, enabled) {
-  console.log('`devices/${deviceId}/set-remote-locking`', `devices/${deviceId}/set-remote-locking`)
+  // console.log('`devices/${deviceId}/set-remote-locking`', `devices/${deviceId}/set-remote-locking`)
   return andersenHttp.post(`devices/${deviceId}/set-remote-locking`, {
     setTo: !enabled,
   })
@@ -58,5 +59,11 @@ function putDeviceSerialNumber (deviceId, serialNumber) {
 function putDeviceLocation (deviceId, location) {
   return andersenHttp.put(`devices/${deviceId}/location`, {
     location,
+  })
+}
+
+function putDeviceChargeCost (deviceId, costunit) {
+  return andersenHttp.put(`devices/${deviceId}/setchargecost`, {
+    costunit,
   })
 }

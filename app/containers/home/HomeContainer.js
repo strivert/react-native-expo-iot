@@ -48,7 +48,7 @@ class HomeContainer extends Component {
       }
       // for add
       if (nextProps.deviceCount === nextProps.devices.length) {
-        if (this.props.devices.length != nextProps.devices.length) {
+        if (this.props.devices && this.props.devices.length != nextProps.devices.length) {
           if (this.state.selectedDeviceId !== null) {
             this.setState({
               selectedDeviceId: nextProps.devices[0].id,
@@ -391,7 +391,7 @@ class HomeContainer extends Component {
         initStates['status']['iconSty'] = 'disableColor'
         initStates['status']['t2Sty'] = 'redColor'
 
-        initStates['status']['iconName'] = 'status8'
+        initStates['status']['iconName'] = 'security6'
       }
     }
 

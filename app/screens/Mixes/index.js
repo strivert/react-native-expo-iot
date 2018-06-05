@@ -10,6 +10,7 @@ import TermsWeb from './TermsWeb'
 import ChargePoint from './ChargePoint'
 import ChargeSetting from './ChargeSetting'
 import AddCharge from './AddCharge'
+import UnitCost from './UnitCost'
 
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import Footer from '../../components/common/Footer'
@@ -62,12 +63,28 @@ const UserNav = StackNavigator(
   }
 )
 
+const MoreNav = StackNavigator(
+  {
+    More: { screen: More },
+    UnitCost: { screen: UnitCost },
+  }, {
+    transitionConfig: () => ({
+      transitionSpec: {
+        duration: 0,
+        timing: Animated.timing,
+        easing: Easing.step0,
+      },
+    }),
+    headerMode: 'none',
+  }
+)
+
 export default ( MainScreenNavigator = TabNavigator(
   {
     HomeNav: { screen: HomeNav },
     UserNav: { screen: UserNav },
     SettingNav: { screen: SettingNav },
-    More: { screen: More },
+    MoreNav: { screen: MoreNav },
   },
   {
     tabBarPosition: 'bottom',
