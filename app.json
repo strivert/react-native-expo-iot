@@ -9,7 +9,12 @@
     "sdkVersion": "27.0.0",
     "privacy": "unlisted",
     "android": {
-      "package": "com.irdev.andersen_app"
+      "package": "com.irdev.andersen_app",
+      "config": {
+       "googleMaps": {
+         "apiKey": "AIzaSyCbYW5CoxoxwTrMO6H3RvoFFXzHSICF2lI"
+       }
+     }
     },
     "ios": {
       "bundleIdentifier": "com.appleio.exp"
