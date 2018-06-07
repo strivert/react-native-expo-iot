@@ -1,8 +1,8 @@
 {
-  "name": "andersen_app",
-  "displayName": "andersen_app",
+  "name": "Kønnect",
+  "displayName": "Kønnect",
   "expo": {
-    "name": "Andersen App",
+    "name": "Kønnect",
     "icon": "./logo.png",
     "slug": "andersen-app",
     "version": "1.0.0",

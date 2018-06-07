@@ -239,7 +239,6 @@ class HomeContainer extends Component {
       },
     }
 
-    const evccoffline = this.checkKeyExist('evccoffline', selectedDevice['variables']) ? selectedDevice['variables']['evccoffline'] : undefined
     const online = this.checkKeyExist('online', selectedDevice['variables']) ? selectedDevice['variables']['online'] : undefined
     let consume = this.checkKeyExist('consume', selectedDevice['variables']) ? selectedDevice['variables']['consume'] : undefined
     consume = (consume === undefined) ? '0.00' : consume.toFixed(2)
@@ -250,9 +249,11 @@ class HomeContainer extends Component {
     let costunit = this.checkKeyExist('costunit', selectedDevice['variables']) ? selectedDevice['variables']['costunit'] : undefined
     costunit = (costunit === undefined) ? '0.00' : costunit.toFixed(2)
 
+    const lasterror = this.checkKeyExist('lasterror', selectedDevice['variables']) ? selectedDevice['variables']['lasterror'] : 0
+
     let dis_char = ''
 
-    if (evccoffline === true) {
+    if (lasterror !== 0) {
       initStates['status']['t2Sty'] = 'redColor'
       initStates['status']['iconSty'] = 'redColor'
       initStates['status']['t2Text'] = 'No CP'
@@ -262,14 +263,20 @@ class HomeContainer extends Component {
 
       initStates['mainternance']['t2Sty'] = 'redColor'
       initStates['mainternance']['iconSty'] = 'redColor'
-      initStates['mainternance']['t2Text'] = 'Chargepoint Error'
+      initStates['mainternance']['t2Text'] = 'Error'
 
       initStates['status']['iconName'] = 'status6'
       initStates['charge']['iconName'] = 'status7'
       initStates['mainternance']['iconName'] = 'maintenance2'
-    }
-
-    if (evccoffline === false) {
+      
+      switch (lasterror) {
+        case 1001:
+          // default
+          break
+        case 1002:
+          break
+      }
+    } else {
       initStates['mainternance']['t2Sty'] = 'grayColor'
       initStates['mainternance']['iconSty'] = 'grayColor'
 
@@ -475,7 +482,7 @@ class HomeContainer extends Component {
     }
 
     let displayKeyArray = [];
-    if (evccoffline=== false && ['A', 'B', 'C'].indexOf(dis_char) !== -1) {
+    if (['A', 'B', 'C'].indexOf(dis_char) !== -1) {
       displayKeyArray = ['status', 'charge', 'cost', 'power', 'mainternance']
     } else {
       displayKeyArray = ['status', 'charge', 'cost', 'power', 'mainternance']
