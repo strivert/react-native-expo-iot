@@ -92,7 +92,7 @@ class ChargePointContainer extends Component {
         <BlueBtn style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]} onClick={() => { this.props.navigation.navigate('ChargeSetting') }}>
           <View style={pageStyles.flexRowView}>
             <View style={{flex: 0.8}}>
-              <Text style={[styles.txtColor2, pageStyles.currenctyText, {fontFamily: 'Proxima_nova_ltsemibold'}]}>{deviceName}</Text>
+              <Text style={[styles.txtColor2, pageStyles.currenctyText]}>{deviceName}</Text>
             </View>
             <View style={{flex: 0.2, alignItems: 'flex-end', justifyContent: 'center'}}>
               <Image
