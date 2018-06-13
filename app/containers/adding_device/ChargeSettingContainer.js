@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Image, Modal as NativeModal, Dimensions } from 'react-native'
-import { Container, Header, Left, Button, Icon } from 'native-base'
+import { StyleSheet, Text, View, Modal as NativeModal, Dimensions } from 'react-native'
+import { Container, Header, Left, Button, Icon, Right } from 'native-base'
 
 import {withRouter} from 'react-router-native'
 import {bindActionCreators} from 'redux'
@@ -14,8 +14,10 @@ import BlueBtn from '../../components/common/BlueBtn'
 import PageHeaderBack from '../../components/common/PageHeaderBack'
 import Bar2 from '../../components/common/Bar2'
 import Spinner from '../../components/common/Spinner'
+import Dialog from '../../components/Dialog'
+import EditLocation from '../devices/EditLocation'
 
-import { setSerialNumber } from '../../actions/particleActions'
+import { renameDevice, setSerialNumber, setLocation } from '../../actions/particleActions'
 
 import { MapView, Svg, BarCodeScanner } from 'expo'
 
@@ -27,8 +29,20 @@ class ChargeSettingContainer extends Component {
     this.handleCloseScan = this.handleCloseScan.bind(this)
     this.handleBarcodeRead = this.handleBarcodeRead.bind(this)
 
+    this.handlePressRename = this.handlePressRename.bind(this)
+    this.handleCloseRename = this.handleCloseRename.bind(this)
+    this.handleSaveRename = this.handleSaveRename.bind(this)
+
+    this.handlePressEditLocation = this.handlePressEditLocation.bind(this)
+    this.handleCloseLocation = this.handleCloseLocation.bind(this)
+    this.handleSaveLocation = this.handleSaveLocation.bind(this)
+    this.handleMoveLocation = this.handleMoveLocation.bind(this)
+
     this.state = {
       scanningSerial: false,
+      editingName: false,
+      editingLocation: false,
+      editingLocationCoords: null,
     }
   }
 
@@ -49,10 +63,59 @@ class ChargeSettingContainer extends Component {
       }))
   }
 
+  handlePressRename () {
+    this.setState({
+      name: ('variables' in this.props.devicesHash[this.props.selectedDeviceId]) ? this.props.devicesHash[this.props.selectedDeviceId].variables.friendlyName : '',
+      saving: false,
+      editingName: true,
+    })
+  }
+
+  handleCloseRename () {
+    this.setState({editingName: false})
+  }
+
+  handleSaveRename (text) {
+    this.setState({editingName: false, saving: true})
+    this.props.renameDevice(this.props.devicesHash[this.props.selectedDeviceId].id, text)
+      .then(() => this.setState({saving: false}))
+  }
+
+  handleSaveLocation () {
+    if (this.state.editingLocationCoords) {
+      this.setState({saving: true, editingLocation: false})
+      this.props.setLocation(this.props.devicesHash[this.props.selectedDeviceId].id, this.state.editingLocationCoords)
+        .then(() => this.setState({saving: false, editingLocationCoords: null}))
+    }
+  }
+
+  handlePressEditLocation () {
+    this.setState({editingLocation: true})
+  }
+
+  handleCloseLocation () {
+    this.setState({editingLocation: false})
+  }
+
+  handleMoveLocation (editingLocationCoords) {
+    this.setState({editingLocationCoords})
+  }
+
   render () {
-    const {devicesHash, selectedDeviceId, user} = this.props
-    const { scanningSerial } = this.state
-    const { handleOpenScan, handleCloseScan, handleBarcodeRead } = this
+    const {devicesHash, selectedDeviceId} = this.props
+    const { scanningSerial, editingName, editingLocation } = this.state
+    const {
+      handleOpenScan,
+      handleCloseScan,
+      handleBarcodeRead,
+      handlePressRename,
+      handleCloseRename,
+      handleSaveRename,
+      handleCloseLocation,
+      handleSaveLocation,
+      handlePressEditLocation,
+      handleMoveLocation,
+    } = this
     const selectedDevice = devicesHash[selectedDeviceId]
 
     if (!selectedDevice || !('variables' in selectedDevice) || !('location' in selectedDevice.variables) || !('latitude' in selectedDevice.variables.location)) {
@@ -63,9 +126,8 @@ class ChargeSettingContainer extends Component {
       )
     }
 
-    const deviceName = selectedDevice.name
+    const deviceName = ('variables' in selectedDevice) ? selectedDevice.variables.friendlyName : 'Undefined'
     const deviceSerialNumber = ('variables' in selectedDevice) ? selectedDevice.variables.serialNumber : ''
-    const userAddress1 = user.address1
 
     const {width, height} = Dimensions.get('window')
     const svgSize = width < height - 340 ? width : height - 340
@@ -94,11 +156,19 @@ class ChargeSettingContainer extends Component {
             <Text style={[styles.txtColor2, pageStyles.currenctyText]}>{deviceName}</Text>
           </View>
           <View style={{flex: 0.2, alignItems: 'flex-end'}}>
-            <BlueBtn style={[]} onClick={() => {}}>
+            <BlueBtn style={[]} onClick={handlePressRename}>
               <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Edit</Text>
             </BlueBtn>
           </View>
         </View>
+
+        <Dialog
+          title="Rename"
+          isVisible={editingName}
+          onSubmit={handleSaveRename}
+          onClose={handleCloseRename}
+          defaultValue={deviceName}
+        />
 
         <Bar
           barText='Serial No'
@@ -178,21 +248,42 @@ class ChargeSettingContainer extends Component {
 
         <View style={[pageStyles.flexRowView, pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]}>
           <View style={{flex: 0.8}}>
-            <Text style={[styles.txtColor2, pageStyles.currenctyText]}>{userAddress1}</Text>
           </View>
           <View style={{flex: 0.2, alignItems: 'flex-end'}}>
-            <BlueBtn style={[]} onClick={() => {}}>
+            <BlueBtn style={[]} onClick={handlePressEditLocation}>
               <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Edit</Text>
             </BlueBtn>
           </View>
         </View>
 
+        <NativeModal
+          onRequestClose={handleCloseLocation}
+          animationType="slide"
+          visible={editingLocation}
+          style={{flex: 1}}
+        >
+          <Container>
+            <Header>
+              <Left>
+                <Button hasText transparent style={{alignItems: 'center'}} onPress={handleCloseLocation}>
+                  <Icon style={{display: 'flex'}} name="arrow-back" />
+                  <Text>Cancel</Text>
+                </Button>
+              </Left>
+              <Right>
+                <Button hasText transparent onPress={handleSaveLocation}><Text>Save</Text></Button>
+              </Right>
+            </Header>
+            <EditLocation onChange={handleMoveLocation} coords={selectedDevice.variables.location} />
+          </Container>
+        </NativeModal>
+
         <View style={{ flex: 1, justifyContent: 'flex-end' }}>
           <MapView
             style={{ flex: 1 }}
             initialRegion={{
-              latitude: locationItem.location.latitude + 0.145,
-              longitude: locationItem.location.longitude - 0.525,
+              latitude: locationItem.location.latitude,
+              longitude: locationItem.location.longitude,
               latitudeDelta: locationItem.location.latitudeDelta,
               longitudeDelta: locationItem.location.longitudeDelta,
             }}
@@ -204,9 +295,6 @@ class ChargeSettingContainer extends Component {
                 longitude: locationItem.location.longitude,
               }}
             />
-            <View style={{flex: 1, position: 'absolute', width: '100%', height: 207}}>
-              <Image source={ require('../../assets/images/gradient.png') } style={{width: '100%', height: '100%', resizeMode: 'stretch'}} />
-            </View>
           </MapView>
           <View style={{flex: 1, position: 'absolute', bottom: 0, width: '100%', height: 207, backgroundColor: 'transparent'}}>
           </View>
@@ -267,17 +355,17 @@ let pageStyles = StyleSheet.create({
 })
 
 ChargeSettingContainer.propTypes = {
-  user: PropTypes.object,
   devicesHash: PropTypes.object,
   selectedDeviceId: PropTypes.any,
   setSerialNumber: PropTypes.func.isRequired,
+  renameDevice: PropTypes.func.isRequired,
+  setLocation: PropTypes.func.isRequired,
 }
 
 export default withRouter(connect(
   state => ({
     devicesHash: state.particle.devicesHash,
     selectedDeviceId: state.particle.selectedDeviceId,
-    user: state.user,
   }),
-  dispatch => bindActionCreators({ setSerialNumber }, dispatch)
+  dispatch => bindActionCreators({ setSerialNumber, renameDevice, setLocation }, dispatch)
 )(ChargeSettingContainer))

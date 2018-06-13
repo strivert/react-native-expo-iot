@@ -44,9 +44,9 @@ function postSetEnableCharging (deviceId, enabled) {
   })
 }
 
-function putRenameDevice (deviceId, name) {
-  return andersenHttp.put(`devices/${deviceId}/name`, {
-    name,
+function putRenameDevice (deviceId, friendlyName) {
+  return andersenHttp.put(`devices/${deviceId}/friendlyname`, {
+    friendlyName,
   })
 }
 

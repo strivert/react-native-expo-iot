@@ -70,7 +70,7 @@ class ViewForAdd12 extends Component {
         <View style={{flex: 1, position: 'relative'}}>
           <View style={{flexGrow: 1}}>
             <BarCodeScanner
-              onBarCodeRead={handleBarcodeRead}
+              onBarCodeRead={this.handleBarcodeRead}
               style={StyleSheet.absoluteFill}
               barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
             />

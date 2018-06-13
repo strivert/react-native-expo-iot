@@ -23,34 +23,28 @@ class EditLocation extends Component {
   }
 
   componentDidMount () {
-    this.props.onRef(this)
-    if (this.props.coords) {
-      return this.setState({coords: this.props.coords})
-    }
-    this.handleGetCurrentLocation()
-  }
-
-  handleGetCurrentLocation () {
-    return Permissions.askAsync(Permissions.LOCATION)
+    Permissions.askAsync(Permissions.LOCATION)
       .then(response => this.setState({hasLocationPermission: response.status === 'granted'}))
-      .then(() => Location.getCurrentPositionAsync({
-        enableHighAccuracy: true,
-      }))
-      .then(location => {
-        const coords = Object.assign(location.coords, {
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        })
-        return this.setState({coords, isChanged: true})
+      .then(() => {
+        if (this.props.coords) {
+          return this.setState({coords: this.props.coords})
+        }
+        this.handleGetCurrentLocation()
       })
   }
 
-  handleSave () {
-    this.props.onSet(this.state.coords)
+  handleGetCurrentLocation () {
+    const location = Location.getCurrentPositionAsync({enableHighAccuracy: true})
+    const coords = Object.assign(location.coords, {
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.01,
+    })
+    return this.setState({coords, isChanged: true})
   }
 
   handleMapPress (coordinate) {
     const coords = Object.assign({}, this.state.coords, coordinate)
+    this.props.onChange && this.props.onChange(coords)
     this.setState({coords, isChanged: true})
   }
 
@@ -70,9 +64,8 @@ class EditLocation extends Component {
           {coords && <MapView
             onMapReady={handleMapReady}
             style={{flex: 1}}
-            region={coords}
+            initialRegion={coords}
             onRegionChangeComplete={handleMapPress}
-            provider="google"
             showsUserLocation={true}
             showsMyLocationButton={true}
             rotateEnabled={false}
@@ -87,8 +80,7 @@ class EditLocation extends Component {
 
 EditLocation.propTypes = {
   coords: PropTypes.object,
-  onSet: PropTypes.func.isRequired,
-  onRef: PropTypes.func,
+  onChange: PropTypes.func,
 }
 
 export default connect(

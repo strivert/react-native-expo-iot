@@ -23,16 +23,9 @@ class ViewForAdd1 extends Component {
         </View>
         <View style={{flex: 1}}>
           <View style={[styles.flexCenter, {flex: 0.3}]}>
-            <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin, {width: 250}]}>Are you within 5 meters of your charge point?</Text>
+            <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin]}>We will now add your charge point to your Andersen account</Text>
           </View>
           <Border style={styles.marginLeftRight16} />
-          <View style={[styles.flexCenter, {flex: 0.3}]}>
-            <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin, {width: 250}]}>Are you within range of your chosen WiFi network?</Text>
-          </View>
-          <Border style={styles.marginLeftRight16} />
-          <View style={[styles.flexCenter, {flex: 0.3}]}>
-            <Text style={[styles.txtColor2, pageStyles.appText, pageStyles.txtPaddingMargin, {width: 250}]}>Do you have your WiFi network password?</Text>
-          </View>
         </View>
       </Container>
     )
@@ -47,6 +40,8 @@ let pageStyles = StyleSheet.create({
     fontSize: 18,
   },
   txtPaddingMargin: {
+    marginLeft: 60,
+    marginRight: 60,
     marginTop: 20,
     marginBottom: 20,
   },

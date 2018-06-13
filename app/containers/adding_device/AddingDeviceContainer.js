@@ -6,11 +6,11 @@ import { Container } from 'native-base'
 
 import styles from '../../styles'
 
+import ViewForAdd0 from '../../components/adding_device/ViewForAdd0'
 import ViewForAdd1 from '../../components/adding_device/ViewForAdd1'
 import ViewForAdd2 from '../../components/adding_device/ViewForAdd2'
 import ViewForAdd3 from '../../components/adding_device/ViewForAdd3'
 import ViewForAdd4 from '../../components/adding_device/ViewForAdd4'
-import ViewForAdd5 from '../../components/adding_device/ViewForAdd5'
 import ViewForAdd6 from '../../components/adding_device/ViewForAdd6'
 import ViewForAdd7 from '../../components/adding_device/ViewForAdd7'
 import ViewForAdd8 from '../../components/adding_device/ViewForAdd8'
@@ -18,6 +18,7 @@ import ViewForAdd9 from '../../components/adding_device/ViewForAdd9'
 import ViewForAdd10 from '../../components/adding_device/ViewForAdd10'
 import ViewForAdd11 from '../../components/adding_device/ViewForAdd11'
 import ViewForAdd12 from '../../components/adding_device/ViewForAdd12'
+import ViewForAdd13 from '../../components/adding_device/ViewForAdd13'
 
 import PageHeaderBack from '../../components/common/PageHeaderBack'
 
@@ -25,7 +26,7 @@ import reactMixin from 'react-mixin'
 import TimerMixin from 'react-timer-mixin'
 import {fetchId, fetchHotspots, configureAndConnectAp} from '../../actions/chipActions'
 import {setConnectionInter} from '../../actions/storeActions'
-import {setSerialNumber, setLocation, createClaimCode} from '../../actions/particleActions'
+import {setSerialNumber, setLocation, createClaimCode, renameDevice} from '../../actions/particleActions'
 
 import {deleteDevice, postDevice} from '../../services/particleService'
 import locationService from '../../services/locationService'
@@ -35,7 +36,7 @@ class AddingDeviceContainer extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      viewState: 0,
+      viewState: -1,
 
       selectedHotspot: null,
       hotspots: null,
@@ -49,6 +50,8 @@ class AddingDeviceContainer extends Component {
 
     this.fetchIdInterval = null
     this.verifyingConnectionInterval = null
+
+    this.handleSaveName = this.handleSaveName.bind(this)
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -72,13 +75,21 @@ class AddingDeviceContainer extends Component {
     // alert('amount')
   }
 
+  componentWillUnmount () {
+    this.clearInterval(this.fetchIdInterval)
+  }
+
   clearVerifyingConnectionInterval () {
     this.clearInterval(this.verifyingConnectionInterval)
   }
 
   increaseViewState () {
+    let newState = this.state.viewState + 1
+    if (newState === 4) {
+      newState += 1
+    }
     this.setState({
-      viewState: (this.state.viewState + 1),
+      viewState: newState,
     })
   }
 
@@ -88,8 +99,15 @@ class AddingDeviceContainer extends Component {
 
   onContinue () {
     // alert('onContinue')
+    let newState = this.state.viewState + 1
+    if (newState === 4) {
+      newState += 1
+    }
+    if (newState === 7 && this.state.selectedHotspot.sec <= 0) {
+      newState += 1
+    }
     this.setState({
-      viewState: (this.state.viewState + 1),
+      viewState: newState,
     })
   }
 
@@ -156,7 +174,7 @@ class AddingDeviceContainer extends Component {
 
   addAgain () {
     this.setState({
-      viewState: 0,
+      viewState: -1,
 
       selectedHotspot: null,
       hotspots: null,
@@ -202,6 +220,10 @@ class AddingDeviceContainer extends Component {
       }
     }
 
+    if (this.state.viewState === 3 && this.props.connected) {
+      this.setState({viewState: 5})
+    }
+
     if (this.state.viewState !== 8) {
       this.clearInterval(this.verifyingConnectionInterval)
     }
@@ -228,13 +250,22 @@ class AddingDeviceContainer extends Component {
     Promise.all(promises)
       .then(() => this.setState({
         saving: false,
-        viewState: 9,
       }))
+      .then(() => this.onContinue())
+  }
+
+  handleSaveName (name) {
+    this.setState({saving: true})
+    this.props.renameDevice(this.state.deviceId, name)
+      .then(() => this.setState({saving: false, viewState: 9}))
   }
 
   render () {
     let ViewComponent = null
     switch (this.state.viewState) {
+      case -1:
+        ViewComponent = ViewForAdd0
+        break
       case 0:
         ViewComponent = ViewForAdd1
         break
@@ -246,9 +277,6 @@ class AddingDeviceContainer extends Component {
         break
       case 3:
         ViewComponent = ViewForAdd4
-        break
-      case 4:
-        ViewComponent = ViewForAdd5
         break
       case 5:
         ViewComponent = ViewForAdd6
@@ -270,6 +298,9 @@ class AddingDeviceContainer extends Component {
         break
       case 11:
         ViewComponent = ViewForAdd12
+        break
+      case 12:
+        ViewComponent = ViewForAdd13
         break
       default:
         ViewComponent = ViewForAdd1
@@ -305,6 +336,7 @@ class AddingDeviceContainer extends Component {
           addAgain={() => this.addAgain() }
           clearVerifyingConnectionInterval={() => this.clearVerifyingConnectionInterval() }
           onBarCodeRead={(data, saveLocation) => this.handleSerialRead(data, saveLocation)}
+          onSaveName={name => this.handleSaveName(name)}
         />
       </Container>
     )
@@ -330,6 +362,7 @@ AddingDeviceContainer.propTypes = {
   setConnectionInter: PropTypes.func.isRequired,
   setLocation: PropTypes.func,
   setSerialNumber: PropTypes.func,
+  renameDevice: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -349,5 +382,6 @@ export default connect(
     setConnectionInter,
     setSerialNumber,
     setLocation,
+    renameDevice,
   }, dispatch)
 )(AddingDeviceContainer)

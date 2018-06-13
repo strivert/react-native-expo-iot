@@ -55,7 +55,7 @@ class ViewForAdd9 extends Component {
         <View>
           <View style={[styles.flexCenter, pageStyles.txtPaddingMargin]}>
             <Text style={[styles.txtColor2, pageStyles.appText]}>
-              Finalisign Wi-Fi network setup.
+              Finalising Wi-Fi network setup.
             </Text>
             <Text style={[styles.txtColor2, pageStyles.appText]}>
               This might take up to 60 secs

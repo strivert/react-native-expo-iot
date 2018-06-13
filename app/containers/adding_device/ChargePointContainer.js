@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
 import { Container } from 'native-base'
 
 import {withRouter} from 'react-router-native'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
+import {bindActionCreators} from 'redux'
 
 import styles from '../../styles'
 
@@ -14,8 +15,13 @@ import BlueBtn from '../../components/common/BlueBtn'
 import Border from '../../components/common/Border'
 import PageHeader from '../../components/common/PageHeader'
 import Spinner from '../../components/common/Spinner'
+import {selectedDeviceId as selectDevice} from '../../actions/particleActions'
 
 class ChargePointContainer extends Component {
+  constructor (props) {
+    super(props)
+    this.handlePressDevice = this.handlePressDevice.bind(this)
+  }
   componentDidMount () {
     const fromIsFrom = this.props.navigation.getParam('isFrom', '')
     if (fromIsFrom === 'addAgain') {
@@ -23,8 +29,14 @@ class ChargePointContainer extends Component {
     }
   }
 
+  handlePressDevice (deviceId) {
+    this.props.selectDevice(deviceId)
+    this.props.navigation.navigate('ChargeSetting')
+  }
+
   render () {
-    const {devicesHash, selectedDeviceId, user} = this.props
+    const {devicesHash, selectedDeviceId, devices} = this.props
+    const {handlePressDevice} = this
 
     if (this.props.deviceCount === 0) {
       return (
@@ -72,10 +84,6 @@ class ChargePointContainer extends Component {
       )
     }
 
-    const deviceName = selectedDevice.name
-    const userAddress1 = user.address1
-    const userAddress2 = user.address2
-
     return (
       <Container style={pageStyles.moreWrapper}>
         <PageHeader />
@@ -89,29 +97,14 @@ class ChargePointContainer extends Component {
           barText='Your Charge Points'
         />
 
-        <BlueBtn style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]} onClick={() => { this.props.navigation.navigate('ChargeSetting') }}>
-          <View style={pageStyles.flexRowView}>
-            <View style={{flex: 0.8}}>
-              <Text style={[styles.txtColor2, pageStyles.currenctyText]}>{deviceName}</Text>
-            </View>
-            <View style={{flex: 0.2, alignItems: 'flex-end', justifyContent: 'center'}}>
-              <Image
-                style={{height: 22, width: 13}}
-                source={require('../../assets/images/page_icons/next.png')}
-                resizeMode="contain"
-              />
-            </View>
-          </View>
-        </BlueBtn>
-
-        <Border style={pageStyles.marginLeftRight16} />
-
-        {
-          userAddress1 ? (
-            <BlueBtn style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]} onClick={() => { this.props.navigation.navigate('ChargeSetting') }}>
+        <ScrollView>
+          {devices.map((device, key) => ([
+            <BlueBtn key={`${key}btn`} style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]} onClick={() => handlePressDevice(device.id)}>
               <View style={pageStyles.flexRowView}>
                 <View style={{flex: 0.8}}>
-                  <Text style={[styles.txtColor2, pageStyles.currenctyText]}>{userAddress1}</Text>
+                  <Text style={[styles.txtColor2, pageStyles.currenctyText, {fontFamily: 'Proxima_nova_ltsemibold'}]}>
+                    {('variables' in device) ? device.variables.friendlyName : 'Undefined'}
+                  </Text>
                 </View>
                 <View style={{flex: 0.2, alignItems: 'flex-end', justifyContent: 'center'}}>
                   <Image
@@ -121,40 +114,10 @@ class ChargePointContainer extends Component {
                   />
                 </View>
               </View>
-            </BlueBtn>
-          ) : null
-        }
-
-        {
-          userAddress1 ? (
-            <Border style={pageStyles.marginLeftRight16} />
-          ) : null
-        }
-
-        {
-          userAddress2 ? (
-            <BlueBtn style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]} onClick={() => { this.props.navigation.navigate('ChargeSetting') }}>
-              <View style={pageStyles.flexRowView}>
-                <View style={{flex: 0.8}}>
-                  <Text style={[styles.txtColor2, pageStyles.currenctyText]}>{userAddress2}</Text>
-                </View>
-                <View style={{flex: 0.2, alignItems: 'flex-end', justifyContent: 'center'}}>
-                  <Image
-                    style={{height: 22, width: 13}}
-                    source={require('../../assets/images/page_icons/next.png')}
-                    resizeMode="contain"
-                  />
-                </View>
-              </View>
-            </BlueBtn>
-          ) : null
-        }
-
-        {
-          userAddress2 ? (
-            <Border style={[pageStyles.marginLeftRight16, {marginBottom: 60}]} />
-          ) : null
-        }
+            </BlueBtn>,
+            <Border key={`${key}border`} style={pageStyles.marginLeftRight16} />,
+          ]))}
+        </ScrollView>
 
         <Bar
           barText='Add Charge Point'
@@ -217,14 +180,17 @@ ChargePointContainer.propTypes = {
   selectedDeviceId: PropTypes.any,
   isFrom: PropTypes.any,
   deviceCount: PropTypes.any,
+  selectDevice: PropTypes.func,
+  devices: PropTypes.array,
 }
 
 export default withRouter(connect(
   state => ({
     devicesHash: state.particle.devicesHash,
+    devices: state.particle.devices,
     selectedDeviceId: state.particle.selectedDeviceId,
     user: state.user,
     deviceCount: state.particle.deviceCount,
   }),
-  null
+  dispatch => bindActionCreators({selectDevice}, dispatch)
 )(ChargePointContainer))

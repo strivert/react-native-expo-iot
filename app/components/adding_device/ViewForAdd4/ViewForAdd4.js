@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { Container } from 'native-base'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import PropTypes from 'prop-types'
 
 import styles from '../../../styles'
 import Bar2 from '../../common/Bar2'
 import BlueBtn from '../../common/BlueBtn'
-import Border from '../../common/Border'
 
 class ViewForAdd4 extends Component {
   render () {
@@ -16,9 +15,6 @@ class ViewForAdd4 extends Component {
         <View style={pageStyles.menuBar}>
           <BlueBtn onClick={this.props.onCancel}>
             <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Cancel</Text>
-          </BlueBtn>
-          <BlueBtn onClick={this.props.onContinue}>
-            <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Continue</Text>
           </BlueBtn>
         </View>
         <View>
@@ -35,7 +31,9 @@ class ViewForAdd4 extends Component {
               </Text>
             </View>
           </View>
-          <Border style={styles.marginLeftRight16} />
+          <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: 50}}>
+            <Image source={require('../../../assets/images/page_icons/spinner.gif')} style={{width: 50, height: 50}} />
+          </View>
         </View>
       </Container>
     )

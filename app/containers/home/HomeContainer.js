@@ -365,7 +365,8 @@ class HomeContainer extends Component {
         case 'C':
         case 'D':
           initStates['cost']['t1Text'] = 'Charging Cost'
-          initStates['cost']['t2Text'] = `£ ${costunit}`
+          // initStates['cost']['t2Text'] = `£ ${costunit}`
+          initStates['cost']['t2Text'] = `£ ${totalcost}`
           initStates['cost']['t2Sty'] = 'greenColor'
           initStates['cost']['iconSty'] = 'grayColor'
 
