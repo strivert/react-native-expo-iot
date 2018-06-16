@@ -10,7 +10,7 @@
     "privacy": "unlisted",
     "android": {
       "package": "com.irdev.konnect_app",
-      "versionCode": 2,
+      "versionCode": 3,
       "config": {
        "googleMaps": {
          "apiKey": "AIzaSyCbYW5CoxoxwTrMO6H3RvoFFXzHSICF2lI"
@@ -24,6 +24,9 @@
       "image": "./app/assets/images/splash_960.png",
       "resizeMode": "cover"
     },
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "notification": {
+      "icon": "./app/assets/images/notification.png"
+    }
   }
 }
