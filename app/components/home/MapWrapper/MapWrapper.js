@@ -26,20 +26,6 @@ class MapWrapper extends Component {
       return false
     }
 
-    if (nextProps.isRefresh === 0) {
-      return false
-    }
-
-    if (nextProps.mapUpdated === 1) {
-      return false
-    }
-
-    /*
-    if ((this.props.isRefresh === nextProps.isRefresh) && (this.props.mapUpdated === nextProps.mapUpdated)) {
-      return false
-    }
-    */
-
     return true
   }
 
@@ -54,20 +40,18 @@ class MapWrapper extends Component {
   componentDidUpdate (prevProps, prevState) {
     if (this.state.visibleSwiper) {
       this._swiper.scrollBy(0)
-      // console.log('isRefresh', this.props.isRefresh)
-      // console.log('mapUpdated', this.props.mapUpdated)
     }
   }
 
   onIndexChanged (selectedIndex) {
     this.props.selectDevice(
       this.props.mapData[selectedIndex].deviceId
-    )    
+    )
   }
 
   render () {
     const {mapData} = this.props
-    const isRefresh = this.props.isRefresh
+    // console.log('mapData', mapData)
     const maps = mapData.map((item, i) => {
       return (
         <View key={`view-map-${i}`} style={{ flex: 1, position: 'relative' }}>
