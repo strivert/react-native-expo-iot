@@ -13,6 +13,7 @@ import {
   RECEIVED_DEVICE_STATUS,
   LOGOUT,
   SET_SELECTED_DEVICE_ID,
+  MAP_UPDATED,
 } from '../types'
 
 import {keyBy, merge, values, get} from 'lodash'
@@ -27,6 +28,7 @@ const initialState = {
   selectedDeviceId: null,
   deviceCount: null,
   unlockedEvent: null,
+  mapUpdated: 1,
 }
 
 export default function data (state = initialState, action) {
@@ -151,6 +153,11 @@ export default function data (state = initialState, action) {
       return {
         ...state,
         unlockedEvent: action.payload,
+      }
+    case MAP_UPDATED:
+      return {
+        ...state,
+        mapUpdated: action.payload,
       }
     default:
       return state

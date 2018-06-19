@@ -488,7 +488,15 @@ class HomeContainer extends Component {
     } else {
       displayKeyArray = ['status', 'charge', 'cost', 'power', 'mainternance']
     }
+    // console.log('this.props', this.props.navigation)
 
+    let isRefresh = 0
+    if (this.checkKeyExist('params', this.props.navigation.state)) {
+      if (this.props.navigation.state.params && this.checkKeyExist('isRefresh', this.props.navigation.state.params)) {
+        isRefresh = this.props.navigation.state.params.isRefresh
+      }
+    }
+    
     return (
       <Container style={pageStyles.homeWrapper}>
         <View style={{height: 207}}>
@@ -497,6 +505,8 @@ class HomeContainer extends Component {
               <MapWrapper
                 selectDevice={(deviceId) => this.selectDevice(deviceId)}
                 mapData={deviceArr}
+                mapUpdated={this.props.mapUpdated}
+                isRefresh={isRefresh}
               />) : (
               <Container style={{backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'}}>
                 <Spinner />
@@ -555,6 +565,7 @@ HomeContainer.propTypes = {
   deviceCount: PropTypes.any,
   goAddPage: PropTypes.func,
   setTabVisible: PropTypes.func,
+  mapUpdated: PropTypes.any,
 }
 
 export default withRouter(connect(
@@ -564,6 +575,7 @@ export default withRouter(connect(
     deviceCount: state.particle.deviceCount,
     token: state.auth.token,
     internetConnection: state.misc.internetConnection,
+    mapUpdated: state.particle.mapUpdated,
   }),
   dispatch => bindActionCreators({setEnableCharging, selectedDeviceId}, dispatch)
 )(HomeContainer))

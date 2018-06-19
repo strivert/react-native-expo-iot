@@ -32,6 +32,7 @@ class Home extends Component {
           this.props.navigation.navigate('AddCharge')
         }}
         setTabVisible={this.setTabVisible}
+        {...this.props}
       />
     )
   }

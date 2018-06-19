@@ -12,4 +12,7 @@ module.exports = keyMirror({
   SOCKET_CONNECTED: null,
   SOCKET_DISCONNECTED: null,
   SET_SELECTED_DEVICE_ID: null,
+
+  // refresh swiper-mapview once udpated
+  MAP_UPDATED: false,
 })

@@ -52,7 +52,7 @@ class ChargePointContainer extends Component {
           />
 
           <BlueBtn style={[pageStyles.paddingLeftRight42, pageStyles.AppWrapper]} onClick={() => { this.props.navigation.navigate('AddCharge') }}>
-            <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>App Charge Point</Text>
+            <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Add Charge Point</Text>
           </BlueBtn>
         </Container>
       )
@@ -124,7 +124,7 @@ class ChargePointContainer extends Component {
         />
 
         <BlueBtn style={[pageStyles.paddingLeftRight42, pageStyles.AppWrapper]} onClick={() => { this.props.navigation.navigate('AddCharge') }}>
-          <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>App Charge Point</Text>
+          <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Add Charge Point</Text>
         </BlueBtn>
 
       </Container>

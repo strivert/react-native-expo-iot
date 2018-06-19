@@ -21,6 +21,10 @@ class ViewForAdd12 extends Component {
     }
   }
 
+  componentDidMount() {
+    this.props.setMapUpdated()
+  }
+
   componentWillMount () {
     Permissions.askAsync(Permissions.CAMERA)
       .then(response => this.setState({hasCameraPermission: response.status === 'granted'}))
@@ -98,7 +102,7 @@ class ViewForAdd12 extends Component {
 
           <View style={{flexBasis: 50, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
             <CheckBox checked={saveLocation} style={{marginRight: 20}} onPress={handleToggleSaveLocation} />
-            <Text style={[styles.txtColor2, pageStyles.appText]}>Us phone location</Text>
+            <Text style={[styles.txtColor2, pageStyles.appText]}>Use phone location</Text>
           </View>
 
         </View>

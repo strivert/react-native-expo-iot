@@ -10,7 +10,7 @@
     "privacy": "unlisted",
     "android": {
       "package": "com.irdev.konnect_app",
-      "versionCode": 3,
+      "versionCode": 4,
       "config": {
        "googleMaps": {
          "apiKey": "AIzaSyCbYW5CoxoxwTrMO6H3RvoFFXzHSICF2lI"

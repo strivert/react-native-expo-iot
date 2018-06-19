@@ -15,6 +15,7 @@ import {
   SOCKET_CONNECTED,
   SOCKET_DISCONNECTED,
   SET_SELECTED_DEVICE_ID,
+  MAP_UPDATED,
 } from '../types'
 
 import {
@@ -41,6 +42,7 @@ module.exports = {
   selectedDeviceId,
   receivedDeviceCount,
   putUnlockedEvent,
+  setMapUpdated,
 }
 
 function createClaimCode () {
@@ -137,6 +139,13 @@ function receivedDeviceCount (data) {
 function putUnlockedEvent (data) {
   return {
     type: PUT_UNLOCKED_EVENT,
+    payload: data,
+  }
+}
+
+function setMapUpdated (data) {
+  return {
+    type: MAP_UPDATED,
     payload: data,
   }
 }

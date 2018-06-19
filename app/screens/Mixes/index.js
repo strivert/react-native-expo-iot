@@ -15,6 +15,7 @@ import UnitCost from './UnitCost'
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import Footer from '../../components/common/Footer'
 
+/*
 const HomeNav = StackNavigator(
   {
     Home: { screen: Home },
@@ -30,6 +31,7 @@ const HomeNav = StackNavigator(
     }),
   }
 )
+*/
 const SettingNav = StackNavigator(
   {
     ChargePoint: { screen: ChargePoint },
@@ -81,7 +83,7 @@ const MoreNav = StackNavigator(
 
 export default ( MainScreenNavigator = TabNavigator(
   {
-    HomeNav: { screen: HomeNav },
+    HomeNav: { screen: Home },
     UserNav: { screen: UserNav },
     SettingNav: { screen: SettingNav },
     MoreNav: { screen: MoreNav },

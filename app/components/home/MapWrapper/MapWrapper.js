@@ -19,11 +19,28 @@ class MapWrapper extends Component {
       return true
     }
 
-    if (odiff.equal(this.props.mapData, nextProps.mapData)) {
+    if (
+      odiff.equal(this.props.mapData, nextProps.mapData) &&
+      this.props.isRefresh === nextProps.isRefresh
+    ) {
       return false
-    } else {
-      return true
     }
+
+    if (nextProps.isRefresh === 0) {
+      return false
+    }
+
+    if (nextProps.mapUpdated === 1) {
+      return false
+    }
+
+    /*
+    if ((this.props.isRefresh === nextProps.isRefresh) && (this.props.mapUpdated === nextProps.mapUpdated)) {
+      return false
+    }
+    */
+
+    return true
   }
 
   componentDidMount () {
@@ -34,21 +51,35 @@ class MapWrapper extends Component {
     }, 100)
   }
 
+  componentDidUpdate (prevProps, prevState) {
+    if (this.state.visibleSwiper) {
+      this._swiper.scrollBy(0)
+      // console.log('isRefresh', this.props.isRefresh)
+      // console.log('mapUpdated', this.props.mapUpdated)
+    }
+  }
+
   onIndexChanged (selectedIndex) {
     this.props.selectDevice(
       this.props.mapData[selectedIndex].deviceId
-    )
+    )    
   }
 
   render () {
     const {mapData} = this.props
-    // console.log('mapData', mapData)
+    const isRefresh = this.props.isRefresh
     const maps = mapData.map((item, i) => {
       return (
         <View key={`view-map-${i}`} style={{ flex: 1, position: 'relative' }}>
           <MapView
             style={{ flex: 1 }}
             initialRegion={{
+              latitude: item.location.latitude + 0.185,
+              longitude: item.location.longitude - 0.525,
+              latitudeDelta: item.location.latitudeDelta,
+              longitudeDelta: item.location.longitudeDelta,
+            }}
+            region={{
               latitude: item.location.latitude + 0.185,
               longitude: item.location.longitude - 0.525,
               latitudeDelta: item.location.latitudeDelta,
@@ -89,6 +120,8 @@ class MapWrapper extends Component {
             nextButton={<Text style={{color: '#707070', fontSize: 50}}>›</Text>}
             prevButton={<Text style={{color: '#707070', fontSize: 50}}>‹</Text>}
             activeDotColor={'#707070'}
+            ref={(swiper) => { this._swiper = swiper }}
+            // key={`me-${isRefresh}`}
           >
             {maps}
           </Swiper>
@@ -107,6 +140,8 @@ let styles = StyleSheet.create({
 MapWrapper.propTypes = {
   mapData: PropTypes.array,
   selectDevice: PropTypes.func,
+  isRefresh: PropTypes.any,
+  mapUpdated: PropTypes.any,
 }
 
 export default MapWrapper

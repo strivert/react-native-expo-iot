@@ -17,7 +17,7 @@ import Spinner from '../../components/common/Spinner'
 import Dialog from '../../components/Dialog'
 import EditLocation from '../devices/EditLocation'
 
-import { renameDevice, setSerialNumber, setLocation } from '../../actions/particleActions'
+import { renameDevice, setSerialNumber, setLocation, setMapUpdated } from '../../actions/particleActions'
 
 import { MapView, Svg, BarCodeScanner } from 'expo'
 
@@ -86,6 +86,7 @@ class ChargeSettingContainer extends Component {
       this.setState({saving: true, editingLocation: false})
       this.props.setLocation(this.props.devicesHash[this.props.selectedDeviceId].id, this.state.editingLocationCoords)
         .then(() => this.setState({saving: false, editingLocationCoords: null}))
+      this.props.setMapUpdated(Math.random())
     }
   }
 
@@ -287,6 +288,12 @@ class ChargeSettingContainer extends Component {
               latitudeDelta: locationItem.location.latitudeDelta,
               longitudeDelta: locationItem.location.longitudeDelta,
             }}
+            region={{
+              latitude: locationItem.location.latitude,
+              longitude: locationItem.location.longitude,
+              latitudeDelta: locationItem.location.latitudeDelta,
+              longitudeDelta: locationItem.location.longitudeDelta,
+            }}
           >
             <MapView.Marker
               // coordinate={item.location}
@@ -360,6 +367,7 @@ ChargeSettingContainer.propTypes = {
   setSerialNumber: PropTypes.func.isRequired,
   renameDevice: PropTypes.func.isRequired,
   setLocation: PropTypes.func.isRequired,
+  setMapUpdated: PropTypes.func.isRequired,
 }
 
 export default withRouter(connect(
@@ -367,5 +375,5 @@ export default withRouter(connect(
     devicesHash: state.particle.devicesHash,
     selectedDeviceId: state.particle.selectedDeviceId,
   }),
-  dispatch => bindActionCreators({ setSerialNumber, renameDevice, setLocation }, dispatch)
+  dispatch => bindActionCreators({ setSerialNumber, renameDevice, setLocation, setMapUpdated }, dispatch)
 )(ChargeSettingContainer))
