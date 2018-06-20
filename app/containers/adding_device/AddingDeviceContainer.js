@@ -19,6 +19,7 @@ import ViewForAdd10 from '../../components/adding_device/ViewForAdd10'
 import ViewForAdd11 from '../../components/adding_device/ViewForAdd11'
 import ViewForAdd12 from '../../components/adding_device/ViewForAdd12'
 import ViewForAdd13 from '../../components/adding_device/ViewForAdd13'
+import ViewForAdd14 from '../../components/adding_device/ViewForAdd14'
 
 import PageHeaderBack from '../../components/common/PageHeaderBack'
 
@@ -26,7 +27,7 @@ import reactMixin from 'react-mixin'
 import TimerMixin from 'react-timer-mixin'
 import {fetchId, fetchHotspots, configureAndConnectAp} from '../../actions/chipActions'
 import {setConnectionInter} from '../../actions/storeActions'
-import {setSerialNumber, setLocation, createClaimCode, renameDevice} from '../../actions/particleActions'
+import {setSerialNumber, setLocation, createClaimCode, renameDevice, setMapUpdated} from '../../actions/particleActions'
 
 import {deleteDevice, postDevice} from '../../services/particleService'
 import locationService from '../../services/locationService'
@@ -105,6 +106,9 @@ class AddingDeviceContainer extends Component {
     }
     if (newState === 7 && this.state.selectedHotspot.sec <= 0) {
       newState += 1
+    }
+    if (newState === 14) {
+      newState = 12
     }
     this.setState({
       viewState: newState,
@@ -302,6 +306,9 @@ class AddingDeviceContainer extends Component {
       case 12:
         ViewComponent = ViewForAdd13
         break
+      case 13:
+        ViewComponent = ViewForAdd14
+        break
       default:
         ViewComponent = ViewForAdd1
     }
@@ -329,6 +336,11 @@ class AddingDeviceContainer extends Component {
               viewState: 10,
             })
           }}
+          goManualQR={() => {
+            this.setState({
+              viewState: 13,
+            })
+          }}
           clearHotspots={() => this.clearHotspots()}
           goDashboard={() => {
             this.props.navigation.navigate('HomeNav')
@@ -337,6 +349,7 @@ class AddingDeviceContainer extends Component {
           clearVerifyingConnectionInterval={() => this.clearVerifyingConnectionInterval() }
           onBarCodeRead={(data, saveLocation) => this.handleSerialRead(data, saveLocation)}
           onSaveName={name => this.handleSaveName(name)}
+          setMapUpdated={this.props.setMapUpdated}
         />
       </Container>
     )
@@ -363,6 +376,7 @@ AddingDeviceContainer.propTypes = {
   setLocation: PropTypes.func,
   setSerialNumber: PropTypes.func,
   renameDevice: PropTypes.func.isRequired,
+  setMapUpdated: PropTypes.func,
 }
 
 export default connect(
@@ -383,5 +397,6 @@ export default connect(
     setSerialNumber,
     setLocation,
     renameDevice,
+    setMapUpdated,
   }, dispatch)
 )(AddingDeviceContainer)

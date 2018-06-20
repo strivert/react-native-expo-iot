@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { Container, CheckBox } from 'native-base'
-import { StyleSheet, Text, View, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, Image } from 'react-native'
 import PropTypes from 'prop-types'
 import { BarCodeScanner, Permissions, Svg } from 'expo'
 
 import styles from '../../../styles'
 import Bar2 from '../../common/Bar2'
 import Spinner from '../../common/Spinner'
+import BlueBtn from '../../common/BlueBtn'
+
 
 class ViewForAdd12 extends Component {
   constructor (props) {
@@ -66,7 +68,7 @@ class ViewForAdd12 extends Component {
     return (
       <Container style={styles.bgColor}>
         <Bar2 barText="Scan QR Code" />
-        <View style={{margin: 40, marginLeft: 50, marginRight: 50, marginBottom: 10}}>
+        <View style={{margin: 20, marginLeft: 50, marginRight: 50, marginBottom: 10}}>
           <Text style={[styles.txtColor2, pageStyles.appText, styles.textCenter]}>
             Now scan the QR code on the chargepoint
           </Text>
@@ -80,29 +82,22 @@ class ViewForAdd12 extends Component {
             />
           </View>
           <View style={pageStyles.pageView}>
-            <View style={{width: svgSize, height: svgSize}}>
-              <Svg height={svgSize} width={svgSize}>
-                <Svg.G scale={svgSize / 87.8} originX={8}>
-                  <Svg.G>
-                    <Svg.Polygon points="13.2,30 12.2,30 12.2,12.2 30,12.2 30,13.2 13.2,13.2" />
-                  </Svg.G>
-                  <Svg.G>
-                    <Svg.Polygon points="70,13.2 70,12.2 87.8,12.2 87.8,30 86.8,30 86.8,13.2" />
-                  </Svg.G>
-                  <Svg.G>
-                    <Svg.Polygon points="86.8,70 87.8,70 87.8,87.8 70,87.8 70,86.8 86.8,86.8" />
-                  </Svg.G>
-                  <Svg.G>
-                    <Svg.Polygon points="30,86.8 30,87.8 12.2,87.8 12.2,70 13.2,70 13.2,86.8" />
-                  </Svg.G>
-                </Svg.G>
-              </Svg>
+            <View style={{flex: 1}}>
+              { 
+                // <Image source={require('../../../assets/images/focus_rect.png')} style={{flex: 1}} resizeMode={'stretch'}/>
+              }
             </View>
           </View>
 
           <View style={{flexBasis: 50, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
             <CheckBox checked={saveLocation} style={{marginRight: 20}} onPress={handleToggleSaveLocation} />
             <Text style={[styles.txtColor2, pageStyles.appText]}>Use phone location</Text>
+          </View>
+
+          <View style={{flexBasis: 50, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+            <BlueBtn onClick={this.props.goManualQR()} style={{paddingTop: 10, paddingBottom: 20}}>
+              <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Manually Add QR Code</Text>
+            </BlueBtn>
           </View>
 
         </View>
@@ -116,13 +111,8 @@ let pageStyles = StyleSheet.create({
     fontSize: 18,
   },
   pageView: {
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    flex: 1,
     position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
   },
 })
 
@@ -132,6 +122,7 @@ ViewForAdd12.propTypes = {
   addAgain: PropTypes.func,
   onBarCodeRead: PropTypes.func,
   saving: PropTypes.any,
+  goManualQR: PropTypes.func,
 }
 
 export default ViewForAdd12
