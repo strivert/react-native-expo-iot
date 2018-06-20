@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Linking } from 'react-native'
-import { Container } from 'native-base'
+import { Container, CheckBox } from 'native-base'
+import odiff from 'odiff'
+
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
@@ -15,13 +17,42 @@ import Spinner from '../../components/common/Spinner'
 
 import config from '../../config/config'
 
+import {
+  postSetSolarMode,
+} from '../../services/particleService'
+
 class MoreContainer extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      enableSolar: true,
+    }
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    if (odiff.equal(this.props, nextProps) && odiff.equal(this.state, nextState)) {
+      return false
+    } else {
+      return true
+    }
+  }
+
   checkKeyExist = (key, object) => {
     return (key in object)
   }
 
+  handleToggleSaveSolar = () => {
+    postSetSolarMode(this.props.selectedDeviceId, true)
+      .then((a) => {
+      })
+      .catch((err) => {
+          console.log(err)
+      })
+  }
+
   render () {
     const {devicesHash, selectedDeviceId} = this.props
+    const {enableSolar} = this.state
 
     if (this.props.deviceCount === 0) {
       return (
@@ -67,6 +98,14 @@ class MoreContainer extends Component {
       deviceCostUnit = parseFloat(selectedDevice['variables']['costunit']).toFixed(2)
     }
 
+    let deviceSolar = null
+
+    if (this.checkKeyExist('solarmode', selectedDevice['variables'])) {
+      deviceSolar = selectedDevice['variables']['solarmode']
+    }
+
+    const disableStyle = deviceSolar === null ? {color: '#E8E3E3'} : {}
+
     return (
       <Container style={pageStyles.moreWrapper}>
         <PageHeader />
@@ -92,6 +131,36 @@ class MoreContainer extends Component {
               <BlueBtn style={[]} onClick={() => { this.props.navigation.navigate('UnitCost') }}>
                 <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Edit</Text>
               </BlueBtn>
+            </View>
+          </View>
+        </BlueBtn>
+
+        <Bar
+          barText='Solar Mode'
+        />
+
+        <BlueBtn style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]} onClick={()=>this.handleToggleSaveSolar()}>
+          <View style={pageStyles.flexRowView}>
+            <View style={{flex: 0.8}}>
+              <Text style={[styles.txtColor2, pageStyles.currenctyText, disableStyle]}>Enable Solar Charge Mode</Text>
+            </View>
+            <View style={{flex: 0.2, alignItems: 'flex-end'}}>
+              {
+                deviceSolar === null ? (
+                  <CheckBox
+                    checked={deviceSolar}
+                    style={{ marginRight: 20 }}
+                    color={'#E8E3E3'}
+                    onPress={() => {}}
+                  />
+                ) : (
+                  <CheckBox
+                    checked={deviceSolar}
+                    style={{ marginRight: 20 }}
+                    onPress={() => this.handleToggleSaveSolar()}
+                  />
+                )
+              }
             </View>
           </View>
         </BlueBtn>

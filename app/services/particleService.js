@@ -11,6 +11,7 @@ module.exports = {
   deleteDevice,
   postDevice,
   putDeviceChargeCost,
+  postSetSolarMode,
 }
 
 function postCreateClaimCode () {
@@ -65,5 +66,12 @@ function putDeviceLocation (deviceId, location) {
 function putDeviceChargeCost (deviceId, costunit) {
   return andersenHttp.put(`devices/${deviceId}/setchargecost`, {
     costunit,
+  })
+}
+
+function postSetSolarMode (deviceId, enabled) {
+  // console.log('`devices/${deviceId}/set-remote-locking`', `devices/${deviceId}/set-remote-locking`)
+  return andersenHttp.post(`devices/${deviceId}/setsolarmode`, {
+    setTo: enabled,
   })
 }

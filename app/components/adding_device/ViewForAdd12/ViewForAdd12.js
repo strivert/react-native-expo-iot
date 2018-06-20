@@ -95,7 +95,7 @@ class ViewForAdd12 extends Component {
           </View>
 
           <View style={{flexBasis: 50, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-            <BlueBtn onClick={this.props.goManualQR()} style={{paddingTop: 10, paddingBottom: 20}}>
+            <BlueBtn onClick={()=>this.props.goManualQR()} style={{paddingTop: 10, paddingBottom: 20}}>
               <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Manually Add QR Code</Text>
             </BlueBtn>
           </View>

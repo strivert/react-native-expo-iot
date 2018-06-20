@@ -30,7 +30,7 @@ class ViewForAdd14 extends Component {
     }
   }
 
-  handlePasswordChange (text) {
+  handleCodeChange (text) {
     this.setState({
       codeText: text,
     })
@@ -43,7 +43,7 @@ class ViewForAdd14 extends Component {
       <Container style={styles.bgColor}>
         <Bar2 barText="Type QR Serial Code" />
         <View style={pageStyles.menuBar}>
-          <BlueBtn onClick={this.props.onCancel}>
+          <BlueBtn onClick={()=>this.props.onCancel}>
             <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Cancel</Text>
           </BlueBtn>
           <BlueBtn onClick={() => this.handleContinue()}>
