@@ -30,6 +30,7 @@ class HomeContainer extends Component {
     this.state = {
       selectedDeviceId: null,
       visibleTabBar: false,
+	  visibleSolarModal: false,
     }
   }
 
@@ -150,8 +151,30 @@ class HomeContainer extends Component {
     return hours + ':' + minutes + ':' + seconds
   }
 
+  closeSolarModal = (goSolar) => {
+	this.setState({
+	  visibleSolarModal: false
+    }, () => {
+		if (goSolar)
+		{
+			this.postSolar(this.state.selectedDeviceId, true)
+		}
+	})
+  }
+
   handleToggleEco = (deviceId, enabled) => {
-    postSetEcoMode(deviceId, enabled)
+	  if (enabled)
+	  {
+		  this.setState({
+			  visibleSolarModal: true
+		  })
+	  } else {
+		this.postSolar(deviceId, enabled)
+	  }
+  }
+  
+  postSolar = (deviceId, enabled) => {
+	  postSetEcoMode(deviceId, enabled)
       .then((a) => {
       })
       .catch((err) => {
@@ -306,6 +329,7 @@ class HomeContainer extends Component {
 		if (ecomode)
 		{
 		  initStates['gridpower']['t2Sty'] = 'disableColor'
+		  initStates['gridpower']['iconName'] = 'power2'
 		}
 	}
 
@@ -389,10 +413,13 @@ class HomeContainer extends Component {
 		  if (solarmode && ecomode)
 		  {
 		    initStates['gridpower']['t2Sty'] = 'disableColor'
+			initStates['gridpower']['iconName'] = 'power2'
 		  } else {
             initStates['gridpower']['t2Sty'] = 'greenColor'
+			initStates['gridpower']['iconName'] = 'power3'
 		  }
           initStates['solar']['t2Sty'] = 'greenColor'
+		  initStates['solar']['iconName'] = 'power3'
           break
       }
       switch (this.catchCharFromChargerStatus(chargerstatus)) {
@@ -587,7 +614,7 @@ class HomeContainer extends Component {
 
     return (
       <Container style={pageStyles.homeWrapper}>
-        {/*<SolarModal />*/}
+        <SolarModal visible={this.state.visibleSolarModal} closeSolarModal={(goSolar)=>this.closeSolarModal(goSolar)} />
         <View style={{height: 207}}>
           {
             (this.props.deviceCount !== null && deviceArr.length === this.props.deviceCount) ? (

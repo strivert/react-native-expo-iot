@@ -105,7 +105,7 @@ class MoreContainer extends Component {
       deviceSolar = selectedDevice['variables']['solarmode']
     }
 
-	  console.log('deviceSolar', deviceSolar)
+	  // console.log('deviceSolar', deviceSolar)
 
     const disableStyle = deviceSolar === null ? {color: '#E8E3E3'} : {}
 
@@ -160,7 +160,7 @@ class MoreContainer extends Component {
                   <CheckBox
                     checked={deviceSolar}
                     style={{ marginRight: 20 }}
-                    onPress={() => {}}
+                    onPress={()=>this.handleToggleSaveSolar(deviceSolar)}
                   />
                 )
               }
