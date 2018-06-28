@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, Text } from 'react-native'
+import { StyleSheet, View, Image, Text, ScrollView } from 'react-native'
 import { Container } from 'native-base'
 
 import {withRouter} from 'react-router-native'
@@ -12,6 +12,7 @@ import odiff from 'odiff'
 
 import ListItem from '../../components/home/ListItem'
 import MapWrapper from '../../components/home/MapWrapper'
+import SolarModal from '../../components/home/SolarModal'
 import {setEnableCharging, selectedDeviceId} from '../../actions/particleActions'
 import Spinner from '../../components/common/Spinner'
 import PageHeader from '../../components/common/PageHeader'
@@ -19,6 +20,9 @@ import PageTop from '../../components/common/PageTop'
 import Bar from '../../components/common/Bar'
 import BlueBtn from '../../components/common/BlueBtn'
 import appStyles from '../../styles'
+import {
+  postSetEcoMode,
+} from '../../services/particleService'
 
 class HomeContainer extends Component {
   constructor (props) {
@@ -146,6 +150,15 @@ class HomeContainer extends Component {
     return hours + ':' + minutes + ':' + seconds
   }
 
+  handleToggleEco = (deviceId, enabled) => {
+    postSetEcoMode(deviceId, enabled)
+      .then((a) => {
+      })
+      .catch((err) => {
+          console.log(err)
+      })
+  }
+
   render () {
     const { selectedDeviceId } = this.state
 
@@ -237,6 +250,23 @@ class HomeContainer extends Component {
         't2Sty': 'disableColor',
         'hasSwitch': false,
       },
+	  'gridpower': {
+        't1Text': 'Grid Power',
+        't2Text': '0.00 kW',
+        'iconName': 'power2',
+        'iconSty': 'disableColor',
+        't2Sty': 'disableColor',
+        'hasSwitch': false,
+      },
+      'solar': {
+        't1Text': 'Solar Power',
+        't2Text': '0.00 kW',
+        'iconName': 'solar1-disable',
+        'iconSty': 'disableColor',
+        't2Sty': 'disableColor',
+        'hasSwitch': false,
+        'hasSolarSwitch': true,
+      },
     }
 
     const online = this.checkKeyExist('online', selectedDevice['variables']) ? selectedDevice['variables']['online'] : undefined
@@ -249,9 +279,36 @@ class HomeContainer extends Component {
     let costunit = this.checkKeyExist('costunit', selectedDevice['variables']) ? selectedDevice['variables']['costunit'] : undefined
     costunit = (costunit === undefined) ? '0.00' : costunit.toFixed(2)
 
+	let solarpower = this.checkKeyExist('solarpower', selectedDevice['variables']) ? selectedDevice['variables']['solarpower'] : undefined
+    solarpower = (solarpower === undefined) ? '0.00' : solarpower.toFixed(2)
+	let gridpower = this.checkKeyExist('gridpower', selectedDevice['variables']) ? selectedDevice['variables']['gridpower'] : undefined
+    gridpower = (gridpower === undefined) ? '0.00' : gridpower.toFixed(2)
+	let totalpower = this.checkKeyExist('totalpower', selectedDevice['variables']) ? selectedDevice['variables']['totalpower'] : undefined
+    totalpower = (totalpower === undefined) ? '0.00' : totalpower.toFixed(2)
+	let solarmode = this.checkKeyExist('solarmode', selectedDevice['variables']) ? selectedDevice['variables']['solarmode'] : false
+
+	let ecomode = this.checkKeyExist('ecomode', selectedDevice['variables']) ? selectedDevice['variables']['ecomode'] : false
+
     const lasterror = this.checkKeyExist('lasterror', selectedDevice['variables']) ? selectedDevice['variables']['lasterror'] : 0
 
     let dis_char = ''
+
+	if (solarmode)
+	{
+		initStates['gridpower']['t2Text'] = `${gridpower} kW`
+        initStates['gridpower']['t2Sty'] = 'grayColor'
+        initStates['gridpower']['iconName'] = 'power1'
+
+		initStates['solar']['t2Text'] = `${solarpower} kW`
+        initStates['solar']['t2Sty'] = 'grayColor'
+        initStates['solar']['iconName'] = 'solar1'
+
+		if (ecomode)
+		{
+		  initStates['gridpower']['t2Sty'] = 'disableColor'
+		}
+	}
+
 
     if (lasterror !== 0) {
       initStates['status']['t2Sty'] = 'redColor'
@@ -328,6 +385,14 @@ class HomeContainer extends Component {
           initStates['status']['t2Sty'] = 'greenColor'
           initStates['status']['iconName'] = 'status4'
           initStates['status']['iconSty'] = 'greenColor'
+
+		  if (solarmode && ecomode)
+		  {
+		    initStates['gridpower']['t2Sty'] = 'disableColor'
+		  } else {
+            initStates['gridpower']['t2Sty'] = 'greenColor'
+		  }
+          initStates['solar']['t2Sty'] = 'greenColor'
           break
       }
       switch (this.catchCharFromChargerStatus(chargerstatus)) {
@@ -477,6 +542,23 @@ class HomeContainer extends Component {
           't2Sty': 'disableColor',
           'hasSwitch': false,
         },
+		'gridpower': {
+		  't1Text': 'Grid Power',
+          't2Text': '0.00 kW',
+          'iconName': 'power2',
+          'iconSty': 'disableColor',
+          't2Sty': 'disableColor',
+          'hasSwitch': false,
+        },
+        'solar': {
+          't1Text': 'Solar Power',
+          't2Text': '0.00 kW',
+          'iconName': 'solar1-disable',
+          'iconSty': 'disableColor',
+          't2Sty': 'disableColor',
+          'hasSwitch': false,
+          'hasSolarSwitch': true,
+        },
       }
     } else {
       resultStates = Object.assign({}, initStates)
@@ -488,6 +570,12 @@ class HomeContainer extends Component {
     } else {
       displayKeyArray = ['status', 'charge', 'cost', 'power', 'mainternance']
     }
+	
+	if (solarmode)
+	{
+		displayKeyArray = ['status', 'charge', 'cost', 'power', 'gridpower', 'solar', 'mainternance']
+	}
+
     // console.log('this.props', this.props.navigation)
 
     let isRefresh = 0
@@ -496,9 +584,10 @@ class HomeContainer extends Component {
         isRefresh = this.props.navigation.state.params.isRefresh
       }
     }
-    
+
     return (
       <Container style={pageStyles.homeWrapper}>
+        {/*<SolarModal />*/}
         <View style={{height: 207}}>
           {
             (this.props.deviceCount !== null && deviceArr.length === this.props.deviceCount) ? (
@@ -522,7 +611,8 @@ class HomeContainer extends Component {
           />
         </View>
 
-        <View style={{flex: 1, paddingLeft: 10, paddingRight: 10}}>
+        <ScrollView style={{flex: 1, paddingLeft: 10, paddingRight: 10}}>
+        { /*<View style={{flex: 1, paddingLeft: 10, paddingRight: 10}}>*/}
           {
             displayKeyArray.map((key, i) => {
               return (
@@ -530,6 +620,7 @@ class HomeContainer extends Component {
                   key={`listitem-${i}`}
                   iconName={resultStates[key]['iconName']}
                   hasSwitch={resultStates[key]['hasSwitch']}
+                  hasSolarSwitch={resultStates[key]['hasSolarSwitch']}
                   iconSty={resultStates[key]['iconSty']}
                   t2Sty={resultStates[key]['t2Sty']}
                   t1Text={resultStates[key]['t1Text']}
@@ -537,11 +628,14 @@ class HomeContainer extends Component {
                   isLast={ i === (displayKeyArray.length-1) }
                   setEnableCharging={this.props.setEnableCharging}
                   deviceId={this.state.selectedDeviceId}
+				  ecomode={ecomode}
                   isEnableSwitch={resultStates['status']['t2Text'] === 'Unlocked' || resultStates['status']['t2Text'] === 'Locked'}
+				  setEnableEco={(deviceId, enabled)=>this.handleToggleEco(deviceId, enabled)}
                 />)
             })
           }
-        </View>
+        </ScrollView>
+        {/*</View>*/}
 
       </Container>
     )

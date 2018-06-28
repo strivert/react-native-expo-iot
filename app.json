@@ -18,7 +18,9 @@
      }
     },
     "ios": {
-      "bundleIdentifier": "com.appleio.exp"
+      "bundleIdentifier": "com.irdev.konnectapp",
+      "buildNumber": "2",
+      "icon": "./logo-no-alpha.png"
     },
     "splash": {
       "image": "./app/assets/images/splash_960.png",

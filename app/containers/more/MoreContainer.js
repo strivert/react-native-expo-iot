@@ -41,8 +41,9 @@ class MoreContainer extends Component {
     return (key in object)
   }
 
-  handleToggleSaveSolar = () => {
-    postSetSolarMode(this.props.selectedDeviceId, true)
+  handleToggleSaveSolar = (deviceSolar) => {
+	let deviceToggle = deviceSolar ? false : true
+    postSetSolarMode(this.props.selectedDeviceId, deviceToggle)
       .then((a) => {
       })
       .catch((err) => {
@@ -104,6 +105,8 @@ class MoreContainer extends Component {
       deviceSolar = selectedDevice['variables']['solarmode']
     }
 
+	  console.log('deviceSolar', deviceSolar)
+
     const disableStyle = deviceSolar === null ? {color: '#E8E3E3'} : {}
 
     return (
@@ -139,7 +142,7 @@ class MoreContainer extends Component {
           barText='Solar Mode'
         />
 
-        <BlueBtn style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]} onClick={()=>this.handleToggleSaveSolar()}>
+        <BlueBtn style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]} onClick={()=>this.handleToggleSaveSolar(deviceSolar)}>
           <View style={pageStyles.flexRowView}>
             <View style={{flex: 0.8}}>
               <Text style={[styles.txtColor2, pageStyles.currenctyText, disableStyle]}>Enable Solar Charge Mode</Text>
@@ -157,7 +160,7 @@ class MoreContainer extends Component {
                   <CheckBox
                     checked={deviceSolar}
                     style={{ marginRight: 20 }}
-                    onPress={() => this.handleToggleSaveSolar()}
+                    onPress={() => {}}
                   />
                 )
               }

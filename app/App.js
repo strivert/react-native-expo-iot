@@ -85,6 +85,8 @@ export default class App extends Component {
         require('./assets/images/status_icons/power1.png'),
         require('./assets/images/status_icons/cost2.png'),
         require('./assets/images/status_icons/power2.png'),
+        require('./assets/images/status_icons/solar1.png'),
+        require('./assets/images/status_icons/solar1-disable.png'),
       ].map((image) => {
         return Asset.fromModule(image).downloadAsync()
       }),
