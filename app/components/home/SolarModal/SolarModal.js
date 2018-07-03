@@ -24,7 +24,7 @@ class MapWrapper extends Component {
 			</View>
 
 			<View style={{padding: 30}}>
-			  <Text style={[pageStyles.cntText, styles.txtColor2]}>By enabling eco mode you will use only solar generated power to charge the vehicle. This may increase vehicle charge time.</Text>
+			  <Text style={[pageStyles.cntText, styles.txtColor2, {textAlign: 'center'}]}>By enabling eco mode you will use only solar generated power to charge the vehicle. This may increase vehicle charge time.</Text>
 			</View>
 
 			<View style={{flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 20, paddingRight: 20, paddingBottom: 20}}>

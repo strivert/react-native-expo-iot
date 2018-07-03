@@ -86,8 +86,8 @@ class ViewForAdd8 extends Component {
                 checked={showPassword}
                 onPress={() => this.handlePressShowPassword()} />
             </View>
-            <View style={{marginRight: 60}}>
-              <Text style={[styles.txtColor2, pageStyles.appText, {marginLeft: 20}]}>Show Password</Text>
+            <View style={{marginRight: 60, justifyContent: 'center'}}>
+              <Text style={[styles.txtColor2, pageStyles.appText, {marginLeft: 20, justifyContent: 'center'}]}>Show Password</Text>
             </View>
           </View>
         </View>

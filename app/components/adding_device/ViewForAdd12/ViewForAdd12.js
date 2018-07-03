@@ -91,7 +91,7 @@ class ViewForAdd12 extends Component {
 
           <View style={{flexBasis: 50, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
             <CheckBox checked={saveLocation} style={{marginRight: 20}} onPress={handleToggleSaveLocation} />
-            <Text style={[styles.txtColor2, pageStyles.appText]}>Use phone location</Text>
+            <Text style={[styles.txtColor2, pageStyles.appText, {justifyContent: 'center'}]}>Use phone location</Text>
           </View>
 
           <View style={{flexBasis: 50, flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>

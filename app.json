@@ -10,7 +10,7 @@
     "privacy": "unlisted",
     "android": {
       "package": "com.irdev.konnect_app",
-      "versionCode": 4,
+      "versionCode": 5,
       "config": {
        "googleMaps": {
          "apiKey": "AIzaSyCbYW5CoxoxwTrMO6H3RvoFFXzHSICF2lI"
@@ -19,7 +19,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.irdev.konnectapp",
-      "buildNumber": "2",
+      "buildNumber": "4",
       "icon": "./logo-no-alpha.png"
     },
     "splash": {

@@ -144,7 +144,7 @@ class MoreContainer extends Component {
 
         <BlueBtn style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]} onClick={()=>this.handleToggleSaveSolar(deviceSolar)}>
           <View style={pageStyles.flexRowView}>
-            <View style={{flex: 0.8}}>
+            <View style={{flex: 0.8, justifyContent: 'center'}}>
               <Text style={[styles.txtColor2, pageStyles.currenctyText, disableStyle]}>Enable Solar Charge Mode</Text>
             </View>
             <View style={{flex: 0.2, alignItems: 'flex-end'}}>
@@ -159,7 +159,7 @@ class MoreContainer extends Component {
                 ) : (
                   <CheckBox
                     checked={deviceSolar}
-                    style={{ marginRight: 20 }}
+                    style={{ marginRight: 20,  }}
                     onPress={()=>this.handleToggleSaveSolar(deviceSolar)}
                   />
                 )
