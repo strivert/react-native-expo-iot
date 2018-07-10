@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Animated, Easing } from 'react-native'
 import Home from './Home'
-import Charge from './Charge'
 import User from './User'
 import Setting from './Setting'
 import More from './More'
 import TermsWeb from './TermsWeb'
 
+import ChargeSchedule from './ChargeSchedule'
 import ChargePoint from './ChargePoint'
 import ChargeSetting from './ChargeSetting'
 import AddCharge from './AddCharge'
@@ -37,6 +37,7 @@ const SettingNav = StackNavigator(
     ChargePoint: { screen: ChargePoint },
     ChargeSetting: { screen: ChargeSetting },
     AddCharge: { screen: AddCharge },
+    ChargeSchedule: { screen: ChargeSchedule },
   }, {
     transitionConfig: () => ({
       transitionSpec: {

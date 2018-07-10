@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Text, Linking } from 'react-native'
-import { Container } from 'native-base'
 
 import {withRouter} from 'react-router-native'
 import {connect} from 'react-redux'
@@ -17,6 +16,8 @@ import PageTop from '../../components/common/PageTop'
 import Bar from '../../components/common/Bar'
 import BlueBtn from '../../components/common/BlueBtn'
 import Border from '../../components/common/Border'
+
+import ResponsiveContainer from '../common/ResponsiveContainer'
 
 class AccountContainer extends Component {
   constructor (props) {
@@ -40,7 +41,7 @@ class AccountContainer extends Component {
   render () {
     const {email, user} = this.props
     return (
-      <Container style={pageStyles.accountWrapper}>
+      <ResponsiveContainer style={pageStyles.accountWrapper}>
         <PageHeader />
         <PageTop
           iconName='account3'
@@ -90,7 +91,7 @@ class AccountContainer extends Component {
           </BlueBtn>
         </View>
 
-      </Container>
+      </ResponsiveContainer>
     )
   }
 }

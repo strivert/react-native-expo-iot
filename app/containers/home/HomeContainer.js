@@ -616,7 +616,7 @@ class HomeContainer extends Component {
       <Container style={pageStyles.homeWrapper}>
         <SolarModal visible={this.state.visibleSolarModal} closeSolarModal={(goSolar)=>this.closeSolarModal(goSolar)} />
         <View style={{height: 207}}>
-          {
+          {/*
             (this.props.deviceCount !== null && deviceArr.length === this.props.deviceCount) ? (
               <MapWrapper
                 selectDevice={(deviceId) => this.selectDevice(deviceId)}
@@ -628,7 +628,7 @@ class HomeContainer extends Component {
                 <Spinner />
               </Container>
             )
-          }
+          */}
         </View>
         <View style={{flex: 1, position: 'absolute', left: '50%', marginLeft: -65, top: 10}}>
           <Image
@@ -655,9 +655,9 @@ class HomeContainer extends Component {
                   isLast={ i === (displayKeyArray.length-1) }
                   setEnableCharging={this.props.setEnableCharging}
                   deviceId={this.state.selectedDeviceId}
-				  ecomode={ecomode}
+                  ecomode={ecomode}
                   isEnableSwitch={resultStates['status']['t2Text'] === 'Unlocked' || resultStates['status']['t2Text'] === 'Locked'}
-				  setEnableEco={(deviceId, enabled)=>this.handleToggleEco(deviceId, enabled)}
+                  setEnableEco={(deviceId, enabled)=>this.handleToggleEco(deviceId, enabled)}
                 />)
             })
           }

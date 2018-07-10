@@ -6,6 +6,15 @@ import PropTypes from 'prop-types'
 // import * as Animatable from 'react-native-animatable'
 import Swipeout from 'react-native-swipeout'
 
+const { width } = Dimensions.get('window')
+
+getAdjustedFontSize1 = (size) => {
+  return width > 320 ? size : 12
+}
+getAdjustedFontSize2 = (size) => {
+  return width > 320 ? size : 20
+}
+
 const LockCompoment = ({textValue}) => (
   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Text style={{fontSize: 25, color: 'white'}}>{textValue}</Text></View>
 )
@@ -97,7 +106,7 @@ class ListItemWrapper extends Component {
     // body style
     let bodyStyles = [styles.bodyCtr]
     hasSwitch && bodyStyles.push(styles.flex_6)
-	hasSolarSwitch && bodyStyles.push(styles.flex_6)
+	  hasSolarSwitch && bodyStyles.push(styles.flex_6)
 
     // first text style
     let t1Styles = [styles.t1]
@@ -190,8 +199,12 @@ class ListItemWrapper extends Component {
           >
             <View style={{height: '100%', flexDirection: 'row', backgroundColor: 'white', alignItems: 'center'}}>
               <View style={styles.leftCtr}>
-                <Text style={t1Styles}></Text>
-                <Image source={this.statusIcons[iconName]} style={iconStyles} />
+                <View style={{height: 10}}>
+                  <Text style={t1Styles}></Text>
+                </View>
+                <View style={{marginBottom: 5}}>
+                  <Image source={this.statusIcons[iconName]} style={iconStyles} resizeMode='contain' />
+                </View>
               </View>
               <View style={bodyStyles}>
                 <Text style={t1Styles}>{t1Text}</Text>
@@ -217,8 +230,12 @@ class ListItemWrapper extends Component {
           >
             <View style={{height: '100%', flexDirection: 'row', backgroundColor: 'white', alignItems: 'center'}}>
               <View style={styles.leftCtr}>
-                <Text style={t1Styles}></Text>
-                <Image source={this.statusIcons[iconName]} style={iconStyles} />
+                <View style={{height: 10}}>
+                  <Text style={t1Styles}></Text>
+                </View>
+                <View style={{marginBottom: 5}}>
+                  <Image source={this.statusIcons[iconName]} style={iconStyles} resizeMode='contain' />
+                </View>
               </View>
               <View style={bodyStyles}>
                 <Text style={t1Styles}>{t1Text}</Text>
@@ -236,21 +253,17 @@ class ListItemWrapper extends Component {
 	  // renderItem = <View style={[itemWrapperStyles]}>
       renderItem = <View style={[itemWrapperStyles, {height: rowHeight}]}>
         <View style={styles.leftCtr}>
-          <Text style={t1Styles}></Text>
-          <Image source={this.statusIcons[iconName]} style={iconStyles} />
+          <View style={{height: 10}}>
+            <Text style={t1Styles}></Text>
+          </View>
+          <View style={{marginBottom: 5}}>
+            <Image source={this.statusIcons[iconName]} style={iconStyles} resizeMode='contain' />
+          </View>
         </View>
         <View style={bodyStyles}>
           <Text style={t1Styles}>{t1Text}</Text>
           <Text style={t2Styles}>{t2Text}</Text>
         </View>
-
-        {
-          (hasSwitch && isEnableSwitch) &&
-            <View style={styles.rightCtr}>
-              {
-              }
-            </View>
-        }
       </View>
     }
 
@@ -266,13 +279,15 @@ let styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   iconStyle: {
-    width: 40,
-    height: 40,
-    justifyContent: 'flex-end',
+    height: '95%',
+    maxHeight: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   leftCtr: {
     flex: 0.2,
     flexDirection: 'column',
+    alignItems: 'center',
   },
   rightCtr: {
     flex: 0.1,
@@ -285,14 +300,12 @@ let styles = StyleSheet.create({
   },
   t1: {
     color: '#707070',
-    fontSize: 17,
-    lineHeight: 21,
+    fontSize: getAdjustedFontSize1(17),
     fontFamily: 'Proxima_nova_light',
   },
   t2: {
     color: '#707070',
-    fontSize: 32,
-    lineHeight: 39,
+    fontSize: getAdjustedFontSize2(32),
     fontFamily: 'Proxima_nova_light',
   },
 

@@ -6,6 +6,8 @@ import odiff from 'odiff'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
+import ResponsiveContainer from '../common/ResponsiveContainer'
+
 import styles from '../../styles'
 
 import PageHeader from '../../components/common/PageHeader'
@@ -110,7 +112,7 @@ class MoreContainer extends Component {
     const disableStyle = deviceSolar === null ? {color: '#E8E3E3'} : {}
 
     return (
-      <Container style={pageStyles.moreWrapper}>
+      <ResponsiveContainer style={pageStyles.moreWrapper}>
         <PageHeader />
         <PageTop
           iconName='setting3'
@@ -199,7 +201,7 @@ class MoreContainer extends Component {
 
         <Border style={pageStyles.marginLeftRight16} />
 
-      </Container>
+      </ResponsiveContainer>
     )
   }
 }
