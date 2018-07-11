@@ -30,6 +30,7 @@ class ListItemWrapper extends Component {
       switchValue: false,
       switchValueExam: false,
       switchSolarValue: false,
+      switchScheduleValue: false,
       fontSize: 10,
     }
 
@@ -80,10 +81,16 @@ class ListItemWrapper extends Component {
       }
     }
 
-	if (nextProps.hasSolarSwitch) {
-	  this.setState({
-	    switchSolarValue: nextProps.ecomode ? true : false,
-	  })
+	  if (nextProps.hasSolarSwitch) {
+      this.setState({
+        switchSolarValue: nextProps.ecomode ? true : false,
+      })
+    }
+
+    if (nextProps.hasScheduleSwitch) {
+      this.setState({
+        switchScheduleValue: nextProps.dailyenable ? true : false,
+      })
     }
   }
 
@@ -92,7 +99,7 @@ class ListItemWrapper extends Component {
   }
 
   render () {
-    const {iconName, t1Text, t2Text, t2Sty, hasSwitch, isLast, switchSty, isEnableSwitch, hasSolarSwitch} = this.props
+    const {iconName, t1Text, t2Text, t2Sty, hasSwitch, isLast, switchSty, isEnableSwitch, hasSolarSwitch, hasScheduleSwitch} = this.props
     // const {iconSty} = this.props
 
     // item wrapper style
@@ -106,7 +113,8 @@ class ListItemWrapper extends Component {
     // body style
     let bodyStyles = [styles.bodyCtr]
     hasSwitch && bodyStyles.push(styles.flex_6)
-	  hasSolarSwitch && bodyStyles.push(styles.flex_6)
+    hasSolarSwitch && bodyStyles.push(styles.flex_6)
+    hasScheduleSwitch && bodyStyles.push(styles.flex_6)
 
     // first text style
     let t1Styles = [styles.t1]
@@ -182,6 +190,37 @@ class ListItemWrapper extends Component {
       ]
     }
 
+    let swipeScheduleBtnOption = []
+    if (this.state.switchScheduleValue) {
+      swipeScheduleBtnOption = [
+        {
+          text: 'On',
+          backgroundColor: '#2F96DA',
+          onPress: () => {
+            _this.setState({
+              switchScheduleValue: false,
+            })
+            _this.props.postSchedule(_this.props.deviceId, false)
+          },
+          component: <LockCompoment textValue={'On'} />,
+        },
+      ]
+    } else {
+      swipeScheduleBtnOption = [
+        {
+          text: 'Off',
+          backgroundColor: '#959595',
+          onPress: () => {
+            _this.setState({
+              switchScheduleValue: true,
+            })
+            _this.props.postSchedule(_this.props.deviceId, true)
+          },
+          component: <LockCompoment textValue={'Off'} />,
+        },
+      ]
+    }
+
     const {width, height} = Dimensions.get('window')
     const rowHeight = Math.floor( (height - 24 - 207 - 55) / 5 )
 
@@ -223,6 +262,37 @@ class ListItemWrapper extends Component {
           <Swipeout
             backgroundColor={'white'}
             right={swipeSolarBtnOption}
+            style={{flex: 1, borderColor: '#959595', borderWidth: 0, borderBottomWidth: 0.5, paddingLeft: 20, paddingRight: 20, height: rowHeight}}
+            // style={{flex: 1, borderColor: '#959595', borderWidth: 0, borderBottomWidth: 0.5, paddingLeft: 20, paddingRight: 20}}
+            buttonWidth={120}
+            autoClose={true}
+          >
+            <View style={{height: '100%', flexDirection: 'row', backgroundColor: 'white', alignItems: 'center'}}>
+              <View style={styles.leftCtr}>
+                <View style={{height: 10}}>
+                  <Text style={t1Styles}></Text>
+                </View>
+                <View style={{marginBottom: 5}}>
+                  <Image source={this.statusIcons[iconName]} style={iconStyles} resizeMode='contain' />
+                </View>
+              </View>
+              <View style={bodyStyles}>
+                <Text style={t1Styles}>{t1Text}</Text>
+                <Text style={t2Styles}>{t2Text}</Text>
+              </View>
+              <View style={[styles.rightCtr, {flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}]}>
+                <View style={{borderWidth: 1, borderColor: '#e8e3e3', width: 1, marginRight: 3, height: 25}}>
+                </View>
+                <View style={{borderWidth: 1, borderColor: '#e8e3e3', width: 1, height: 25}}>
+                </View>
+              </View>
+            </View>
+          </Swipeout>
+    } else if (hasScheduleSwitch) {
+      renderItem = 
+          <Swipeout
+            backgroundColor={'white'}
+            right={swipeScheduleBtnOption}
             style={{flex: 1, borderColor: '#959595', borderWidth: 0, borderBottomWidth: 0.5, paddingLeft: 20, paddingRight: 20, height: rowHeight}}
             // style={{flex: 1, borderColor: '#959595', borderWidth: 0, borderBottomWidth: 0.5, paddingLeft: 20, paddingRight: 20}}
             buttonWidth={120}

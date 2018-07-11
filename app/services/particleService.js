@@ -13,6 +13,7 @@ module.exports = {
   putDeviceChargeCost,
   postSetSolarMode,
   postSetEcoMode,
+  postSetEnableSchedule,
 }
 
 function postCreateClaimCode () {
@@ -81,5 +82,13 @@ function postSetEcoMode (deviceId, enabled) {
   // console.log('`devices/${deviceId}/set-remote-locking`', `devices/${deviceId}/set-remote-locking`)
   return andersenHttp.post(`devices/${deviceId}/setecomode`, {
     setTo: enabled,
+  })
+}
+
+function postSetEnableSchedule (deviceId, schedulestr) {
+  // console.log('`devices/${deviceId}/set-remote-locking`', `devices/${deviceId}/set-remote-locking`)
+  console.log('schedulestr', schedulestr)
+  return andersenHttp.post(`devices/${deviceId}/setchargetimer`, {
+    timerString: schedulestr,
   })
 }

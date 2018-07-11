@@ -21,7 +21,7 @@ import Bar from '../../components/common/Bar'
 import BlueBtn from '../../components/common/BlueBtn'
 import appStyles from '../../styles'
 import {
-  postSetEcoMode,
+  postSetEcoMode, postSetEnableSchedule,
 } from '../../services/particleService'
 
 class HomeContainer extends Component {
@@ -182,6 +182,22 @@ class HomeContainer extends Component {
       })
   }
 
+  postSchedule = (deviceId, enabled) => {
+    const { selectedDeviceId } = this.state
+    const selectedDevice = this.props.devicesHash[selectedDeviceId]
+    let chargetimer = this.checkKeyExist('chargetimer', selectedDevice['variables']) ? JSON.parse(selectedDevice['variables']['chargetimer']) : false
+
+    let hour = chargetimer ? chargetimer[0]['hour'] : '00'
+    let min = chargetimer ? chargetimer[0]['min'] : '00'
+
+	  postSetEnableSchedule(deviceId, `{chargetimer:[{hour:${hour}, min:${min}, dailyenable:${enabled}, active:false}]}`)
+      .then((a) => {
+      })
+      .catch((err) => {
+          console.log(err)
+      })
+  }
+
   render () {
     const { selectedDeviceId } = this.state
 
@@ -242,12 +258,13 @@ class HomeContainer extends Component {
         'hasSwitch': true,
       },
       'charge': {
-        't1Text': 'Last Charge',
+        't1Text': 'Last Charge / Timer',
         't2Text': '00:00:00',
         'iconName': 'status7-disable',
         'iconSty': 'disableColor',
         't2Sty': 'disableColor',
         'hasSwitch': false,
+        'hasScheduleSwitch': true,
       },
       'cost': {
         't1Text': 'Last Charge Cost',
@@ -302,36 +319,43 @@ class HomeContainer extends Component {
     let costunit = this.checkKeyExist('costunit', selectedDevice['variables']) ? selectedDevice['variables']['costunit'] : undefined
     costunit = (costunit === undefined) ? '0.00' : costunit.toFixed(2)
 
-	let solarpower = this.checkKeyExist('solarpower', selectedDevice['variables']) ? selectedDevice['variables']['solarpower'] : undefined
+	  let solarpower = this.checkKeyExist('solarpower', selectedDevice['variables']) ? selectedDevice['variables']['solarpower'] : undefined
     solarpower = (solarpower === undefined) ? '0.00' : solarpower.toFixed(2)
-	let gridpower = this.checkKeyExist('gridpower', selectedDevice['variables']) ? selectedDevice['variables']['gridpower'] : undefined
+	  let gridpower = this.checkKeyExist('gridpower', selectedDevice['variables']) ? selectedDevice['variables']['gridpower'] : undefined
     gridpower = (gridpower === undefined) ? '0.00' : gridpower.toFixed(2)
-	let totalpower = this.checkKeyExist('totalpower', selectedDevice['variables']) ? selectedDevice['variables']['totalpower'] : undefined
+	  let totalpower = this.checkKeyExist('totalpower', selectedDevice['variables']) ? selectedDevice['variables']['totalpower'] : undefined
     totalpower = (totalpower === undefined) ? '0.00' : totalpower.toFixed(2)
-	let solarmode = this.checkKeyExist('solarmode', selectedDevice['variables']) ? selectedDevice['variables']['solarmode'] : false
+	  let solarmode = this.checkKeyExist('solarmode', selectedDevice['variables']) ? selectedDevice['variables']['solarmode'] : false
 
-	let ecomode = this.checkKeyExist('ecomode', selectedDevice['variables']) ? selectedDevice['variables']['ecomode'] : false
+	  let ecomode = this.checkKeyExist('ecomode', selectedDevice['variables']) ? selectedDevice['variables']['ecomode'] : false
 
     const lasterror = this.checkKeyExist('lasterror', selectedDevice['variables']) ? selectedDevice['variables']['lasterror'] : 0
 
+    let chargetimer = this.checkKeyExist('chargetimer', selectedDevice['variables']) ? JSON.parse(selectedDevice['variables']['chargetimer']) : false
+
+    let dailyenable = chargetimer ? chargetimer[0]['dailyenable'] : false
+    // console.log('dailyenable', dailyenable)
+    let hour = chargetimer ? chargetimer[0]['hour'] : '00'
+    let min = chargetimer ? chargetimer[0]['min'] : '00'
+
     let dis_char = ''
 
-	if (solarmode)
-	{
-		initStates['gridpower']['t2Text'] = `${gridpower} kW`
-        initStates['gridpower']['t2Sty'] = 'grayColor'
-        initStates['gridpower']['iconName'] = 'power1'
+    if (solarmode)
+    {
+      initStates['gridpower']['t2Text'] = `${gridpower} kW`
+          initStates['gridpower']['t2Sty'] = 'grayColor'
+          initStates['gridpower']['iconName'] = 'power1'
 
-		initStates['solar']['t2Text'] = `${solarpower} kW`
-        initStates['solar']['t2Sty'] = 'grayColor'
-        initStates['solar']['iconName'] = 'solar1'
+      initStates['solar']['t2Text'] = `${solarpower} kW`
+          initStates['solar']['t2Sty'] = 'grayColor'
+          initStates['solar']['iconName'] = 'solar1'
 
-		if (ecomode)
-		{
-		  initStates['gridpower']['t2Sty'] = 'disableColor'
-		  initStates['gridpower']['iconName'] = 'power2'
-		}
-	}
+      if (ecomode)
+      {
+        initStates['gridpower']['t2Sty'] = 'disableColor'
+        initStates['gridpower']['iconName'] = 'power2'
+      }
+    }
 
 
     if (lasterror !== 0) {
@@ -425,8 +449,17 @@ class HomeContainer extends Component {
       switch (this.catchCharFromChargerStatus(chargerstatus)) {
         case '':
         case 'A':
+          if (dailyenable) {
+            initStates['charge']['t1Text'] = 'Scheduled Charge'
+            initStates['charge']['t2Text'] = `${hour}:${min}`
+            initStates['charge']['t2Sty'] = 'grayColor'
+            initStates['charge']['iconSty'] = 'grayColor'
+
+            initStates['charge']['iconName'] = 'status7'
+            break;
+          }
         case 'B':
-          initStates['charge']['t1Text'] = 'Last Charge'
+          initStates['charge']['t1Text'] = 'Last Charge / Timer'
           initStates['charge']['t2Text'] = this.toHHMMSS(lastchargingtime) // to be
           initStates['charge']['t2Sty'] = 'grayColor'
           initStates['charge']['iconSty'] = 'grayColor'
@@ -538,12 +571,13 @@ class HomeContainer extends Component {
           'hasSwitch': true,
         },
         'charge': {
-          't1Text': 'Last Charge',
+          't1Text': 'Last Charge / Timer',
           't2Text': '00:00:00',
           'iconName': 'status7-disable',
           'iconSty': 'disableColor',
           't2Sty': 'disableColor',
           'hasSwitch': false,
+          'hasScheduleSwitch': true,
         },
         'cost': {
           't1Text': 'Last Charge Cost',
@@ -616,7 +650,7 @@ class HomeContainer extends Component {
       <Container style={pageStyles.homeWrapper}>
         <SolarModal visible={this.state.visibleSolarModal} closeSolarModal={(goSolar)=>this.closeSolarModal(goSolar)} />
         <View style={{height: 207}}>
-          {/*
+          {
             (this.props.deviceCount !== null && deviceArr.length === this.props.deviceCount) ? (
               <MapWrapper
                 selectDevice={(deviceId) => this.selectDevice(deviceId)}
@@ -628,7 +662,7 @@ class HomeContainer extends Component {
                 <Spinner />
               </Container>
             )
-          */}
+          }
         </View>
         <View style={{flex: 1, position: 'absolute', left: '50%', marginLeft: -65, top: 10}}>
           <Image
@@ -648,6 +682,7 @@ class HomeContainer extends Component {
                   iconName={resultStates[key]['iconName']}
                   hasSwitch={resultStates[key]['hasSwitch']}
                   hasSolarSwitch={resultStates[key]['hasSolarSwitch']}
+                  hasScheduleSwitch={resultStates[key]['hasScheduleSwitch']}
                   iconSty={resultStates[key]['iconSty']}
                   t2Sty={resultStates[key]['t2Sty']}
                   t1Text={resultStates[key]['t1Text']}
@@ -656,8 +691,10 @@ class HomeContainer extends Component {
                   setEnableCharging={this.props.setEnableCharging}
                   deviceId={this.state.selectedDeviceId}
                   ecomode={ecomode}
+                  dailyenable={dailyenable}
                   isEnableSwitch={resultStates['status']['t2Text'] === 'Unlocked' || resultStates['status']['t2Text'] === 'Locked'}
                   setEnableEco={(deviceId, enabled)=>this.handleToggleEco(deviceId, enabled)}
+                  postSchedule={(deviceId, enabled)=>this.postSchedule(deviceId, enabled)}
                 />)
             })
           }

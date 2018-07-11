@@ -16,6 +16,9 @@ import Border from '../../components/common/Border'
 import PageHeader from '../../components/common/PageHeader'
 import Spinner from '../../components/common/Spinner'
 import {selectedDeviceId as selectDevice} from '../../actions/particleActions'
+import {
+  postSetEnableSchedule,
+} from '../../services/particleService'
 
 import Picker from 'react-native-roll-picker'
 
@@ -33,27 +36,91 @@ for (let i = 0; i < 24; i++ ) {
 class ChargeScheduleContainer extends Component {
   constructor (props) {
     super(props)
+    this.state = {
+      hour: null,
+      min: null,
+      dailyenable: false,
+    }
   }
+
   componentDidMount () {
+    const {devicesHash, selectedDeviceId, devices} = this.props
+    const selectedDevice = devicesHash[selectedDeviceId]
+
+    let chargetimer = this.checkKeyExist('chargetimer', selectedDevice['variables']) ? JSON.parse(selectedDevice['variables']['chargetimer']) : false
+    let dailyenable = chargetimer ? chargetimer[0]['dailyenable'] : false
+    let hour = chargetimer ? chargetimer[0]['hour'] : 0
+    let min = chargetimer ? chargetimer[0]['min'] : 0
+    this.setState({
+      dailyenable,
+      hour,
+      min
+    })
+  }
+
+  componentWillReceiveProps (nextProps) {
+    /*
+    const {devicesHash, selectedDeviceId, devices} = nextProps
+    const selectedDevice = devicesHash[selectedDeviceId]
+
+    let chargetimer = this.checkKeyExist('chargetimer', selectedDevice['variables']) ? JSON.parse(selectedDevice['variables']['chargetimer']) : false
+
+    let hour = chargetimer ? chargetimer[0]['hour'] : 0
+    let min = chargetimer ? chargetimer[0]['min'] : 0
+    // console.log('hour', hour)
+    this.setState({
+      hour,
+      min
+    })
+    */
+
+  }
+  
+
+  checkKeyExist (key, object) {
+    return (key in object)
+  }
+
+  postSchedule = () => {
+    const {selectedDeviceId} = this.props
+    let hour = this.state.hour
+    let min = this.state.min
+    let enabled = this.state.dailyenable
+
+	  postSetEnableSchedule(selectedDeviceId, `{chargetimer:[{hour:${hour}, min:${min}, dailyenable:${enabled}, active:false}]}`)
+      .then((a) => {
+      })
+      .catch((err) => {
+          console.log(err)
+      })
   }
 
   render () {
+    if (!this.state.hour) {
+      return null;
+    }
     return (
       <Container style={pageStyles.moreWrapper}>
         <PageHeader />
         <Bar
           barText='Scheduled Charge Time'
         />
+        <View style = {{height: 15}} />
         <View style = {{height: 225, flexDirection: 'row'}}>
           <View style = {{flex: 1}}>
             <Picker 
               data = {hoursData}
               ref = '_Picker1'
               name = 'i'
-              pickerStr={'Hours'}
+              pickerStr={'hour'}
               pickerBigFontSize={30}
               onRowChange = {index => {
+                console.log('index', index)
+                this.setState({
+                  hour: index
+                })
               }}
+              selectTo={this.state.hour}
             />
           </View>
           <View style = {{flex: 1}}>
@@ -61,12 +128,17 @@ class ChargeScheduleContainer extends Component {
               data = {minutesData}
               ref = '_Picker0'
               name = 'i'
-              pickerStr={'Minutes'}
+              pickerStr={'min'}
+              selectTo={this.state.min}
               onRowChange = {index => {
+                this.setState({
+                  min: index
+                })
               }}
             />
           </View>
         </View>
+        <View style = {{height: 15}} />
 
         <ScrollView style={[{flex: 1}, pageStyles.moreWrapper]}>
             <BlueBtn style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]} onClick={()=>{}}>
@@ -76,12 +148,16 @@ class ChargeScheduleContainer extends Component {
                 </View>
                 <View style={{flex: 0.2, alignItems: 'flex-end'}}>
                 {
-                    <CheckBox
-                        checked={true}
-                        style={{ marginRight: 20 }}
-                        color={'#E8E3E3'}
-                        onPress={() => {}}
-                    />
+                  <CheckBox
+                      checked={this.state.dailyenable}
+                      style={{ marginRight: 20 }}
+                      color={'#E8E3E3'}
+                      onPress={() => {
+                        this.setState({
+                          dailyenable: !this.state.dailyenable
+                        })
+                      }}
+                  />
                 }
                 </View>
             </View>
@@ -99,7 +175,7 @@ class ChargeScheduleContainer extends Component {
                     <BlueBtn onClick={() => {}}>
                         <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Cancel</Text>
                     </BlueBtn>
-                    <BlueBtn onClick={() => {}}>
+                    <BlueBtn onClick={() => this.postSchedule()}>
                         <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Continue</Text>
                     </BlueBtn>
                 </View>
