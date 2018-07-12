@@ -1,26 +1,24 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Platform } from 'react-native'
 import { Container, CheckBox } from 'native-base'
 
 import {withRouter} from 'react-router-native'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {bindActionCreators} from 'redux'
+import TimePicker from 'react-native-simple-time-picker'
 
 import styles from '../../styles'
 
-import PageTop from '../../components/common/PageTop'
 import Bar from '../../components/common/Bar'
 import BlueBtn from '../../components/common/BlueBtn'
 import Border from '../../components/common/Border'
-import PageHeader from '../../components/common/PageHeader'
-import Spinner from '../../components/common/Spinner'
+import PageHeaderBack from '../../components/common/PageHeaderBack'
 import {selectedDeviceId as selectDevice} from '../../actions/particleActions'
 import {
   postSetEnableSchedule,
 } from '../../services/particleService'
 
-import Picker from 'react-native-roll-picker'
 
 let minutesData = []
 for (let i = 0; i < 60; i++ ) {
@@ -40,6 +38,7 @@ class ChargeScheduleContainer extends Component {
       hour: null,
       min: null,
       dailyenable: false,
+      set: false,
     }
   }
 
@@ -51,34 +50,26 @@ class ChargeScheduleContainer extends Component {
     let dailyenable = chargetimer ? chargetimer[0]['dailyenable'] : false
     let hour = chargetimer ? chargetimer[0]['hour'] : 0
     let min = chargetimer ? chargetimer[0]['min'] : 0
+    let set = chargetimer ? true : false
     this.setState({
       dailyenable,
       hour,
-      min
+      min,
+      set,
     })
-  }
-
-  componentWillReceiveProps (nextProps) {
-    /*
-    const {devicesHash, selectedDeviceId, devices} = nextProps
-    const selectedDevice = devicesHash[selectedDeviceId]
-
-    let chargetimer = this.checkKeyExist('chargetimer', selectedDevice['variables']) ? JSON.parse(selectedDevice['variables']['chargetimer']) : false
-
-    let hour = chargetimer ? chargetimer[0]['hour'] : 0
-    let min = chargetimer ? chargetimer[0]['min'] : 0
-    // console.log('hour', hour)
-    this.setState({
-      hour,
-      min
-    })
-    */
-
-  }
-  
+  }  
 
   checkKeyExist (key, object) {
     return (key in object)
+  }
+
+  toApply00 (str) {
+    if (!parseInt(str, 10)) {
+      return '00'
+    }
+    let strResult = str
+    if (str < 10) { strResult = '0' + str }
+    return strResult
   }
 
   postSchedule = () => {
@@ -96,48 +87,60 @@ class ChargeScheduleContainer extends Component {
   }
 
   render () {
-    if (!this.state.hour) {
+    if (this.state.hour === null) {
       return null;
     }
+
+    let schedule_desc = '';
+    if (this.state.set) {
+
+      const {devicesHash, selectedDeviceId} = this.props
+      const selectedDevice = devicesHash[selectedDeviceId]
+
+      let chargetimer = this.checkKeyExist('chargetimer', selectedDevice['variables']) ? JSON.parse(selectedDevice['variables']['chargetimer']) : false
+      let dailyenable = chargetimer ? chargetimer[0]['dailyenable'] : false
+      let hour = chargetimer ? chargetimer[0]['hour'] : 0
+      let min = chargetimer ? chargetimer[0]['min'] : 0
+
+      schedule_desc = `${this.toApply00(hour)} : ${this.toApply00(min)} ` + (dailyenable ? 'Active' : 'Inactive')
+    } else {
+      schedule_desc = 'Not set'
+    }
+
     return (
       <Container style={pageStyles.moreWrapper}>
-        <PageHeader />
+        <PageHeaderBack pageName='ChargeSetting' {...this.props}/>
         <Bar
           barText='Scheduled Charge Time'
         />
         <View style = {{height: 15}} />
-        <View style = {{height: 225, flexDirection: 'row'}}>
+        
+        {
+          Platform.OS === "android" ?
+          <View style = {{marginTop: 10, marginBottom: 10}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <View><Text style={[{textDecorationLine: 'underline', fontSize: 18}, styles.txtColor2]}>Hours</Text></View>
+              <View><Text style={[{textDecorationLine: 'underline', fontSize: 18}, styles.txtColor2]}>Mins</Text></View>
+            </View>
+            <TimePicker
+              selectedHours={this.state.hour}
+              selectedMinutes={this.state.min}
+              onChange={(hour, min) => this.setState({ hour, min })}
+            />
+          </View> :
           <View style = {{flex: 1}}>
-            <Picker 
-              data = {hoursData}
-              ref = '_Picker1'
-              name = 'i'
-              pickerStr={'hour'}
-              pickerBigFontSize={30}
-              onRowChange = {index => {
-                console.log('index', index)
-                this.setState({
-                  hour: index
-                })
-              }}
-              selectTo={this.state.hour}
+            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              <View><Text style={[{textDecorationLine: 'underline', fontSize: 18}, styles.txtColor2]}>Hours</Text></View>
+              <View><Text style={[{textDecorationLine: 'underline', fontSize: 18}, styles.txtColor2]}>Mins</Text></View>
+            </View>
+            <TimePicker
+              selectedHours={this.state.hour}
+              selectedMinutes={this.state.min}
+              onChange={(hour, min) => this.setState({ hour, min })}
             />
           </View>
-          <View style = {{flex: 1}}>
-            <Picker 
-              data = {minutesData}
-              ref = '_Picker0'
-              name = 'i'
-              pickerStr={'min'}
-              selectTo={this.state.min}
-              onRowChange = {index => {
-                this.setState({
-                  min: index
-                })
-              }}
-            />
-          </View>
-        </View>
+        }
+        
         <View style = {{height: 15}} />
 
         <ScrollView style={[{flex: 1}, pageStyles.moreWrapper]}>
@@ -166,17 +169,21 @@ class ChargeScheduleContainer extends Component {
             <Border style={pageStyles.marginLeftRight16} />
             <View style={[styles.flexCenter, pageStyles.AppWrapper]}>
                 <Text style={[styles.txtColor2, {fontSize: 20}]}>Scheduled Timer</Text>
-                <Text style={[styles.txtColor, {fontSize: 35}]}>Not Set</Text>
+                <Text style={[styles.blueBtnTextColor, {fontSize: 35}]}>
+                  {schedule_desc}
+                </Text>
             </View>
             <Border style={pageStyles.marginLeftRight16} />
         
-            <View style={{flex: 1, justifyContent: 'center'}}>
+            <View style={{flex: 1}}>
                 <View style={pageStyles.menuBar}>
-                    <BlueBtn onClick={() => {}}>
+                    <BlueBtn onClick={() => {
+                      this.props.navigation.navigate('ChargeSetting')
+                    }}>
                         <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Cancel</Text>
                     </BlueBtn>
                     <BlueBtn onClick={() => this.postSchedule()}>
-                        <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Continue</Text>
+                        <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Submit</Text>
                     </BlueBtn>
                 </View>
             </View>
@@ -188,7 +195,7 @@ class ChargeScheduleContainer extends Component {
 
 let pageStyles = StyleSheet.create({
   menuBar: {
-    flexDirection: 'row', padding: 20, justifyContent: 'space-between',
+    flex: 1, flexDirection: 'row', padding: 20, justifyContent: 'space-between', alignItems: 'center',
   },
   moreWrapper: {
     backgroundColor: '#FFFFFF',

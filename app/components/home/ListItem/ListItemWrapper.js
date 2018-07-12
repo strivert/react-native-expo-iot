@@ -36,6 +36,7 @@ class ListItemWrapper extends Component {
 
     this.statusIcons = {
       'charge1': require('../../../assets/images/status_icons/charge1.png'),
+      'charge2': require('../../../assets/images/status_icons/charge2.png'),
       'charge-disable': require('../../../assets/images/status_icons/charge-disable.png'),
       'maintenance1': require('../../../assets/images/status_icons/maintenance1.png'),
       'maintenance2': require('../../../assets/images/status_icons/maintenance2.png'),
@@ -61,7 +62,7 @@ class ListItemWrapper extends Component {
       'power1': require('../../../assets/images/status_icons/power1.png'),
       'cost2': require('../../../assets/images/status_icons/cost2.png'),
       'power2': require('../../../assets/images/status_icons/power2.png'),
-	  'power3': require('../../../assets/images/status_icons/power3.png'),
+	    'power3': require('../../../assets/images/status_icons/power3.png'),
       'solar1': require('../../../assets/images/status_icons/solar1.png'),
       'solar1-disable': require('../../../assets/images/status_icons/solar1-disable.png'),
     }

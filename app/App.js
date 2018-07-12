@@ -61,6 +61,7 @@ export default class App extends Component {
 
         require('./assets/images/status_icons/charge1.png'),
         require('./assets/images/status_icons/charge-disable.png'),
+        require('./assets/images/status_icons/charge2.png'),
         require('./assets/images/status_icons/maintenance1.png'),
         require('./assets/images/status_icons/maintenance2.png'),
         require('./assets/images/status_icons/maintenance1-disable.png'),
@@ -85,7 +86,7 @@ export default class App extends Component {
         require('./assets/images/status_icons/power1.png'),
         require('./assets/images/status_icons/cost2.png'),
         require('./assets/images/status_icons/power2.png'),
-		require('./assets/images/status_icons/power3.png'),
+        require('./assets/images/status_icons/power3.png'),
         require('./assets/images/status_icons/solar1.png'),
         require('./assets/images/status_icons/solar1-disable.png'),
       ].map((image) => {

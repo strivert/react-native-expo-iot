@@ -37,6 +37,7 @@ class ChargeSettingContainer extends Component {
     this.handleCloseLocation = this.handleCloseLocation.bind(this)
     this.handleSaveLocation = this.handleSaveLocation.bind(this)
     this.handleMoveLocation = this.handleMoveLocation.bind(this)
+    this.handleChargeSchedule = this.handleChargeSchedule.bind(this)
 
     this.state = {
       scanningSerial: false,
@@ -102,6 +103,10 @@ class ChargeSettingContainer extends Component {
     this.setState({editingLocationCoords})
   }
 
+  handleChargeSchedule() {
+    this.props.navigation.navigate('ChargeSchedule')
+  }
+
   render () {
     const {devicesHash, selectedDeviceId} = this.props
     const { scanningSerial, editingName, editingLocation } = this.state
@@ -116,6 +121,7 @@ class ChargeSettingContainer extends Component {
       handleSaveLocation,
       handlePressEditLocation,
       handleMoveLocation,
+      handleChargeSchedule,
     } = this
     const selectedDevice = devicesHash[selectedDeviceId]
 
@@ -257,6 +263,20 @@ class ChargeSettingContainer extends Component {
           </View>
         </View>
 
+        <Bar
+          barText='Scheduled Charge Time'
+        />
+
+        <View style={[pageStyles.flexRowView, pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]}>
+          <View style={{flex: 0.8}}>
+          </View>
+          <View style={{flex: 0.2, alignItems: 'flex-end'}}>
+            <BlueBtn style={[]} onClick={handleChargeSchedule}>
+              <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Edit</Text>
+            </BlueBtn>
+          </View>
+        </View>
+
         <NativeModal
           onRequestClose={handleCloseLocation}
           animationType="slide"
@@ -303,7 +323,7 @@ class ChargeSettingContainer extends Component {
               }}
             />
           </MapView>
-          <View style={{flex: 1, position: 'absolute', bottom: 0, width: '100%', height: 207, backgroundColor: 'transparent'}}>
+          <View style={{flex: 1, position: 'absolute', bottom: 0, width: '100%', height: '100%', backgroundColor: 'transparent'}}>
           </View>
         </View>
       </Container>

@@ -6501,6 +6501,12 @@ react-native-scripts@^1.11.1:
     rimraf "^2.6.1"
     xdl "48.1.4"
 
+react-native-simple-time-picker@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-simple-time-picker/-/react-native-simple-time-picker-0.2.0.tgz#b1a12a7880ac2f5a1200b0bc3d3c0065196097dc"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-smart-picker@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/react-native-smart-picker/-/react-native-smart-picker-1.0.4.tgz#39540278cd2b0b0144a59026a45347e763e617f8"

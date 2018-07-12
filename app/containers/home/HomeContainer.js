@@ -151,6 +151,15 @@ class HomeContainer extends Component {
     return hours + ':' + minutes + ':' + seconds
   }
 
+  toApply00 (str) {
+    if (!parseInt(str, 10)) {
+      return '00'
+    }
+    let strResult = str
+    if (str < 10) { strResult = '0' + str }
+    return strResult
+  }
+
   closeSolarModal = (goSolar) => {
 	this.setState({
 	  visibleSolarModal: false
@@ -335,8 +344,8 @@ class HomeContainer extends Component {
 
     let dailyenable = chargetimer ? chargetimer[0]['dailyenable'] : false
     // console.log('dailyenable', dailyenable)
-    let hour = chargetimer ? chargetimer[0]['hour'] : '00'
-    let min = chargetimer ? chargetimer[0]['min'] : '00'
+    let hour = chargetimer ? this.toApply00(chargetimer[0]['hour']) : '00'
+    let min = chargetimer ? this.toApply00(chargetimer[0]['min']) : '00'
 
     let dis_char = ''
 
@@ -455,7 +464,7 @@ class HomeContainer extends Component {
             initStates['charge']['t2Sty'] = 'grayColor'
             initStates['charge']['iconSty'] = 'grayColor'
 
-            initStates['charge']['iconName'] = 'status7'
+            initStates['charge']['iconName'] = 'charge2'
             break;
           }
         case 'B':
@@ -650,7 +659,7 @@ class HomeContainer extends Component {
       <Container style={pageStyles.homeWrapper}>
         <SolarModal visible={this.state.visibleSolarModal} closeSolarModal={(goSolar)=>this.closeSolarModal(goSolar)} />
         <View style={{height: 207}}>
-          {
+          {/*
             (this.props.deviceCount !== null && deviceArr.length === this.props.deviceCount) ? (
               <MapWrapper
                 selectDevice={(deviceId) => this.selectDevice(deviceId)}
@@ -662,7 +671,7 @@ class HomeContainer extends Component {
                 <Spinner />
               </Container>
             )
-          }
+          */}
         </View>
         <View style={{flex: 1, position: 'absolute', left: '50%', marginLeft: -65, top: 10}}>
           <Image
