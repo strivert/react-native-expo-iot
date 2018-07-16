@@ -87,7 +87,6 @@ function postSetEcoMode (deviceId, enabled) {
 
 function postSetEnableSchedule (deviceId, schedulestr) {
   // console.log('`devices/${deviceId}/set-remote-locking`', `devices/${deviceId}/set-remote-locking`)
-  console.log('schedulestr', schedulestr)
   return andersenHttp.post(`devices/${deviceId}/setchargetimer`, {
     timerString: schedulestr,
   })

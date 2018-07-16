@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text } from 'native-base'
-import { StyleSheet, View, Image, Dimensions } from 'react-native'
+import { StyleSheet, View, Image, Dimensions, TouchableHighlight } from 'react-native'
 import PropTypes from 'prop-types'
 // import ToggleSwitch from 'toggle-switch-react-native'
 // import * as Animatable from 'react-native-animatable'
@@ -294,30 +294,40 @@ class ListItemWrapper extends Component {
           <Swipeout
             backgroundColor={'white'}
             right={swipeScheduleBtnOption}
-            style={{flex: 1, borderColor: '#959595', borderWidth: 0, borderBottomWidth: 0.5, paddingLeft: 20, paddingRight: 20, height: rowHeight}}
+            style={{flex: 1, borderColor: '#959595', borderWidth: 0, borderBottomWidth: 0.5, height: rowHeight}}
             // style={{flex: 1, borderColor: '#959595', borderWidth: 0, borderBottomWidth: 0.5, paddingLeft: 20, paddingRight: 20}}
             buttonWidth={120}
             autoClose={true}
           >
             <View style={{height: '100%', flexDirection: 'row', backgroundColor: 'white', alignItems: 'center'}}>
-              <View style={styles.leftCtr}>
-                <View style={{height: 10}}>
-                  <Text style={t1Styles}></Text>
+              <TouchableHighlight
+                style={{flex: 1}}
+                onLongPress={() => {
+                  this.props.goChargeSchedule()
+                }}
+                underlayColor='#cccccc'
+              >
+                <View style={{flex: 1, flexDirection: 'row', backgroundColor: 'white', alignItems: 'center', paddingLeft: 20, paddingRight: 20}}>
+                  <View style={styles.leftCtr}>
+                    <View style={{height: 10}}>
+                      <Text style={t1Styles}></Text>
+                    </View>
+                    <View style={{marginBottom: 5}}>
+                      <Image source={this.statusIcons[iconName]} style={iconStyles} resizeMode='contain' />
+                    </View>
+                  </View>
+                  <View style={bodyStyles}>
+                    <Text style={t1Styles}>{t1Text}</Text>
+                    <Text style={t2Styles}>{t2Text}</Text>
+                  </View>
+                  <View style={[styles.rightCtr, {flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}]}>
+                    <View style={{borderWidth: 1, borderColor: '#e8e3e3', width: 1, marginRight: 3, height: 25}}>
+                    </View>
+                    <View style={{borderWidth: 1, borderColor: '#e8e3e3', width: 1, height: 25}}>
+                    </View>
+                  </View>
                 </View>
-                <View style={{marginBottom: 5}}>
-                  <Image source={this.statusIcons[iconName]} style={iconStyles} resizeMode='contain' />
-                </View>
-              </View>
-              <View style={bodyStyles}>
-                <Text style={t1Styles}>{t1Text}</Text>
-                <Text style={t2Styles}>{t2Text}</Text>
-              </View>
-              <View style={[styles.rightCtr, {flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}]}>
-                <View style={{borderWidth: 1, borderColor: '#e8e3e3', width: 1, marginRight: 3, height: 25}}>
-                </View>
-                <View style={{borderWidth: 1, borderColor: '#e8e3e3', width: 1, height: 25}}>
-                </View>
-              </View>
+              </TouchableHighlight>
             </View>
           </Swipeout>
     } else {

@@ -10,7 +10,9 @@ import TimePicker from 'react-native-simple-time-picker'
 
 import styles from '../../styles'
 
-import Bar from '../../components/common/Bar'
+import ResponsiveContainer from '../common/ResponsiveContainer'
+
+import Bar2 from '../../components/common/Bar2'
 import BlueBtn from '../../components/common/BlueBtn'
 import Border from '../../components/common/Border'
 import PageHeaderBack from '../../components/common/PageHeaderBack'
@@ -102,15 +104,16 @@ class ChargeScheduleContainer extends Component {
       let hour = chargetimer ? chargetimer[0]['hour'] : 0
       let min = chargetimer ? chargetimer[0]['min'] : 0
 
-      schedule_desc = `${this.toApply00(hour)} : ${this.toApply00(min)} ` + (dailyenable ? 'Active' : 'Inactive')
+      // schedule_desc = `${this.toApply00(hour)} : ${this.toApply00(min)} ` + (dailyenable ? 'Active' : 'Inactive')
+      schedule_desc = `${this.toApply00(this.state.hour)} : ${this.toApply00(this.state.min)} ` + (this.state.dailyenable ? 'Active' : 'Inactive')
     } else {
-      schedule_desc = 'Not set'
+      schedule_desc = 'Not Set'
     }
 
     return (
-      <Container style={pageStyles.moreWrapper}>
-        <PageHeaderBack pageName='ChargeSetting' {...this.props}/>
-        <Bar
+      <ResponsiveContainer style={pageStyles.moreWrapper}>
+        <PageHeaderBack pageName='HomeNav' {...this.props}/>
+        <Bar2
           barText='Scheduled Charge Time'
         />
         <View style = {{height: 15}} />
@@ -119,8 +122,8 @@ class ChargeScheduleContainer extends Component {
           Platform.OS === "android" ?
           <View style = {{marginTop: 10, marginBottom: 10}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-              <View><Text style={[{textDecorationLine: 'underline', fontSize: 18}, styles.txtColor2]}>Hours</Text></View>
-              <View><Text style={[{textDecorationLine: 'underline', fontSize: 18}, styles.txtColor2]}>Mins</Text></View>
+              <View><Text style={[{fontSize: 18}, styles.txtColor2]}>Hours</Text></View>
+              <View><Text style={[{fontSize: 18}, styles.txtColor2]}>Mins</Text></View>
             </View>
             <TimePicker
               selectedHours={this.state.hour}
@@ -128,10 +131,10 @@ class ChargeScheduleContainer extends Component {
               onChange={(hour, min) => this.setState({ hour, min })}
             />
           </View> :
-          <View style = {{flex: 1}}>
+          <View style = {{height: 225}}>
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-              <View><Text style={[{textDecorationLine: 'underline', fontSize: 18}, styles.txtColor2]}>Hours</Text></View>
-              <View><Text style={[{textDecorationLine: 'underline', fontSize: 18}, styles.txtColor2]}>Mins</Text></View>
+              <View><Text style={[{fontSize: 18}, styles.txtColor2]}>Hours</Text></View>
+              <View><Text style={[{fontSize: 18}, styles.txtColor2]}>Mins</Text></View>
             </View>
             <TimePicker
               selectedHours={this.state.hour}
@@ -140,62 +143,65 @@ class ChargeScheduleContainer extends Component {
             />
           </View>
         }
-        
-        <View style = {{height: 15}} />
 
-        <ScrollView style={[{flex: 1}, pageStyles.moreWrapper]}>
-            <BlueBtn style={[pageStyles.currencyWrapper, pageStyles.paddingLeftRight49]} onClick={()=>{}}>
-            <View style={pageStyles.flexRowView}>
-                <View style={{flex: 0.8, justifyContent: 'center'}}>
-                <Text style={[styles.txtColor2, pageStyles.currenctyText]}>Enable Daily Charger Timer</Text>
-                </View>
-                <View style={{flex: 0.2, alignItems: 'flex-end'}}>
-                {
-                  <CheckBox
-                      checked={this.state.dailyenable}
-                      style={{ marginRight: 20 }}
-                      color={'#E8E3E3'}
-                      onPress={() => {
-                        this.setState({
-                          dailyenable: !this.state.dailyenable
-                        })
-                      }}
-                  />
-                }
-                </View>
-            </View>
+        <View style={[{flex: 1}, pageStyles.moreWrapper]}>
+            <BlueBtn style={[pageStyles.paddingLeftRight49, {flex: 1, justifyContent: 'center'}]} onClick={()=>{}}>
+              <View style={[pageStyles.flexRowView]}>
+                  <View style={{flex: 0.8, justifyContent: 'center', alignItems: 'flex-end'}}>
+                  <Text style={[styles.txtColor2, pageStyles.currenctyText]}>Enable Daily Charger Timer</Text>
+                  </View>
+                  <View style={{flex: 0.2, justifyContent: 'center', alignItems: 'flex-start'}}>
+                  {
+                    <CheckBox
+                        checked={this.state.dailyenable}
+                        style={{ marginRight: 20 }}
+                        onPress={() => {
+                          this.setState({
+                            dailyenable: !this.state.dailyenable
+                          })
+                        }}
+                    />
+                  }
+                  </View>
+              </View>
             </BlueBtn>
 
             <Border style={pageStyles.marginLeftRight16} />
-            <View style={[styles.flexCenter, pageStyles.AppWrapper]}>
-                <Text style={[styles.txtColor2, {fontSize: 20}]}>Scheduled Timer</Text>
-                <Text style={[styles.blueBtnTextColor, {fontSize: 35}]}>
-                  {schedule_desc}
-                </Text>
+            <View style={[styles.flexCenter, pageStyles.AppWrapper, {flex: 1}]}>
+                <Text style={[styles.txtColor2, {fontSize: 20, marginBottom: 10}]}>Scheduled Timer</Text>
+                {
+                  this.state.set ?
+                    <Text style={[styles.blueBtnTextColor, {fontSize: 35}]}>
+                      {schedule_desc}
+                    </Text> :
+                    <Text style={[{color: '#bcbcbc' ,fontSize: 35}]}>
+                      {schedule_desc}
+                    </Text>
+                }
             </View>
             <Border style={pageStyles.marginLeftRight16} />
         
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, justifyContent: 'flex-end'}}>
                 <View style={pageStyles.menuBar}>
                     <BlueBtn onClick={() => {
-                      this.props.navigation.navigate('ChargeSetting')
+                      this.props.navigation.navigate('HomeNav')
                     }}>
                         <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Cancel</Text>
                     </BlueBtn>
                     <BlueBtn onClick={() => this.postSchedule()}>
-                        <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Submit</Text>
+                        <Text style={[styles.blueBtnTextColor, pageStyles.appText]}>Confirm</Text>
                     </BlueBtn>
                 </View>
             </View>
-        </ScrollView>
-      </Container>
+        </View>
+      </ResponsiveContainer>
     )
   }
 }
 
 let pageStyles = StyleSheet.create({
   menuBar: {
-    flex: 1, flexDirection: 'row', padding: 20, justifyContent: 'space-between', alignItems: 'center',
+    flexDirection: 'row', padding: 20, justifyContent: 'space-between', alignItems: 'center',
   },
   moreWrapper: {
     backgroundColor: '#FFFFFF',
@@ -213,7 +219,7 @@ let pageStyles = StyleSheet.create({
     marginRight: 16,
   },
   currencyWrapper: {
-    paddingTop: 17,
+    paddingTop: 1,
     paddingBottom: 17,
   },
   flexRowView: {
