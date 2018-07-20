@@ -144,6 +144,7 @@ class AddingDeviceContainer extends Component {
     this.verifyingConnectionInterval = this.setInterval(() => {
       deleteDevice(deviceId)
         .then((a) => {
+          // return true
           return postDevice(deviceId)
         })
         .then((b) => {

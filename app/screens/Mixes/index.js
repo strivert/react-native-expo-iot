@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Animated, Easing } from 'react-native'
 import Home from './Home'
 import User from './User'
-import Setting from './Setting'
+import ChargeHistory from './ChargeHistory'
 import More from './More'
 import TermsWeb from './TermsWeb'
 
@@ -15,11 +15,11 @@ import UnitCost from './UnitCost'
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import Footer from '../../components/common/Footer'
 
-/*
+
 const HomeNav = StackNavigator(
   {
     Home: { screen: Home },
-    Charge: { screen: Charge },
+    ChargeHistory: { screen: ChargeHistory },
   }, {
     headerMode: 'none',
     transitionConfig: () => ({
@@ -31,7 +31,7 @@ const HomeNav = StackNavigator(
     }),
   }
 )
-*/
+
 const SettingNav = StackNavigator(
   {
     ChargePoint: { screen: ChargePoint },
@@ -84,7 +84,7 @@ const MoreNav = StackNavigator(
 
 export default ( MainScreenNavigator = TabNavigator(
   {
-    HomeNav: { screen: Home },
+    HomeNav: { screen: HomeNav },
     UserNav: { screen: UserNav },
     SettingNav: { screen: SettingNav },
     MoreNav: { screen: MoreNav },

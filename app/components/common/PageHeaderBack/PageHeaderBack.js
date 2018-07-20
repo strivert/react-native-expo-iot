@@ -12,8 +12,11 @@ class PageHeaderBack extends Component {
           <BlueBtn
             style={{position: 'absolute', left: 0, top: 0, width: 50, height: 60, justifyContent: 'center'}}
             onClick={() => {
-              // this.props.navigation.goBack()
-              this.props.navigation.navigate(this.props.pageName)
+              if (this.props.isGoBack) {
+                this.props.navigation.goBack()
+              } else {
+                this.props.navigation.navigate(this.props.pageName)
+              }
             }}
           >
             <Image
@@ -36,6 +39,7 @@ class PageHeaderBack extends Component {
 PageHeaderBack.propTypes = {
   navigation: PropTypes.any,
   pageName: PropTypes.any,
+  isGoBack: PropTypes.any,
 }
 
 let styles = StyleSheet.create({

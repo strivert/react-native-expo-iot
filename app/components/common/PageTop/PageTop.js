@@ -9,6 +9,7 @@ class PageTop extends Component {
     this.icons = {
       'account3': require('../../../assets/images/page_icons/account3.png'),
       'setting3': require('../../../assets/images/page_icons/setting3.png'),
+      'charge1': require('../../../assets/images/status_icons/charge1.png'),
     }
   }
   render () {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Container, StyleProvider} from 'native-base'
 import PropTypes from 'prop-types'
-import {NetInfo, View, Image, AppState, Platform} from 'react-native'
+import {NetInfo, View, Image, AppState, Platform, StatusBar} from 'react-native'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import io from 'socket.io-client'
@@ -168,6 +168,7 @@ class AppContainer extends Component {
   setupSocket () {
     this.socket = io(`${ANDERSEN_IOT_DOMAIN}/iot`)
     this.socket.on('connect', () => {
+      // console.log('connect', this.props.token)
       this.props.socketConnected()
       this.socket.emit('authorize', {id_token: this.props.token})
     })
@@ -175,10 +176,12 @@ class AppContainer extends Component {
       // console.log('chargerstatus', data)
       this.props.receivedDeviceStatus(data)
     })
-    this.socket.on('devicecount', data => {
-      // console.log('devicecount', data)
-      this.props.receivedDeviceCount(data)
-    })
+    setTimeout(()=>{
+      this.socket.on('devicecount', data => {
+        // console.log('devicecount', data)
+        this.props.receivedDeviceCount(data)
+      })
+    }, 2000);
     this.socket.on('unlockedevent', data => {
       // console.log('unlockedevent', data);
       this.props.putUnlockedEvent(data)
@@ -194,6 +197,7 @@ class AppContainer extends Component {
       .then(() => {
       })
       .catch(err => {
+        console.log(err)
         // console.warn('refreshtoken failed', err)
       })
     })
@@ -234,8 +238,8 @@ class AppContainer extends Component {
   
   render () {
     return <StyleProvider style={getTheme(platform)}>
-      <Container style={{backgroundColor: 'white'}}>
-        <Container style={{marginTop: 24}}>
+      <Container>
+        <Container style={{backgroundColor: 'white'}}>
           <BootStrap />
         </Container>
         <DropdownAlert ref={ref => this.dropdown = ref} onClose={()=>{}} closeInterval={8000} />

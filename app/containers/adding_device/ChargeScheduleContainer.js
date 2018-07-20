@@ -86,6 +86,7 @@ class ChargeScheduleContainer extends Component {
       .catch((err) => {
           console.log(err)
       })
+    this.props.navigation.navigate('HomeNav')
   }
 
   render () {
@@ -99,10 +100,12 @@ class ChargeScheduleContainer extends Component {
       const {devicesHash, selectedDeviceId} = this.props
       const selectedDevice = devicesHash[selectedDeviceId]
 
+      /*
       let chargetimer = this.checkKeyExist('chargetimer', selectedDevice['variables']) ? JSON.parse(selectedDevice['variables']['chargetimer']) : false
       let dailyenable = chargetimer ? chargetimer[0]['dailyenable'] : false
       let hour = chargetimer ? chargetimer[0]['hour'] : 0
       let min = chargetimer ? chargetimer[0]['min'] : 0
+      */
 
       // schedule_desc = `${this.toApply00(hour)} : ${this.toApply00(min)} ` + (dailyenable ? 'Active' : 'Inactive')
       schedule_desc = `${this.toApply00(this.state.hour)} : ${this.toApply00(this.state.min)} ` + (this.state.dailyenable ? 'Active' : 'Inactive')

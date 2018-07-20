@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import {StyleProvider} from 'native-base'
 import {Provider} from 'react-redux'
 import {NativeRouter} from 'react-router-native'
-import {AsyncStorage, View, Image} from 'react-native'
-import {Font, Asset} from 'expo'
+import {AsyncStorage, View, Image, StatusBar} from 'react-native'
+import {Font, Asset, Constants} from 'expo'
 import getTheme from '../native-base-theme/components'
 import material from '../native-base-theme/variables/material'
 import {setDefaults} from './actions/storeActions'
@@ -127,13 +127,13 @@ export default class App extends Component {
         <Spinner style={{position: 'absolute', left: '50%', top: '50%', marginLeft: -25, marginTop: -25}} />
       </View>
     ) : (
-      <StyleProvider style={getTheme(material)}>
-        <Provider store={store}>
+      <Provider store={store}>
+        <View style={{flex: 1, marginTop: Constants.statusBarHeight}}>
           <NativeRouter>
             <AppContainer />
           </NativeRouter>
-        </Provider>
-      </StyleProvider>
+        </View>
+      </Provider>
     )
   }
 }

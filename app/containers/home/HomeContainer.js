@@ -88,26 +88,26 @@ class HomeContainer extends Component {
       }, () => {
         this.props.setTabVisible()
       })
-      return
+      return true;
     }
 
     if ( !prevProps.token) {
       this.setState({
         visibleTabBar: false,
       })
-      return
+      return true;
     }
 
     if (!selectedDeviceId) {
       this.setState({
         visibleTabBar: false,
       })
-      return
+      return true;
     }
 
     const selectedDevice = prevProps.devicesHash[selectedDeviceId]
     if( !selectedDevice || !this.checkKeyExist('variables', selectedDevice) || !selectedDevice['variables']) {
-      return
+      return true;
     }
 
     this.setState({
@@ -245,7 +245,16 @@ class HomeContainer extends Component {
     const selectedDevice = this.props.devicesHash[selectedDeviceId]
 
     if( !selectedDevice || !this.checkKeyExist('variables', selectedDevice) || !selectedDevice['variables']) {
-      return
+      return (
+        <View style={{flex: 1, position: 'absolute', left: 0, top: 0, height: '100%', width: '100%'}}>
+            <Image
+              source={require('../../assets/images/splash.png')}
+              style={{flex: 1, width: undefined, height: undefined}}
+            >
+            </Image>
+          <Spinner style={{position: 'absolute', left: '50%', top: '50%', marginLeft: -25, marginTop: -25}} />
+        </View>
+      )
     }
 
     // console.log('selectedDevice', selectedDevice)
@@ -705,6 +714,8 @@ class HomeContainer extends Component {
                   setEnableEco={(deviceId, enabled)=>this.handleToggleEco(deviceId, enabled)}
                   postSchedule={(deviceId, enabled)=>this.postSchedule(deviceId, enabled)}
                   goChargeSchedule={()=>{this.props.navigation.navigate('ChargeSchedule')}}
+                  goChargeHistory={()=>{/*this.props.navigation.navigate('ChargeHistory')*/}}
+                  keyStr={key}
                 />)
             })
           }

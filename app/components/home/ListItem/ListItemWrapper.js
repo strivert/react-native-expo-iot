@@ -4,6 +4,7 @@ import { StyleSheet, View, Image, Dimensions, TouchableHighlight } from 'react-n
 import PropTypes from 'prop-types'
 // import ToggleSwitch from 'toggle-switch-react-native'
 // import * as Animatable from 'react-native-animatable'
+import {Constants} from 'expo'
 import Swipeout from 'react-native-swipeout'
 
 const { width } = Dimensions.get('window')
@@ -100,7 +101,7 @@ class ListItemWrapper extends Component {
   }
 
   render () {
-    const {iconName, t1Text, t2Text, t2Sty, hasSwitch, isLast, switchSty, isEnableSwitch, hasSolarSwitch, hasScheduleSwitch} = this.props
+    const {iconName, t1Text, t2Text, t2Sty, hasSwitch, isLast, switchSty, keyStr, isEnableSwitch, hasSolarSwitch, hasScheduleSwitch} = this.props
     // const {iconSty} = this.props
 
     // item wrapper style
@@ -223,7 +224,7 @@ class ListItemWrapper extends Component {
     }
 
     const {width, height} = Dimensions.get('window')
-    const rowHeight = Math.floor( (height - 24 - 207 - 55) / 5 )
+    const rowHeight = Math.floor( (height - Constants.statusBarHeight - 207 - 55) / 5 )
 
     let renderItem = null;
 
@@ -330,8 +331,31 @@ class ListItemWrapper extends Component {
               </TouchableHighlight>
             </View>
           </Swipeout>
+    } else if (keyStr === 'cost' || keyStr === 'power') {
+      renderItem = <View style={{flex: 1}}><TouchableHighlight
+        style={{flex: 1}}
+        onLongPress={() => {
+          this.props.goChargeHistory()
+        }}
+        underlayColor='#f2f2f2'
+      >
+        <View style={[itemWrapperStyles, {height: rowHeight}]}>
+          <View style={styles.leftCtr}>
+            <View style={{height: 10}}>
+              <Text style={t1Styles}></Text>
+            </View>
+            <View style={{marginBottom: 5}}>
+              <Image source={this.statusIcons[iconName]} style={iconStyles} resizeMode='contain' />
+            </View>
+          </View>
+          <View style={bodyStyles}>
+            <Text style={t1Styles}>{t1Text}</Text>
+            <Text style={t2Styles}>{t2Text}</Text>
+          </View>
+        </View>
+      </TouchableHighlight></View>
     } else {
-	  // renderItem = <View style={[itemWrapperStyles]}>
+    // renderItem = <View style={[itemWrapperStyles]}>
       renderItem = <View style={[itemWrapperStyles, {height: rowHeight}]}>
         <View style={styles.leftCtr}>
           <View style={{height: 10}}>
