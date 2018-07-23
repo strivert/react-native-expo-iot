@@ -1,4 +1,5 @@
 import andersenHttp from '../utils/andersenHttp'
+import config from '../config/config'
 
 module.exports = {
   postCreateClaimCode,
@@ -14,6 +15,7 @@ module.exports = {
   postSetSolarMode,
   postSetEcoMode,
   postSetEnableSchedule,
+  postGetChargeHistory,
 }
 
 function postCreateClaimCode () {
@@ -89,5 +91,14 @@ function postSetEnableSchedule (deviceId, schedulestr) {
   // console.log('`devices/${deviceId}/set-remote-locking`', `devices/${deviceId}/set-remote-locking`)
   return andersenHttp.post(`devices/${deviceId}/setchargetimer`, {
     timerString: schedulestr,
+  })
+}
+
+function postGetChargeHistory (deviceId, drawStart) {
+  // console.log('drawStart', drawStart)
+  return andersenHttp.post(`devices/${deviceId}/chargehistory`, {
+    drawStart: drawStart,
+    drawLength: config.CHARGE_HISTORY_COUNT,
+    order: false,
   })
 }

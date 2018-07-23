@@ -346,9 +346,7 @@ class HomeContainer extends Component {
 	  let solarmode = this.checkKeyExist('solarmode', selectedDevice['variables']) ? selectedDevice['variables']['solarmode'] : false
 
 	  let ecomode = this.checkKeyExist('ecomode', selectedDevice['variables']) ? selectedDevice['variables']['ecomode'] : false
-
     const lasterror = this.checkKeyExist('lasterror', selectedDevice['variables']) ? selectedDevice['variables']['lasterror'] : 0
-
     let chargetimer = this.checkKeyExist('chargetimer', selectedDevice['variables']) ? JSON.parse(selectedDevice['variables']['chargetimer']) : false
 
     let dailyenable = chargetimer ? chargetimer[0]['dailyenable'] : false
@@ -357,6 +355,8 @@ class HomeContainer extends Component {
     let min = chargetimer ? this.toApply00(chargetimer[0]['min']) : '00'
 
     let dis_char = ''
+
+    let product_type = this.checkKeyExist('type', selectedDevice['variables']) ? selectedDevice['variables']['type'] : 'Interim'
 
     if (solarmode)
     {
@@ -649,11 +649,14 @@ class HomeContainer extends Component {
     } else {
       displayKeyArray = ['status', 'charge', 'cost', 'power', 'mainternance']
     }
-	
-	if (solarmode)
-	{
-		displayKeyArray = ['status', 'charge', 'cost', 'power', 'gridpower', 'solar', 'mainternance']
-	}
+
+	  if (solarmode) {
+		  displayKeyArray = ['status', 'charge', 'cost', 'power', 'gridpower', 'solar', 'mainternance']
+    }
+
+    if (product_type === 'Interim') {
+      displayKeyArray = ['status', 'charge', 'mainternance']
+    }
 
     // console.log('this.props', this.props.navigation)
 
@@ -714,7 +717,7 @@ class HomeContainer extends Component {
                   setEnableEco={(deviceId, enabled)=>this.handleToggleEco(deviceId, enabled)}
                   postSchedule={(deviceId, enabled)=>this.postSchedule(deviceId, enabled)}
                   goChargeSchedule={()=>{this.props.navigation.navigate('ChargeSchedule')}}
-                  goChargeHistory={()=>{/*this.props.navigation.navigate('ChargeHistory')*/}}
+                  goChargeHistory={()=>{this.props.navigation.navigate('ChargeHistory')}}
                   keyStr={key}
                 />)
             })
